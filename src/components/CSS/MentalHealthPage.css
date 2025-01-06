@@ -1,0 +1,508 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.mental-health-page {
+    color: #333;
+}
+
+.header {
+    background-image: url('../assets/bkmental.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    padding: 80px 50px;
+}
+
+.header-content {
+    flex: 1; /* Ensures the content takes up the remaining space */
+}
+
+.header-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+.header-content h1,
+.header-content h2 {
+    color: #000; /* Change text color to black */
+    margin: 10px 0; /* Adds space between the headers */
+    font-family: 'Helvetica', sans-serif; /* Change to your desired font */
+}
+
+/* If you want a specific font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+#first {
+    color: #36405B; /* Change text color to black */
+    font-family:"Abril Fatface",serif; /* Change to your desired font */
+    font-size: 3rem;
+    margin-top: 170px; /* Add margin to move the text down */
+    line-height: 1.2;
+}
+#second {
+    color: #6D61BC; /* Change text color to black */
+    font-family:"Abril Fatface",serif; /* Change to your desired font */
+    font-size: 3rem;
+    
+}
+
+#third {
+    color: #36405B; /* Change text color to black */
+    font-family:"Abril Fatface",serif; /* Change to your desired font */
+    font-size: 3rem;
+    
+}
+
+.search-form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 20px;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    margin-top: -290px;
+    
+}
+
+.search-form p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.search-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.search-form select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.search-form button {
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #9588E8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.search-form button:hover {
+    background-color: #6c63ff;
+}
+.find-therapist-btn {
+    background-color: #9588E8; /* Change the background color */
+    color: #fff; /* Text color */
+    font-size: 1rem; /* Font size */
+    padding: 12px 24px; /* Padding to make the button larger and more clickable */
+    border: none; /* Remove the default border */
+    border-radius: 25px; /* Make the button rounded */
+    cursor: pointer; /* Change the cursor to a pointer to indicate it's clickable */
+    text-align: center; /* Center the text */
+    font-weight: bold; /* Make the text bold */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition for color and effect */
+}
+
+.find-therapist-btn:hover {
+    background-color: #6c63ff; /* Change the background color on hover */
+    transform: scale(1.05); /* Slightly increase the size when hovered */
+}
+
+.find-therapist-btn:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2); /* Add a shadow on focus */
+}
+
+#find{
+    font-family: "Oswald",serif;
+}
+/* Services Section */
+.services {
+    padding: 80px 0;
+    background-color: #f5f5f5;
+}
+
+.services-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.service-card {
+    padding: 40px 30px;
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.service-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.service-card h2 {
+    font-family: "Abril Fatface", serif;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.service-card p {
+    font-family: "Oswald", sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.find-link {
+    color: white;
+    text-decoration: none;
+    font-family: "Oswald", sans-serif;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin-top: auto;
+    transition: transform 0.3s ease;
+}
+
+.find-link:hover {
+    transform: translateX(10px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .services-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .services-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-card {
+        padding: 30px 20px;
+    }
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Therapist Section */
+.therapist-section {
+    padding: 30px 0;
+    background-color: #fff;
+    margin-left: 320px;
+    width: 100%;
+    font-size: 0.8rem;
+}
+.therapeutic-heading {
+    font-size: 20px; /* Adjust size as needed */
+    font-weight: bold;
+    line-height: 1.4;
+    color: #222;
+}
+
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.expert-label {
+    color: #9588E8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    color: #36405B;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.3;
+}
+
+.therapist-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0px;
+    margin-bottom: 60px;
+    margin-top:250px;
+    margin-right:90px;
+   
+}
+
+.therapist-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-right:70px;
+    
+}
+
+.therapist-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    margin-right:400px;
+}
+
+.therapist-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.therapist-info {
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.therapist-info.purple {
+    background-color: #9588E8;
+    color: white;
+}
+
+.therapist-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.therapist-info p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.therapist-info.purple p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* How it Works Section */
+.how-it-works {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.work-process {
+    color: #9588E8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.how-it-works h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #36405B;
+    margin-bottom: 50px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.steps-container::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, #9588E8 0, #9588E8 5px, transparent 5px, transparent 12px);
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.number {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: #9588E8;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step p {
+    font-size: 1rem;
+    color: #666;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .therapist-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .steps-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .steps-container::before {
+        display: none;
+    }
+
+    .section-header h2,
+    .how-it-works h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .therapist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.team-section {
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .team-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .team-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .team-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 200px;
+    padding: 20px;
+  }
+  
+  .team-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .team-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .team-card p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .view-all-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #62589f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .view-all-btn:hover {
+    background-color: #9588e8;
+  }    

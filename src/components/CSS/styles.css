@@ -1,0 +1,59 @@
+.facebook {
+    border: 0px none;
+    height: 27px;
+    position: relative;
+    width: 27px;
+}
+
+.facebook .vector {
+    height: 26px;
+    left: 7px;
+    position: absolute;
+    top: 1px;
+    width: 13px;
+}
+.twitter {
+    border: 0px none;
+    height: 27px;
+    position: relative;
+    width: 27px;
+}
+
+.twitter .vector {
+    height: 22px;
+    left: 1px;
+    position: absolute;
+    top: 3px;
+    width: 26px;
+}
+.instagram {
+    background-image: url(../assets/vector.svg);
+    background-size: 100% 100%;
+    border: 0px none;
+    height: 27px;
+    width: 27px;
+}
+
+.instagram .overlap-group {
+    height: 16px;
+    left: 7px;
+    position: relative;
+    top: 5px;
+    width: 16px;
+}
+
+.instagram .vector {
+    height: 14px;
+    left: 0;
+    position: absolute;
+    top: 2px;
+    width: 14px;
+}
+
+.instagram .img {
+    height: 3px;
+    left: 13px;
+    position: absolute;
+    top: 0;
+    width: 3px;
+}

@@ -1,0 +1,121 @@
+.magic-zoo-container {
+    
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #FFE4B5; /* Fallback color */
+    overflow: hidden;
+    position: relative; /* Fixed to relative */
+    z-index: -1; /* Push to background */
+}
+
+  
+  .content {
+    max-width: 90%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .title {
+    font-family: 'Courier New', Courier, monospace;
+    color: #6e1d1d;
+    margin-bottom: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.9;
+    margin-right: 600px;
+    font-size: 90px;
+  }
+  
+  .title span {
+    font-size: 4.7rem;
+    display: block;
+    line-height: 1;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .tagline {
+    font-size: 1.5rem;
+    color: #695A77;
+    margin-top: 0.5rem;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+    margin-right: 600px;
+  }
+  
+  .tagline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 1px;
+    background-color: #695A77;
+  }
+  
+  .illustration {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .illustration img {
+    width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .title span {
+      font-size: 3rem;
+    }
+  
+    .tagline {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title span {
+      font-size: 2rem;
+    }
+  
+    .tagline {
+      font-size: 1rem;
+    }
+  
+    .illustration img {
+      max-height: 40vh;
+    }
+  }
+  .explore-button {
+    position: absolute; /* Place the button relative to the container */
+    top: 78%; /* Adjust this value to place the button just below the title */
+    left: 27%; /* Center the button horizontally */
+    transform: translate(-50%, -50%); /* Adjust for proper centering */
+    background-color: #6e1d1d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1; /* Ensure it stays above the background image */
+}
+
+.explore-button:hover {
+    background-color: #af7777;
+}

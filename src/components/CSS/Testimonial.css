@@ -1,0 +1,186 @@
+.onco-testimonial-section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: white;
+  }
+  
+  .onco-testimonial-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .onco-testimonial-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 2rem;
+  }
+  
+  .onco-testimonial-carousel {
+    position: relative;
+    padding: 40px 0;
+  }
+  
+  .onco-testimonial-viewport {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f0ff;
+    border-radius: 24px;
+  }
+  
+  .onco-testimonial-slides {
+    position: relative;
+    height: 100%;
+  }
+  
+  .onco-testimonial-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  
+  .onco-testimonial-slide.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .onco-testimonial-card {
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .onco-testimonial-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .onco-testimonial-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .onco-testimonial-text-box {
+    text-align: center;
+  }
+  
+  .onco-testimonial-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .onco-testimonial-author {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #8447e9;
+    margin-bottom: 0.25rem;
+  }
+  
+  .onco-testimonial-author-details {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .onco-nav-button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #8447e9;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    z-index: 10;
+    transition: all 0.3s ease;
+  }
+  
+  .onco-nav-button:hover {
+    background: #6a39c1;
+    transform: translateX(-50%) scale(1.1);
+  }
+  
+  .onco-nav-prev {
+    top: 0;
+  }
+  
+  .onco-nav-next {
+    bottom: 0;
+  }
+  
+  .onco-testimonial-read-more {
+    margin-top: 2rem;
+  }
+  
+  .onco-read-more-button {
+    display: inline-flex;
+    align-items: center;
+    color: #8447e9;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .onco-read-more-button:hover {
+    transform: translateX(5px);
+  }
+  
+  /* Image classes */
+  .onco-primary-image {
+    background-image: url("../assets/cancerpatientyoungfemale1.png");
+  }
+  
+  .onco-secondary-image {
+    background-image: url("../assets/cancer\ patient\ old\ man.jpeg");
+  }
+  
+  .onco-tertiary-image {
+    background-image: url("../assets/cancer\ patient\ child.jpg");
+  }
+  
+  .onco-quaternary-image {
+    background-image: url("../assets/cancer\ patient\ man.jpg");
+  }
+  
+  @media (max-width: 768px) {
+    .onco-testimonial-viewport {
+      height: 450px;
+    }
+  
+    .onco-testimonial-text {
+      font-size: 1rem;
+    }
+    
+    .onco-testimonial-card {
+      padding: 1.5rem;
+    }
+  }
+  
+  

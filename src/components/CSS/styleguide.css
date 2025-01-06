@@ -1,0 +1,26 @@
+:root {
+  --dimension-dimension-100: 8px;
+  --dimension-dimension-150: 12px;
+  --dimension-dimension-250: 20px;
+  --dimension-dimension-800: 64px;
+  --space-component-padding-6xlarge: var(--dimension-dimension-800);
+  --space-component-padding-medium: var(--dimension-dimension-150);
+  --space-component-padding-small: var(--dimension-dimension-100);
+  --space-component-padding-xlarge: var(--dimension-dimension-250);
+  --colorblack: rgba(15, 15, 15, 1);
+  --colorbrand: rgba(132, 71, 233, 1);
+  --text-16-font-family: "Montserrat", Helvetica;
+  --text-16-font-size: 16px;
+  --text-16-font-style: normal;
+  --text-16-font-weight: 500;
+  --text-16-letter-spacing: -0.8px;
+  --text-16-line-height: normal;
+  --color-primary: #8447e9;
+  --color-black: #0f0f0f;
+  --color-white: #ffffff;
+  --color-button-bg: #6851fc;
+  --color-link-hover: #8447e9;
+  --font-family: "Montserrat", sans-serif;
+  --font-size-base: 16px;
+  --font-size-large: 18px;
+}

@@ -1,0 +1,72 @@
+/* General container styles */
+.screening-container {
+    font-family: Arial, sans-serif;
+    color: #4a148c;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Header styles */
+  .screening-header {
+    background: linear-gradient(to right, #5e35b1, #7e57c2);
+    color: white;
+    padding: 30px 10px;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .screening-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .screening-header p {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  /* Card container styles */
+  .screening-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  /* Individual card styles */
+  .screening-card {
+    width: 90%;
+    max-width: 1200px;
+    border: 2px solid #d1c4e9;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .screening-card h2 {
+    font-size: 1.5rem;
+    color: #4a148c;
+    margin-bottom: 10px;
+  }
+  
+  .screening-card p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  .screening-card button {
+    background-color: #b39ddb;
+    color: #4a148c;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .screening-card button:hover {
+    background-color: #9575cd;
+  }
