@@ -1,0 +1,492 @@
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F8F9FB;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    background: white;
+    padding: 24px 0;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar-header {
+    padding: 0 24px 24px;
+  }
+  
+  .logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .logo-accent {
+    color: #8447E9;
+  }
+  
+  .menu-label {
+    padding: 16px 24px;
+    font-size: 0.875rem;
+    color: #6B7280;
+    font-weight: 500;
+  }
+  
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 12px;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #6B7280;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .nav-item:hover {
+    background-color: #F3F4F6;
+  }
+  
+  .nav-item.active {
+    background-color: #8447E9;
+    color: white;
+  }
+  
+  /* Main Content */
+  .dashboard-main {
+    flex: 1;
+    margin-left: 240px;
+    padding: 24px;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .icon-button {
+    padding: 8px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: #6B7280;
+    cursor: pointer;
+  }
+  
+  .user-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  /* Dashboard Content */
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+  }
+  
+  .main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* Patient List */
+  .patient-list {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .date-selector button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .patients {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .patient-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .patient-item:hover {
+    background: #F3F4F6;
+  }
+  
+  .patient-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+  
+  .patient-avatar.cyan { background: #E0F7FA; }
+  .patient-avatar.pink { background: #FCE4EC; }
+  .patient-avatar.purple { background: #F3E5F5; }
+  
+  .patient-info {
+    flex: 1;
+  }
+  
+  .patient-name {
+    font-weight: 500;
+  }
+  
+  .patient-type {
+    color: #8447E9;
+    font-size: 0.875rem;
+  }
+  
+  .patient-time {
+    color: #6B7280;
+    font-size: 0.875rem;
+  }
+  
+  /* Consultation */
+  .consultation {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  
+  .consultation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .more-options {
+    padding: 8px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: #6B7280;
+    cursor: pointer;
+  }
+  
+  .patient-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .symptoms {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+  
+  .symptom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6B7280;
+  }
+  
+  .medical-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .info-section h4 {
+    color: #6B7280;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+  }
+  
+  .prescription-link {
+    color: #8447E9;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+  
+  /* Calendar */
+  .calendar {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .calendar-nav button {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: #F3F4F6;
+    color: #6B7280;
+    cursor: pointer;
+  }
+  
+  .calendar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+  }
+  
+  .day-name {
+    font-size: 0.75rem;
+    color: #6B7280;
+    font-weight: 500;
+  }
+  
+  .calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  
+  .calendar-day {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .calendar-day.selected {
+    background: #8447E9;
+    color: white;
+  }
+  
+  /* Upcoming Card */
+  .upcoming-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .view-all {
+    color: #8447E9;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .upcoming-event {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  .upcoming-event:hover {
+    background: #F3F4F6;
+  }
+  
+  .event-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #8447E9;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+  
+  .event-details h4 {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .event-details p {
+    color: #6B7280;
+    font-size: 0.875rem;
+  }
+  
+  /* Appointments Card */
+  .appointments-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  
+  .appointments-count {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 16px;
+  }
+  
+  /* Mobile Menu Toggle */
+  .mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    padding: 8px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .dashboard-content {
+      grid-template-columns: 1fr 300px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .dashboard-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .side-section {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    
+    .dashboard-main {
+      margin-left: 0;
+      padding: 16px;
+    }
+    
+    .mobile-menu-toggle {
+      display: block;
+    }
+    
+    .dashboard-header {
+      margin-top: 48px;
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 40;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .symptoms {
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .patient-item {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: center;
+    }
+    
+    .patient-time {
+      align-self: flex-end;
+    }
+  }
+  
+  
