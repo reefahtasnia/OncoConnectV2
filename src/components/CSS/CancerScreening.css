@@ -1,72 +1,353 @@
-/* General container styles */
-.screening-container {
-    font-family: Arial, sans-serif;
-    color: #4a148c;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  /* Header styles */
-  .screening-header {
-    background: linear-gradient(to right, #5e35b1, #7e57c2);
-    color: white;
-    padding: 30px 10px;
-    border-radius: 10px 10px 0 0;
-  }
-  
-  .screening-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .screening-header p {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-  
-  /* Card container styles */
-  .screening-cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  /* Individual card styles */
-  .screening-card {
-    width: 90%;
-    max-width: 1200px;
-    border: 2px solid #d1c4e9;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+.cancer-screening {
+    min-height: 100vh;
     background-color: #fff;
-  }
-  
-  .screening-card h2 {
+}
+
+.sheader {
+    background: url('../assets/Screening_header1.png') center/cover;
+    padding: 2rem 2rem;
+    color: white;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sheader::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: white;
+    border-radius: 50% 50% 0 0;
+}
+
+.sheader h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #7c39f1;
+}
+
+.sheader p {
     font-size: 1.5rem;
-    color: #4a148c;
-    margin-bottom: 10px;
-  }
-  
-  .screening-card p {
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
-  
-  .screening-card button {
-    background-color: #b39ddb;
-    color: #4a148c;
+    opacity: 0.9;
+    color: #71579c;
+}
+
+.about-screening {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 2rem auto;
+    padding: 10 1rem;
+    max-width: 1200px;
+    
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: rgb(237, 229, 246);
+    border-radius: 1rem;
+    padding: 1.5rem 3rem;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+    margin: 0 1rem;
+    overflow: visible; /* Allow content to be visible if it overflows */
+    min-height: auto; /* Remove any fixed height constraints */
+    height: auto; /* Allow card to grow with content */
+    align-self: center;
+}
+
+
+
+
+.info-card h2 {
+    color: #7C3AED;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    
+}
+
+.info-card p {
+    color: #4B5563;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .about-screening {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.screening-sections {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.screening-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+    position: relative; /* or static */
+    z-index: 1;
+    overflow: visible;
+    visibility: visible;
+    display: block; /* or flex */
+}
+
+.screening-card h2 {
+    color: #7C3AED;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.screening-card p {
+    color: #4B5563;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.toggle-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #7C3AED;
+    color: white;
     border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     cursor: pointer;
+    font-size: 1rem;
     transition: background-color 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: #6D28D9;
+}
+
+.expanded-content {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #E5E7EB;
+    animation: slideDown 0.3s ease-out;
+}
+
+.expanded-content h3 {
+    color: #374151;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+.search-formm {
+    max-width: 300px;
+    margin: 2rem auto;
   }
   
-  .screening-card button:hover {
-    background-color: #9575cd;
+  .search-inputt {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
   }
+  
+  .search-inputt img {
+    width: 24px;
+    height: 24px;
+    margin-right: 1rem;
+  }
+  
+  .search-inputt input {
+    flex: 1;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+
+.paginationn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+  }
+  
+  .page-btnn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .page-btn.activee {
+    background: #7C3AED;
+    color: white;
+    border-color: #7C3AED;
+  }
+  
+  .page-btnn:hover:not(.active) {
+    background: #f3f4f6;
+  }
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.book-now-btnn {
+    margin-top: 1rem;
+    margin-left: 40%;
+    padding: 0.75rem 1.5rem;
+    background-color: #7C3AED;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .book-now-btnn:hover {
+    background-color: #6D28D9;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal.show {
+    display: block;
+  }
+  
+  .modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    width: 50%;
+    max-width: 500px;
+    max-height: 500px;
+    border-radius: 8px;
+    
+  }
+  
+  .modal-header {
+    background: #7C3AED;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  
+  .modal-header .close {
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .appointment-form {
+    padding: 1.5rem;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    
+  }
+  
+  .form-row label {
+    font-size: 0.875rem;
+    color:#7C3AED;
+    font-weight: 500;
+  }
+  
+  .form-row input,
+  .form-row select {
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    background-color: #F3F4F6;
+    font-size: 0.875rem;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .cancel-btn,
+  .confirm-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .cancel-btn {
+    background: white;
+    border: 1px solid #D1D5DB;
+    color: #374151;
+  }
+  
+  .confirm-btn {
+    background: #7C3AED;
+    border: none;
+    color: white;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #6D28D9;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #D1D5DB;
+  }
+  
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+

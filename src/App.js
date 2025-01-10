@@ -10,7 +10,6 @@ import Forum from './components/communityforum.js';
 import NewQuestion from './components/newPost.js';
 import ViewPost from './components/viewPost.js';
 import Signup from './components/Signup.js';
-import CancerScreening from './components/CancerScreening.js';
 import PassordReset from './components/resetPassword.js';
 import DoctorDashboard from './dashboard.js';
 import UserDashboard from './user-dashboard/dashboard.js';
@@ -25,6 +24,7 @@ import Bunny from './components/Bunny.js';
 import Elephant from './components/Elephant.js';
 import Formpage from './components/Formpage.js';
 import Doctor_finder from './components/Doctor_finder.jsx';
+import CancerScreen from './components/CancerScreening.jsx';
 
 
 const PageWrapper = ({ children }) => {
@@ -61,7 +61,6 @@ function App() {
                 <Route path="/editProfile" element={<EditProfile />} />
                 <Route path="/forum" element={<Forum />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/cancerscreening" element={<CancerScreening />} />
                 <Route path="/forgot-password" element={<PassordReset />} />
                 <Route path="/newquestion" element={<NewQuestion />} />
                 <Route path="/viewpost" element={<ViewPost />} />
@@ -78,6 +77,7 @@ function App() {
                 <Route path="/user/medicine" element={<UserMedicines  />} />
                 <Route path="/user/messages" element={<UserMessages />} />
                 <Route path="/doc_find" element={<Doctor_finder />} />
+                <Route path="/cancer_screen" element={<CancerScreen />} />
             </Routes>
         </>
     );
