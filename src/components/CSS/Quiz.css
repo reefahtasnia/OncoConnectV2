@@ -1,0 +1,272 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+  }
+  
+  spanh {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1em;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-image: linear-gradient(rgb(174, 0, 255), rgb(132, 0, 255));
+    background-size: 100% 10px;
+    background-repeat: no-repeat;
+    background-position: 100% 0%;
+    transition: background-size .7s, background-position .5s ease-in-out;
+  }
+  
+  spanh:hover {
+    background-size: 100% 100%;
+    background-position: 0% 100%;
+    transition: background-position .7s, background-size .5s ease-in-out;
+  }
+  
+  /* Hero Section */
+  .hero {
+    background: url('../assets/Quiz-header.png') center/cover;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+    color: #7C3AED;
+  }
+  
+  /* Main Content */
+  .main-content {
+    padding: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    background: #7C3AED;
+    padding: 0.5rem;
+    border-radius: 0 0 100px 0;
+  }
+  
+  .content-wrapper {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .cancer-cards {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-content {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.5rem;
+    gap: 2rem;
+  }
+  
+  .ribbon-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    flex-shrink: 0;
+  }
+  
+  .ribbon-image {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  
+  .card-text {
+    flex: 1;
+  }
+  
+  .card-text h3 {
+    color: #7C3AED;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .button-container {
+    margin-top: auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .quiz-btn {
+    background: #7C3AED;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .quiz-btn:hover {
+    background: #5604db;
+  }
+  
+  /* Reviews Section */
+  .reviews-section {
+    flex: 1;
+  }
+  
+  .reviews-section h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #7C3AED;
+  }
+  
+  .review-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .review-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .review-image {
+    flex: 0 0 40%;
+  }
+  
+  .review-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .review-content {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .review-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .rating {
+    color: #FFD700;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+  }
+  
+  .page-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .page-btn.active {
+    background: #7C3AED;
+    color: white;
+    border-color: #7C3AED;
+  }
+  
+  .page-btn:hover:not(.active) {
+    background: #f3f4f6;
+  }
+  
+  .highlightred {
+    background-color: #ffcccb;
+    padding: 0 6px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+  
+    .hero h2 {
+      font-size: 1.5rem;
+    }
+  
+    .main-content {
+      padding: 1rem;
+    }
+  
+    .content-wrapper {
+      flex-direction: column;
+    }
+  
+    .card-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .ribbon-container {
+      margin-bottom: 1rem;
+    }
+  
+    .reviews-section {
+      margin-top: 2rem;
+    }
+  
+    .review-card {
+      flex-direction: column;
+    }
+  
+    .review-image {
+      flex: 0 0 200px;
+    }
+  }

@@ -25,6 +25,7 @@ import Elephant from './components/Elephant.js';
 import Formpage from './components/Formpage.js';
 import Doctor_finder from './components/Doctor_finder.jsx';
 import CancerScreen from './components/CancerScreening.jsx';
+import Quiz from './components/Quiz.jsx';
 
 
 const PageWrapper = ({ children }) => {
@@ -78,6 +79,7 @@ function App() {
                 <Route path="/user/messages" element={<UserMessages />} />
                 <Route path="/doc_find" element={<Doctor_finder />} />
                 <Route path="/cancer_screen" element={<CancerScreen />} />
+                <Route path="/quiz" element={<Quiz />} />
             </Routes>
         </>
     );
