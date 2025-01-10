@@ -1,0 +1,92 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: black; /* Set to black from the start */
+    z-index: 10; /* Ensure it appears above other elements */
+    padding: 0;
+}
+
+.close-btn:hover {
+    color: black; /* Keep it black on hover */
+}
+
+
+  
+  .doctor-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .doctor-details .doctor-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  .doctor-details h2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctor-details .credentials,
+  .doctor-details .hospital {
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctor-details .rating {
+    margin-bottom: 1rem;
+  }
+  
+  .doctor-details h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .book-now-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #7C3AED;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .book-now-btn:hover {
+    background-color: #6D28D9;
+  }
+  
+  

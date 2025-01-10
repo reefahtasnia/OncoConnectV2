@@ -1,0 +1,144 @@
+.appointment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
+  
+  .appointment-content {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+  }
+  
+  .appointment-header {
+    background: #7C3AED;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .appointment-header h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .close-btn span {
+    font-size: 0.875rem;
+  }
+  
+  .appointment-form {
+    padding: 1.5rem;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .form-group label {
+    font-size: 0.875rem;
+    color: #374151;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    background-color: #F3F4F6;
+    font-size: 0.875rem;
+  }
+  
+  .time-group {
+    position: relative;
+  }
+  
+  .time-input-group {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .cancel-btn,
+  .confirm-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .cancel-btn {
+    background: white;
+    border: 1px solid #D1D5DB;
+    color: #374151;
+  }
+  
+  .cancel-btn:hover {
+    background: #F3F4F6;
+  }
+  
+  .confirm-btn {
+    background: #7C3AED;
+    border: none;
+    color: white;
+  }
+  
+  .confirm-btn:hover {
+    background: #6D28D9;
+  }
+  
+  @media (max-width: 640px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .appointment-content {
+      width: 95%;
+      margin: 1rem;
+    }
+  }
+  
+  

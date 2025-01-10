@@ -24,6 +24,7 @@ import Survivalkid from './components/Landingkid.js';
 import Bunny from './components/Bunny.js';
 import Elephant from './components/Elephant.js';
 import Formpage from './components/Formpage.js';
+import Doctor_finder from './components/Doctor_finder.jsx';
 
 
 const PageWrapper = ({ children }) => {
@@ -76,6 +77,7 @@ function App() {
                 <Route path="/user" element={<UserDashboard  />}/>
                 <Route path="/user/medicine" element={<UserMedicines  />} />
                 <Route path="/user/messages" element={<UserMessages />} />
+                <Route path="/doc_find" element={<Doctor_finder />} />
             </Routes>
         </>
     );

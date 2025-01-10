@@ -41,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "OncoConnect is a web-based community platform designed to support individuals impacted by cancer. The platform enables users to ask questions, share experiences, and access valuable resources, creating a collaborative space for support and education.",
+  "main": "server.js",
+  "author": "",
+  "license": "ISC"
 }
