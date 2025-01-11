@@ -1,5 +1,5 @@
 /* Global Styles */
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,7 +8,7 @@
   body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-  }
+  } */
   
   .quiz-container {
     min-height: 100vh;
@@ -141,12 +141,13 @@
   }
   
   .questions-container {
+    background-color: rgb(253, 246, 255);
     display: flex;
     flex-direction: column;
     gap: 2rem;
     max-height: 60vh;
     overflow-y: auto;
-    padding-right: 1rem;
+    padding: 1rem 1rem;
   }
   
   .question-card {
@@ -160,7 +161,7 @@
   }
   
   .question-box {
-    background: #ceb7fc;
+    background: #ffffff;
     padding: 1rem;
     border-radius: 8px;
   }
@@ -171,7 +172,7 @@
   }
   
   .answer-box {
-    background: #ebd1ff;
+    background: #ffffff;
     padding: 1rem;
     border-radius: 8px;
   }
@@ -244,7 +245,7 @@
   }
   .info-card2 p {
     margin-bottom: 0.5rem;
-    padding-left: 10%;
+    /* padding-left: 10%; */
   }
   
   .finish-button {
