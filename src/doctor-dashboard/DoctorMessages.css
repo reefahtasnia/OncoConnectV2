@@ -1,0 +1,462 @@
+/* Doctor Messages Content Layout */
+.doctor-messages-content {
+    padding: 24px;
+    height: calc(100vh - 80px);
+  }
+  
+  .doctor-messages-container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+    height: 100%;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  /* Doctor Chats List */
+  .doctor-chats-list {
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .doctor-chats-header {
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .doctor-chats-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .doctor-search-box {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .doctor-search-box input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  .doctor-chat-new {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .doctor-chats-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+  }
+  
+  .doctor-chat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  
+  .doctor-chat-item:hover,
+  .doctor-chat-item.active {
+    background: #f3f0ff;
+  }
+  
+  .doctor-chat-avatar {
+    position: relative;
+  }
+  
+  .doctor-chat-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  
+  .doctor-status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: #10b981;
+    border: 2px solid white;
+    border-radius: 50%;
+  }
+  
+  .doctor-chat-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .doctor-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  
+  .doctor-chat-header h3 {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  .doctor-chat-time {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  .doctor-chat-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .doctor-chat-status {
+    font-size: 0.75rem;
+    color: #8b5cf6;
+  }
+  
+  .doctor-unread-badge {
+    background: #8b5cf6;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+  
+  /* Doctor Chat Window */
+  .doctor-chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .doctor-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .doctor-chat-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .doctor-contact-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .doctor-contact-info h3 {
+    font-weight: 500;
+  }
+  
+  .doctor-contact-id {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  .doctor-chat-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .doctor-action-btn {
+    padding: 8px;
+    border: none;
+    background: none;
+    color: #6b7280;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  
+  .doctor-action-btn:hover {
+    background: #f3f0ff;
+    color: #8b5cf6;
+  }
+  
+  .doctor-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .doctor-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 80%;
+  }
+  
+  .doctor-message.sent {
+    margin-left: auto;
+    flex-direction: row-reverse;
+  }
+  
+  .doctor-message-avatar {
+    width: 32px;
+    height: 32px;
+    background: #8b5cf6;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .doctor-message-content {
+    background: #f3f0ff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+    position: relative;
+  }
+  
+  .doctor-message.sent .doctor-message-content {
+    background: #8b5cf6;
+    color: white;
+    border-radius: 12px;
+    border-bottom-right-radius: 4px;
+  }
+  
+  .doctor-message-time {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 4px;
+    display: block;
+  }
+  
+  .doctor-message.sent .doctor-message-time {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .doctor-user-message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .doctor-chat-input {
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .doctor-chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  .doctor-attach-btn,
+  .doctor-send-btn {
+    padding: 8px;
+    border: none;
+    background: none;
+    color: #8b5cf6;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  
+  .doctor-attach-btn:hover,
+  .doctor-send-btn:hover {
+    background: #f3f0ff;
+  }
+  
+  .doctor-no-chat-selected {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .doctor-messages-content {
+      padding: 12px;
+      height: calc(100vh - 120px);
+    }
+  
+    .doctor-messages-container {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      position: relative;
+      height: calc(100vh - 180px);
+    }
+  
+    .doctor-chats-list {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      height: auto;
+      border-right: none;
+    }
+  
+    .doctor-chats-header,
+    .doctor-search-box {
+      display: none;
+    }
+  
+    .doctor-chat-item {
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+      min-width: 60px;
+    }
+  
+    .doctor-chat-avatar {
+      margin-bottom: 4px;
+    }
+  
+    .doctor-chat-info {
+      display: none;
+    }
+  
+    /* Fix for chat window visibility */
+    .doctor-chat-window {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+  
+    .doctor-chat-window.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  
+    .doctor-chat-header {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1001;
+      padding: 12px;
+      margin-top: 100px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+  
+    .doctor-chat-messages {
+      height: calc(100vh - 140px);
+      overflow-y: auto;
+      padding: 16px;
+    }
+  
+    .doctor-chat-input {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      z-index: 1001;
+      border-top: 1px solid #e5e7eb;
+    }
+  
+    .doctor-message {
+      max-width: 85%;
+    }
+  }
+  
+  /* Back button styles */
+  .doctor-back-to-chats {
+    display: none;
+    padding: 8px;
+    background: none;
+    border: none;
+    color: #8b5cf6;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .doctor-back-to-chats {
+      display: block;
+      margin-right: 12px;
+    }
+  
+    .doctor-chat-header {
+      display: flex;
+      align-items: center;
+    }
+  
+    .doctor-chat-contact {
+      flex: 1;
+    }
+  
+    .doctor-chat-actions {
+      display: none;
+    }
+  }
+  
+  /* Header and Nav Styles */
+  .doctor-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .doctor-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .doctor-nav-item.active {
+    background-color: #f3f0ff;
+    color: #8b5cf6;
+  }
+  
+  @media (max-width: 768px) {
+    .doctor-header-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+  
+  

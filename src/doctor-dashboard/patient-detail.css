@@ -1,0 +1,235 @@
+.doctor-patient-detail {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .doctor-header-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .doctor-back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    border: none;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .doctor-edit-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: #8b5cf6;
+    cursor: pointer;
+  }
+  
+  .doctor-patient-profile {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+  }
+  
+  .doctor-patient-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+  
+  .doctor-patient-basic-info h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .doctor-patient-metadata {
+    display: flex;
+    gap: 16px;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+  
+  .doctor-patient-contact {
+    color: #8b5cf6;
+    margin-bottom: 8px;
+  }
+  
+  .doctor-last-visited {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+  }
+  
+  .doctor-allergies h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .doctor-allergy-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .doctor-allergy-tag {
+    padding: 4px 12px;
+    background: #f3f0ff;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    color: #8b5cf6;
+  }
+  
+  .doctor-vitals-section {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .doctor-vitals-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .doctor-vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .doctor-vital-card {
+    padding: 16px;
+    background: #f8f7ff;
+    border-radius: 12px;
+  }
+  
+  .doctor-vital-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .doctor-vital-label {
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+  
+  .doctor-vital-sublabel {
+    font-size: 0.875rem;
+    color: #8b5cf6;
+  }
+  
+  .doctor-medical-section {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .doctor-medical-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .doctor-section-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .doctor-consultation-item,
+  .doctor-medication-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .doctor-medication-details {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .doctor-select,
+  .doctor-input {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.875rem;
+  }
+  
+  .doctor-select {
+    min-width: 120px;
+  }
+  
+  .doctor-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+  }
+  
+  .doctor-review-button {
+    padding: 12px 24px;
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .doctor-patient-detail {
+      padding: 16px;
+    }
+  
+    .doctor-patient-profile {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px;
+    }
+  
+    .doctor-patient-photo {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .doctor-patient-metadata,
+    .doctor-allergy-tags {
+      justify-content: center;
+    }
+  
+    .doctor-vitals-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .doctor-medication-details {
+      flex-wrap: wrap;
+    }
+  
+    .doctor-header-content {
+      padding: 16px;
+    }
+  }
+  
+  
