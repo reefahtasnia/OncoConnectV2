@@ -1,143 +1,98 @@
 import React from "react";
 import "./CSS/MentalHealthPage.css";
-import vectorIcon from "./assets/Vector.png";
-import phoneIcon from "./assets/phone.png";
-import counsellingIcon from "./assets/counselling.png";
-import team1Image from "./assets/team-1.jpg";
-import team2Image from "./assets/team-2.png";
-import team3Image from "./assets/team-3.jpg";
-import team4Image from "./assets/team-4.jpg";
+import Expert1 from "./assets/team-1.jpg";
+import Expert2 from "./assets/team-2.png";
+import Expert3 from "./assets/team-3.jpg";
+import Expert4 from "./assets/team-4.jpg";
 
-
-
-
-  
-    
 const MentalHealthPage = () => {
   return (
-    <div className="mental-health-page">
-      {/* Header Section */}
-      <header className="header">
-        <div className="header-content">
-          <h1 id="first">At the heart of</h1>
-          <h1 id="second">children & Young</h1>
-          <h1 id="third">people's mental health</h1>
-          <br />
-          <button type="button" className="find-therapist-btn">
-            Find a Therapist
-          </button>
-          <div className="search-form">
-            <p id="find">Find the right counsellor or therapist for you</p>
-            <form>
-              <select name="service">
-                <option value="">Select service</option>
-                <option value="online">Online Counseling</option>
-                <option value="phone">Phone Counseling</option>
-                <option value="direct">Direct Counseling</option>
-              </select>
-              <select name="location">
-                <option value="">Select location</option>
-                <option value="ny">New York</option>
-                <option value="la">Los Angeles</option>
-                <option value="sf">San Francisco</option>
-              </select>
-              <button type="submit">Search Counsellor</button>
-            </form>
-          </div>
+    <div className="mh-mental-health-container">
+      {/* Header */}
+      
+
+      {/* Hero Section */}
+      <section className="mh-hero">
+        <div className="mh-hero-content">
+          <h1>At the heart of <span className="mh-highlight">children & young people's</span> mental health</h1>
+          <button className="mh-find-therapist-button">Find a Therapist</button>
         </div>
-      </header>
+        <div className="mh-hero-search">
+          <h3>Find the right counsellor or therapist for you</h3>
+          <form>
+            <select className="mh-input-select">
+              <option>select service</option>
+            </select>
+            <select className="mh-input-select">
+              <option>select location</option>
+            </select>
+            <button className="mh-search-button">Search Counsellor</button>
+          </form>
+        </div>
+      </section>
 
       {/* Services Section */}
-      <section className="services">
-        <div className="services-container">
-          <ServiceCard
-            title="Online Counseling"
-            description="Many therapists offer counselling online or by telephone, check their profile to learn more or use our online and telephone search."
-            bgColor="#62589F"
-            iconBg="#90C088"
-            iconSrc={vectorIcon}
-          />
-          <ServiceCard
-            title="Advice By Phone"
-            description="If you are in trouble and want our immediate help, simply pick up the phone and call us anytime you need help."
-            bgColor="#9588E8"
-            iconBg="#FFB17A"
-            iconSrc={phoneIcon}
-          />
-          <ServiceCard
-            title="Direct Counseling"
-            description="Psychological counseling, direct psychotherapy with leading psychologists at Medcaline."
-            bgColor="#62589F"
-            iconBg="#FFFFFF"
-            iconSrc={counsellingIcon}
-          />
+      <section className="mh-services">
+        <div className="mh-service-card">
+          <h3>Online Counseling</h3>
+          <p>
+            Many therapists offer counselling online or by telephone, check
+            their profile to learn more or use our online and telephone search.
+          </p>
+          <button>Find therapist →</button>
+        </div>
+        <div className="mh-service-card">
+          <h3>Advice By Phone</h3>
+          <p>
+            If you are in trouble and want our immediate help, simply pick up
+            the phone and call us anytime you need help.
+          </p>
+          <button>Find therapist →</button>
+        </div>
+        <div className="mh-service-card">
+          <h3>Direct Counseling</h3>
+          <p>
+            Psychological counseling, direct psychotherapy with leading
+            psychologists at Medcaline.
+          </p>
+          <button>Find therapist →</button>
         </div>
       </section>
 
-      {/* Therapist Section */}
-      <section className="therapist-section">
-        <div className="container">
-          <div className="section-header">
-            <span className="expert-label">EXPERT MEMBER</span>
-            <h2>Easing your mind with the best suggested therapeutic care?</h2>
+      {/* Expert Members Section */}
+      <section className="mh-experts">
+        <h2>Expert Members</h2>
+        <div className="mh-experts-list">
+          <div className="mh-expert-card">
+            <img src={Expert1} alt="Philinia D. Darwin" />
+            <h3>Philinia D. Darwin</h3>
+            <p>Therapy Expert</p>
           </div>
-       
-          
+          <div className="mh-expert-card">
+            <img src={Expert2} alt="Hekim D. Kwanaa" />
+            <h3>Hekim D. Kwanaa</h3>
+            <p>Therapy Expert</p>
+          </div>
+          <div className="mh-expert-card">
+            <img src={Expert3} alt="Kate Brown" />
+            <h3>Kate Brown</h3>
+            <p>Therapy Expert</p>
+          </div>
+          <div className="mh-expert-card">
+            <img src={Expert4} alt="Roman Sould" />
+            <h3>Roman Sould</h3>
+            <p>Therapy Expert</p>
+          </div>
         </div>
+        <button className="mh-view-all-button">View All Counsellors</button>
       </section>
-      <section className="team-section">
-        <div className="container">
-          <h2>Our Counselors</h2>
-          <div className="team-cards">
-            <TeamCard
-              name="Phillinia D. Darwin"
-              role="Therapy Expert"
-              imageSrc={team1Image}
-            />
-            <TeamCard
-              name="Delvin D. Renaaa"
-              role="Therapy Expert"
-              imageSrc={team2Image}
-            />
-            <TeamCard
-              name="Kate Brown"
-              role="Therapy Expert"
-              imageSrc={team3Image}
-            />
-            <TeamCard
-            name="Roman Smith"
-            role="Therapy Expert"
-            imageSrc={team4Image}
-          />
-        </div>
-        <button className="view-all-btn">View All Counselors</button>
-      </div>
-    </section>
+
+     
+
+      {/* Footer */}
+      
     </div>
   );
 };
 
-// Service Card Component
-const ServiceCard = ({ title, description, bgColor, iconBg, iconSrc }) => (
-  <div className="service-card" style={{ backgroundColor: bgColor }}>
-    <div className="service-icon" style={{ backgroundColor: iconBg }}>
-      <img src={iconSrc} alt={`${title} Icon`} />
-    </div>
-    <h2>{title}</h2>
-    <p>{description}</p>
-    <a href="#" className="find-link">
-      Find therapist →
-    </a>
-  </div>
-);
-const TeamCard = ({ name, role, imageSrc }) => (
-    <div className="team-card">
-      <img src={imageSrc} alt={name} className="team-image" />
-      <h3>{name}</h3>
-      <p>{role}</p>
-    </div>
-  );
-
-
 export default MentalHealthPage;
-
