@@ -100,10 +100,16 @@
       max-height: 40vh;
     }
   }
+  .button-container {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 20px; /* Add some space between the buttons */
+    margin-top: 20px; /* Add margin for spacing */
+  }
   .explore-button {
     position: absolute; /* Place the button relative to the container */
-    top: 78%; /* Adjust this value to place the button just below the title */
-    left: 27%; /* Center the button horizontally */
+    top: 58%; /* Adjust this value to place the button just below the title */
+    left: 11.9%; /* Center the button horizontally */
     transform: translate(-50%, -50%); /* Adjust for proper centering */
     background-color: #6e1d1d;
     color: white;
@@ -119,3 +125,26 @@
 .explore-button:hover {
     background-color: #af7777;
 }
+
+
+.link-button {
+  position: absolute; /* Place the button relative to the container */
+  top: 58%; /* Adjust this value to place the button just below the title */
+  left: 25%; /* Center the button horizontally */
+  transform: translate(-50%, -50%); /* Adjust for proper centering */
+  background-color: #6e1d1d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1; /* Ensure it stays above the background image */
+}
+
+.link-button:hover {
+  background-color: #af7777;
+}
+
+
