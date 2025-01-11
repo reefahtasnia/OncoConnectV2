@@ -1,0 +1,255 @@
+/* General Container Styling */
+
+.container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #F3F0FF; /* Light purple background */
+    color: #333;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow:auto;
+   
+}
+
+/* Warning Box Styling */
+.warning {
+    background-color: #ffdfdf; /* Light red background */
+    border: 1px solid #C4B5FD; /* Slightly darker border */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #000000; /* Black text */
+    font-size: 14px;
+    text-align: center; /* Center-align text for better readability */
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.warning a {
+    color: #ffffff; /* Bright purple link */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.warning a:hover {
+    color: #bdabda; /* Slightly darker purple on hover */
+}
+
+/* Donation Box Styling */
+.donation-box {
+    border: 1px solid #D8B4FE; /* Light lavender border */
+    border-radius: 12px;
+    background-color: #FFFFFF; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+    width: 100%;
+}
+
+/* Flexbox Layout for Image and Form */
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Project Info (Left Side) */
+.project-info {
+    flex: 1;
+    margin-bottom: 20px; /* Add space between items on smaller devices */
+    width: 100%;
+}
+
+.project-info img {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Rounded corners */
+    border: 3px solid #C4B5FD; /* Purple border */
+}
+
+.project-info h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #6B21A8; /* Deep purple */
+    text-align: center;
+}
+
+.project-info p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.project-info select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #C4B5FD; /* Purple border */
+    border-radius: 6px;
+    background-color: #F5F3FF; /* Light lavender background */
+    font-size: 14px;
+    color: #050505; /* Dark purple text */
+}
+
+.project-info select:focus {
+    outline: none;
+    border-color: #8B5CF6; /* Bright purple focus */
+    box-shadow: 0 0 4px #8B5CF6;
+}
+
+/* Donation Form (Right Side) */
+.donation-form {
+    flex: 1;
+    background-color: #FAF5FF; /* Light purple-lavender background */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #E9D8FD; /* Soft lavender border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 100%;
+    max-height: 70vh; /* Max height for the form */
+   
+    margin-top: -50px; /* Bring the form up a bit */
+}
+
+.donation-form h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #070707; /* Dark purple */
+    text-align: center;
+}
+
+.donation-form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #C4B5FD; /* Purple border */
+    border-radius: 8px;
+    background-color: #FFFFFF; /* White background */
+    font-size: 14px;
+}
+
+.donation-form input:focus {
+    outline: none;
+    border-color: #8B5CF6; /* Bright purple focus */
+    box-shadow: 0 0 4px #8B5CF6;
+}
+
+.donation-form label {
+    font-size: 14px;
+    color: #000000; /* Dark purple */
+    margin-bottom: 15px;
+    display: block;
+}
+
+.donation-form button {
+    padding: 12px 20px;
+    background-color: #8B5CF6; /* Bright purple */
+    color: #FFFFFF; /* White text */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.donation-form button:hover {
+    background-color: #6D28D9; /* Slightly darker purple on hover */
+}
+
+/* Navigation Button */
+.navigate-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #8B5CF6; /* Bright purple */
+    color: #FFFFFF; /* White text */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.navigate-btn:hover {
+    background-color: #6D28D9; /* Slightly darker purple on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .content {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    .project-info,
+    .donation-form {
+        width: 100%; /* Full-width for smaller screens */
+    }
+
+    .project-info img {
+        max-width: 80%; /* Slightly smaller image */
+    }
+
+    .donation-form button,
+    .navigate-btn {
+        width: 100%; /* Buttons scale for smaller screens */
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 10px; /* Reduce padding for very small screens */
+    }
+
+    .warning {
+        font-size: 12px; /* Smaller font size for compact view */
+    }
+
+    .project-info h2,
+    .donation-form h3 {
+        font-size: 16px; /* Adjust headers for mobile */
+    }
+
+    .donation-form input {
+        font-size: 12px; /* Smaller inputs for compact view */
+    }
+
+    .donation-form button {
+        font-size: 14px; /* Adjust button size */
+    }
+}
+
+/* Donation Header */
+.donation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.donation-header h3 {
+    font-size: 20px;
+    color: #070707; /* Dark purple */
+    margin: 0;
+}
+
+.donation-header .paypal-link {
+    background: none;
+    border: none;
+    color: #8B5CF6; /* Bright purple */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    transition: color 0.3s ease;
+}
+
+.donation-header .paypal-link:hover {
+    color: #fcfcfc; /* Slightly darker purple on hover */
+}

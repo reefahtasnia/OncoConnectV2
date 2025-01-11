@@ -5,8 +5,10 @@ import cancer4 from './assets/cancer4.jpg';
 import cancerr from './assets/cancerr.jpg';
 import cancer6 from './assets/cancer6.jpg';
 import Navbar from "./Nav";
+import { useNavigate } from 'react-router-dom';
 
 const DonationPage = () => {
+  const navigate = useNavigate();
   return (
     <div>
       
@@ -22,34 +24,36 @@ const DonationPage = () => {
 
       {/* Latest Updates */}
       <section className="don-latest-updates">
-        <h3>Latest Updates</h3>
-        <h2>Transparent Guidance, See How You<br />Make a Difference</h2>
+        <h3>Start Donations</h3>
+        <h2>Transparent Donation, See How You<br />Make a Difference</h2>
 
         <div className="don-updates-grid">
           <div className="don-update-card">
             <img src={cancer5} alt="Patient care" />
             <div className="don-card-contents">
-              <h4>Supporting Through Treatment</h4>
-              <p>Providing comfort and care during the treatment journey.</p>
-              <button className="don-btn-secondary">Donate Now</button>
+              
+              <p>Martha, a young cancer fighter, urgently needs financial assistance to continue her treatment. Your support can help her embrace a healthier and brighter future.</p>
+              <button className="don-btn-secondary"
+               onClick={() => navigate('/credit')}
+              >Donate Now1</button>
             </div>
           </div>
 
           <div className="don-update-card">
             <img src={cancer4} alt="Patient support" />
             <div className="don-card-contents">
-              <h4>Community Support Network</h4>
-              <p>Building connections that make a difference.</p>
-              <button className="don-btn-secondary">Donate Now</button>
+              
+              <p>Baby Mary, a brave little fighter battling cancer, urgently needs your support to continue her treatment. Your contribution can give her a chance at life and hope for a brighter future.</p>
+              <button className="don-btn-secondary">Donate Now2</button>
             </div>
           </div>
 
           <div className="don-update-card">
             <img src={cancerr} alt="Patient care" />
             <div className="don-card-contents">
-              <h4>Family-Centered Care</h4>
-              <p>Supporting families throughout their journey.</p>
-              <button className="don-btn-secondary">Donate Now</button>
+             
+              <p>Camila, an elderly woman courageously facing cancer, is in urgent need of financial support for her treatment. Your kindness can bring comfort and hope to her challenging journey.</p>
+              <button className="don-btn-secondary">Donate Now3</button>
             </div>
           </div>
         </div>
