@@ -31,6 +31,7 @@ import Quiz from './components/Quiz.jsx';
 import Quiz2 from './components/QuizAssessment.jsx';
 import Credit from './components/CreditPage';
 import Calorie from './components/Calorie.js';
+import Caregiverpage from './components/Caregiverpage.jsx';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -89,6 +90,7 @@ function App() {
                 <Route path="/quiz2" element={<Quiz2 />} />
                 <Route path="/credit" element={<Credit />} />
                 <Route path="/calorie" element={<Calorie />} />
+                <Route path="/care" element={<Caregiverpage />} />
             </Routes>
         </>
     );

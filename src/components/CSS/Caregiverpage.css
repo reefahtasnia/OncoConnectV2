@@ -1,0 +1,187 @@
+.caregiver-container {
+    width: 100%;
+    max-width: 1550px;
+    margin: 0 auto;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  /* Video Section */
+  .video-section {
+    display: flex;
+    gap: 2rem;
+    padding: 3rem 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .video-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .video-title {
+    padding: 1rem;
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .video-container {
+    width: 100%;
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  }
+  
+  .video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Caregiving 101 Section */
+  .caregiving-section {
+    padding: 3rem 1rem;
+  }
+  
+  .section-title {
+    text-align: center;
+    color: #8f3bf5;
+    font-size: 2.5rem;
+    margin-bottom: 0rem;
+    background-color:#e7d6f5
+  }
+  .care101 {
+    padding: 3rem 20rem;
+    color: #ffffff;
+  }
+  
+  .article-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .read-more {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #8800cc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .read-more:hover {
+    color: #004080;
+  }
+  
+  .read-more .arrow {
+    display: inline-block;
+    margin-left: 0.25rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .read-more:hover .arrow {
+    transform: translateX(4px);
+  }
+  
+  .article-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .article-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .article-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .article-card h3 {
+    padding: 1rem;
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .article-card p {
+    padding: 0 1rem 1rem;
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .video-section {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .video-card {
+      width: 100%;
+    }
+  
+    .section-title {
+      font-size: 2rem;
+    }
+  
+  }
+
+  @media (max-width: 1200px) {
+    .article-grid-4 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .article-grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .article-grid-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  
+  
+  
