@@ -12,7 +12,7 @@ body {
 }
 
 /* Hero Section */
-.hero {
+.don-hero {
     height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/cancer3.jpg');
     background-size: cover;
@@ -23,26 +23,26 @@ body {
     padding: 0 10%;
 }
 
-.hero-content {
+.don-hero-content {
     max-width: 600px;
     color: white;
 }
 
-.hero h1 {
+.don-hero h1 {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
-.hero p {
+.don-hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
     opacity: 0.9;
 }
 
 /* Secondary Hero */
-.secondary-hero {
+.don-secondary-hero {
     height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
                 url('../assets/cancer7.jpeg') center/cover;
@@ -52,7 +52,7 @@ body {
 }
 
 /* Buttons */
-.btn-primary {
+.don-btn-primary {
     background-color: #8B5CF6;
     color: white;
     padding: 1rem 2rem;
@@ -63,11 +63,11 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
+.don-btn-primary:hover {
     background-color: #7C3AED;
 }
 
-.btn-secondary {
+.don-btn-secondary {
     background-color: #8B5CF6;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -78,88 +78,88 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.btn-secondary:hover {
+.don-btn-secondary:hover {
     background-color: #7C3AED;
 }
 
 /* Latest Updates Section */
-.latest-updates {
+.don-latest-updates {
     padding: 5rem 10%;
     background-color: #fff;
 }
 
-.latest-updates h3 {
+.don-latest-updates h3 {
     color: #8B5CF6;
     font-size: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 
-.latest-updates h2 {
+.don-latest-updates h2 {
     font-size: 2.5rem;
     margin-bottom: 3rem;
     line-height: 1.2;
 }
 
-.updates-grid {
+.don-updates-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
 
-.update-card {
+.don-update-card {
     background: white;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.update-card img {
+.don-update-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
 
-.card-content {
+.don-card-contents {
     padding: 1.5rem;
 }
 
-.card-content h4 {
+.don-card-contents h4 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
 
-.card-content p {
+.don-card-contents p {
     margin-bottom: 1.5rem;
     color: #666;
 }
 
 /* FAQ Section */
-.faq-section {
+.don-faq-section {
     padding: 5rem 10%;
     background-color: #f8f9fa;
 }
 
-.faq-container {
+.don-faq-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
 }
 
-.faq-questions h3 {
+.don-faq-questions h3 {
     color: #8B5CF6;
     font-size: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 
-.faq-questions h2 {
+.don-faq-questions h2 {
     font-size: 2.5rem;
     margin-bottom: 3rem;
 }
 
-.question {
+.don-question {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -168,60 +168,60 @@ body {
     cursor: pointer;
 }
 
-.question h4 {
+.don-question h4 {
     font-size: 1.1rem;
     font-weight: 500;
 }
 
-.plus {
+.don-plus {
     font-size: 1.5rem;
     color: #8B5CF6;
 }
 
-.faq-image img {
+.don-faq-image img {
     width: 100%;
     border-radius: 10px;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .updates-grid {
+    .don-updates-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .hero h1,
-    .secondary-hero h1 {
+    .don-hero h1,
+    .don-secondary-hero h1 {
         font-size: 2.5rem;
     }
 
-    .updates-grid {
+    .don-updates-grid {
         grid-template-columns: 1fr;
     }
 
-    .faq-container {
+    .don-faq-container {
         grid-template-columns: 1fr;
     }
 
-    .faq-image {
+    .don-faq-image {
         display: none;
     }
 }
 
 @media (max-width: 480px) {
-    .hero,
-    .secondary-hero {
+    .don-hero,
+    .don-secondary-hero {
         padding: 0 5%;
     }
 
-    .latest-updates,
-    .faq-section {
+    .don-latest-updates,
+    .don-faq-section {
         padding: 3rem 5%;
     }
 
-    .hero h1,
-    .secondary-hero h1 {
+    .don-hero h1,
+    .don-secondary-hero h1 {
         font-size: 2rem;
     }
 }
