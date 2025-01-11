@@ -236,6 +236,7 @@
 @media (max-width: 480px) {
   .medicines-content {
     padding: 16px;
+    margin-bottom: 70px;
   }
 
   .amount-duration {

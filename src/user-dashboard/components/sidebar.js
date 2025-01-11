@@ -79,7 +79,7 @@ export default function Sidebar() {
         </svg>
       ),
       label: 'Community',
-      href: '/user/community'
+      href: '/user/forum'
     }
   ]
 

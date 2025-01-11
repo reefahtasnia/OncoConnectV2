@@ -15,6 +15,8 @@ import DoctorDashboard from './dashboard.js';
 import UserDashboard from './user-dashboard/dashboard.js';
 import UserMedicines from './user-dashboard/medicine.js';
 import UserMessages from './user-dashboard/messages.js';
+import UserDiary from './user-dashboard/diary.js';
+import UserForum from './user-dashboard/forum.js';
 import Mental from './components/MentalHealthPage.js';
 import Donation from './components/Donation.js';
 import Ai from './components/Ai.js';
@@ -78,6 +80,8 @@ function App() {
                 <Route path="/user" element={<UserDashboard  />}/>
                 <Route path="/user/medicine" element={<UserMedicines  />} />
                 <Route path="/user/messages" element={<UserMessages />} />
+                <Route path="/user/diary" element={<UserDiary />} />
+                <Route path="/user/forum" element={<UserForum />} />
                 <Route path="/doc_find" element={<Doctor_finder />} />
                 <Route path="/cancer_screen" element={<CancerScreen />} />
                 <Route path="/quiz" element={<Quiz />} />

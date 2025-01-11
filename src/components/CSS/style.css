@@ -161,9 +161,11 @@ body {
   min-height: 100vh;
 }
 
+/* About Us Section Styles */
 .about-us-section {
   padding: 80px 0;
   background-color: #fff;
+  position: relative;
 }
 
 .about-us-container {
@@ -173,30 +175,35 @@ body {
   display: flex;
   gap: 60px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .about-us-content {
   flex: 1;
   max-width: 700px;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .about-us-heading {
-  font-family: "Montserrat", sans-serif;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 500;
   line-height: 1.2;
   margin-bottom: 40px;
-  letter-spacing: -1.6px;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .about-us-info {
   position: relative;
-  padding-left: 20px;
+  padding-left: 0;
 }
 
 .about-us-label {
   color: #9588e8;
-  font-size: 22px;
+  font-size: 22 px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.65px;
@@ -205,19 +212,23 @@ body {
 }
 
 .about-us-text {
-  font-size: 20px;
+  font-size: 17 px;
   line-height: 1.6;
   color: #000;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .about-us-image {
-  flex: 0 0 366px;
+  flex: 0 0 360px;
   height: 399px;
-  background: url(../assets/contactbg.png) no-repeat center;
-  background-size: cover;
-  border-radius: 111px;
+  background: url(../assets/contactbg\ 1.png) no-repeat center;
+  background-size: contain;
+  border-radius: 32px;
+  margin-left: 40px;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-
 @media (max-width: 1024px) {
   .about-us-container {
     flex-direction: column;
@@ -284,8 +295,8 @@ body {
 /* Service Card Styles */
 /* Service Icons - Fix the selectors */
 .service-card .service-icon {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   /* margin-bottom: 20px; */
   object-fit: contain;
 }
@@ -335,7 +346,7 @@ body {
   font-size: 18px;
   color: #8447e9;
   font-weight: 600;
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
   min-height: 44px; /* Ensures consistent height for 2 lines of title */
   display: flex;
   align-items: center;
@@ -343,7 +354,7 @@ body {
 }
 
 .service-description {
-  font-size: 14px;
+  font-size: 10px;
   color: #000;
   opacity: 0.8;
   margin-bottom: auto;
@@ -358,8 +369,8 @@ body {
   font-weight: 600;
   color: #8447e9;
   text-decoration: none;
-  padding: 8px 0;
-  margin-top: auto;
+  /* padding: 8px 0; */
+  /* margin-top: auto; */
   transition: color 0.3s ease;
   align-self: center;
 }
