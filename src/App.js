@@ -26,6 +26,7 @@ import Formpage from './components/Formpage.js';
 import Doctor_finder from './components/Doctor_finder.jsx';
 import CancerScreen from './components/CancerScreening.jsx';
 import Quiz from './components/Quiz.jsx';
+import Quiz2 from './components/QuizAssessment.jsx';
 
 
 const PageWrapper = ({ children }) => {
@@ -80,6 +81,7 @@ function App() {
                 <Route path="/doc_find" element={<Doctor_finder />} />
                 <Route path="/cancer_screen" element={<CancerScreen />} />
                 <Route path="/quiz" element={<Quiz />} />
+                <Route path="/quiz2" element={<Quiz2 />} />
             </Routes>
         </>
     );

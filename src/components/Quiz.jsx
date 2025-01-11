@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./CSS/Quiz.css";
 import Footer from './Footer';
 import breast from "./assets/pinkribbon.png";
@@ -9,11 +10,17 @@ import reviewImage2 from "./assets/quizreveiw2.png";
 import reviewImage3 from "./assets/quizreveiw3.png";
 
 const Quiz = () => {
+  const navigate = useNavigate();
+
   const reviews = [
     { id: 1, name: "John D.", text: "This quiz helped me understand my risk factors better. Highly recommended!", rating: 5, image: reviewImage1 },
     { id: 2, name: "Sarah M.", text: "I learned so much about prevention. Thank you for this valuable resource!", rating: 4, image: reviewImage2 },
     { id: 3, name: "Michael R.", text: "Easy to use and very informative. Everyone should take this quiz.", rating: 5, image: reviewImage3 },
   ];
+
+  const handleQuizStart = () => {
+    navigate(`/quiz2/`);
+  };
 
   return (
     <div className="quiz-container">
@@ -43,7 +50,7 @@ const Quiz = () => {
                 </div>
               </div>
               <div className="button-container">
-                <button className="quiz-btn">Take the quiz now</button>
+                <button className="quiz-btn" onClick={handleQuizStart}>Take the quiz now</button>
               </div>
             </div>
 
@@ -59,7 +66,7 @@ const Quiz = () => {
                 </div>
               </div>
               <div className="button-container">
-                <button className="quiz-btn">Take the quiz now</button>
+                <button className="quiz-btn" onClick={() => handleQuizStart('lung')}>Take the quiz now</button>
               </div>
             </div>
 
@@ -75,7 +82,7 @@ const Quiz = () => {
                 </div>
               </div>
               <div className="button-container">
-                <button className="quiz-btn">Take the quiz now</button>
+                <button className="quiz-btn" onClick={() => handleQuizStart('cervical')}>Take the quiz now</button>
               </div>
             </div>
           </div>
