@@ -1,0 +1,257 @@
+/* User Dropdown Styles */
+.user-dropdown-container {
+  position: relative;
+}
+
+.user-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border: none;
+  border-radius: 20px;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown-trigger:hover {
+  background: #f3f0ff;
+  color: #8b5cf6;
+}
+
+.user-dropdown-trigger[aria-expanded="true"] {
+  background: #8b5cf6;
+  color: white;
+  font-weight: 600;
+}
+
+.user-dropdown-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 50;
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  color: #374151;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.user-dropdown-item:hover {
+  background: #f3f0ff;
+  color: #8b5cf6;
+}
+
+/* Notifications Styles */
+.user-notifications-container {
+  position: relative;
+}
+
+.user-notifications-trigger {
+  position: relative;
+  padding: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+
+.user-notifications-trigger:hover {
+  color: #8b5cf6;
+}
+
+.user-notifications-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+.user-notifications-popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  max-height: 480px;
+  overflow: hidden;
+  z-index: 50;
+}
+.notification-container {
+  position: relative;
+}
+
+.user-notifications-popup {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  max-height: 480px;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.user-notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.user-notifications-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.user-notifications-mark-read {
+  background: none;
+  border: none;
+  color: #8b5cf6;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.user-notifications-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.user-notifications-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.user-notifications-item:hover {
+  background: #f9fafb;
+}
+
+.user-notifications-item.unread {
+  background: #f3f0ff;
+}
+
+.user-notifications-icon {
+  color: #8b5cf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.nuser-notifications-content {
+  flex: 1;
+}
+
+.user-notifications-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.user-notifications-time {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Responsive Design */
+/* Existing styles remain unchanged */
+
+@media (max-width: 768px) {
+  .user-sidebar {
+    display: none; /* Hide sidebar on mobile */
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+  }
+
+  .user-dropdown-menu,
+  .user-notifications-popup {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Ensure it's above the bottom nav */
+  }
+
+  .user-dropdown-container,
+  .user-notifications-container {
+    position: static;
+  }
+
+  .user-dropdown-trigger,
+  .user-notifications-trigger {
+    z-index: 1002; /* Ensure triggers are above the popup */
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile span {
+    display: none; /* Hide username on very small screens */
+  }
+}
+
+.dropdown-overlay,
+.notifications-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .dropdown-overlay.active,
+  .notifications-overlay.active {
+    display: block;
+  }
+}
+

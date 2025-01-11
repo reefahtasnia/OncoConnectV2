@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function BottomNav({ activeSection, onSectionChange }) {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       icon: (
@@ -8,7 +12,8 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         </svg>
       ),
       label: 'Home',
-      value: 'home'
+      value: 'home',
+      path: '/user',
     },
     {
       icon: (
@@ -18,7 +23,8 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         </svg>
       ),
       label: 'Medicines',
-      value: 'medicines'
+      value: 'medicines',
+      path: '/user/medicine',
     },
     {
       icon: (
@@ -27,7 +33,8 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         </svg>
       ),
       label: 'Messages',
-      value: 'messages'
+      value: 'messages',
+      path: '/user/messages',
     },
     {
       icon: (
@@ -39,7 +46,8 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         </svg>
       ),
       label: 'Diary',
-      value: 'diary'
+      value: 'diary',
+      path: '/user/diary',
     },
     {
       icon: (
@@ -51,9 +59,10 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         </svg>
       ),
       label: 'Community',
-      value: 'community'
-    }
-  ]
+      value: 'community',
+      path: '/user/forum',
+    },
+  ];
 
   return (
     <nav className="user-bottom-nav">
@@ -61,13 +70,15 @@ export default function BottomNav({ activeSection, onSectionChange }) {
         <button
           key={item.value}
           className={`bottom-nav-item ${activeSection === item.value ? 'active' : ''}`}
-          onClick={() => onSectionChange(item.value)}
+          onClick={() => {
+            onSectionChange(item.value);
+            navigate(item.path); // Navigate to the specified path
+          }}
         >
           {item.icon}
           <span>{item.label}</span>
         </button>
       ))}
     </nav>
-  )
+  );
 }
-

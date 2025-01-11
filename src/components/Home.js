@@ -126,7 +126,7 @@ const Home = () => {
             ))}
           </div>
           <div className="discover-features">
-            <a href="#features" className="discover-link">
+            <a href="/login" className="discover-link">
               Discover All Features
             </a>
           </div>

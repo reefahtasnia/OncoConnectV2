@@ -1,21 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./components/sidebar";
 import BottomNav from "./components/bottom-nav";
+import UserDropdown from "./components/user-dropdown";
+import NotificationsButton from "./components/notifications";
 import "./messages.css";
-import userImage from './user.png'
+import userImage from "./user.png";
 
 export default function MessagesPage() {
   const [activeSection, setActiveSection] = useState("messages");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const chats = [
     {
       id: 1,
       name: "Suport ADMIN",
-      avatar: "/user.png", // Updated path
+      avatar: {userImage},
       status: "Read",
       time: "00:31:00",
       unread: 0,
@@ -37,7 +51,7 @@ export default function MessagesPage() {
     {
       id: 2,
       name: "Suport ADMIN",
-      avatar: "/user.png", // Updated path
+      avatar: {userImage},
       status: "Unread",
       time: "00:31:00",
       unread: 1,
@@ -52,8 +66,47 @@ export default function MessagesPage() {
     },
   ];
 
+  const notifications = [
+    {
+      id: 1,
+      type: "reply",
+      user: "Sarah Johnson",
+      content: "replied to your post about managing side effects",
+      timestamp: "1 hour ago",
+      isRead: false,
+    },
+    {
+      id: 2,
+      type: "like",
+      user: "Michael Chen",
+      content: "liked your comment about nutrition tips",
+      timestamp: "2 hours ago",
+      isRead: false,
+    },
+    {
+      id: 3,
+      type: "mention",
+      user: "Emma Wilson",
+      content: "mentioned you in a discussion",
+      timestamp: "1 day ago",
+      isRead: true,
+    },
+  ];
+
   const handleChatSelect = (chat) => {
     setActiveChat(chat);
+    // Add body class to prevent scrolling when chat is open on mobile
+    if (isMobile) {
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const handleBackToChats = () => {
+    setActiveChat(null);
+    // Remove body class when closing chat on mobile
+    if (isMobile) {
+      document.body.style.overflow = '';
+    }
   };
 
   return (
@@ -64,47 +117,14 @@ export default function MessagesPage() {
         <header className="dashboard-header">
           <h1>My Messages</h1>
           <div className="header-actions">
-            <button className="edit-profile-btn">Edit Profile</button>
-            <div className="user-profile">
-              <img src={userImage} alt="User" className="user-avatar" /> {/* Updated path */}
-              <span>Username</span>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  d="M6 9l6 6 6-6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <button className="notification-btn">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  d="M18 8A6 6 0 1 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M13.73 21a2 2 0 0 1-3.46 0"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="notification-badge"></span>
-            </button>
+            <UserDropdown
+              username="Username"
+              avatar={userImage}
+              onLogout={() => {
+                /* handle logout */
+              }}
+            />
+            <NotificationsButton notifications={notifications} />
           </div>
         </header>
 
@@ -140,7 +160,7 @@ export default function MessagesPage() {
                     onClick={() => handleChatSelect(chat)}
                   >
                     <div className="chat-avatar">
-                      <img src={userImage} alt={chat.name} /> {/* Updated path */}
+                      <img src={chat.avatar || userImage} alt={chat.name} />
                       <span className="status-indicator"></span>
                     </div>
                     <div className="chat-info">
@@ -160,13 +180,29 @@ export default function MessagesPage() {
               </div>
             </div>
 
-            <div className="chat-window">
+            <div className={`chat-window ${activeChat ? "active" : ""}`}>
               {activeChat ? (
                 <>
                   <div className="chat-header">
+                    <button
+                      className="back-to-chats"
+                      onClick={handleBackToChats}
+                      aria-label="Back to chat list"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                    </button>
                     <div className="chat-contact">
                       <img
-                        src={userImage} // Updated path
+                        src={activeChat.avatar}
                         alt={activeChat.name}
                         className="contact-avatar"
                       />
@@ -198,14 +234,7 @@ export default function MessagesPage() {
                           strokeWidth="2"
                         >
                           <path d="M23 7l-7 5 7 5V7z" />
-                          <rect
-                            x="1"
-                            y="5"
-                            width="15"
-                            height="14"
-                            rx="2"
-                            ry="2"
-                          />
+                          <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                         </svg>
                       </button>
                       <button className="action-btn">
@@ -243,7 +272,7 @@ export default function MessagesPage() {
                         </div>
                         {message.sender === "user" && (
                           <img
-                            src={userImage} // Updated path
+                            src={userImage}
                             alt=""
                             className="user-message-avatar"
                           />
