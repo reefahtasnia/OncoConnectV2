@@ -123,7 +123,7 @@
     gap: 24px;
   }
   
-  .doctor-patients-section {
+  .doctor-dashborad-patients-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;

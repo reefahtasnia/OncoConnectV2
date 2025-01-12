@@ -61,7 +61,7 @@ function DoctorDashboardPage() {
         </header>
 
         <div className="doctor-dashboard-content">
-          <div className="doctor-patients-section">
+          <div className="doctor-dashboard-patients-section">
             <div className="patient-management-panel">
               <PatientList onPatientSelect={setSelectedPatient} />
             </div>

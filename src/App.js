@@ -89,8 +89,8 @@ function App() {
                 <Route path="/user/messages" element={<UserMessages />} />
                 <Route path="/user/diary" element={<UserDiary />} />
                 <Route path="/user/forum" element={<UserForum />} />
-                <Route path="/doc_find" element={<Doctor_finder />} />
-                <Route path="/cancer_screen" element={<CancerScreen />} />
+                <Route path="/docfind" element={<Doctor_finder />} />
+                <Route path="/cancerscreen" element={<CancerScreen />} />
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/quiz2" element={<Quiz2 />} />
                 <Route path="/credit" element={<Credit />} />

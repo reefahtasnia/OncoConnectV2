@@ -6,9 +6,9 @@
   /* Header Styles */
   .header {          
     padding: 4rem 2rem;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     text-align: center;
-    /* background-image: url('../assets/doctorfinder.png'); */
+    background-image: url('../assets/doctorfinder.png');
     background-repeat: no-repeat;
     background-position: center;
   }
