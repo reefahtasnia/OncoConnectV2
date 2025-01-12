@@ -1,6 +1,8 @@
 import React from "react";
 import "./CSS/formpage.css"; // Import the CSS file
 import backgroundImage from "./assets/forest.png"; // Import the background image
+import Footer from "./Footer";
+
 
 const FormPage = () => {
   return (
@@ -41,6 +43,7 @@ const FormPage = () => {
           </div>
         </form>
       </div>
+      
     </div>
   );
 };

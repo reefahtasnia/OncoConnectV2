@@ -4,6 +4,7 @@ import Expert1 from "./assets/team-1.jpg";
 import Expert2 from "./assets/team-2.png";
 import Expert3 from "./assets/team-3.jpg";
 import Expert4 from "./assets/team-4.jpg";
+import Footer from "./Footer";
 
 const MentalHealthPage = () => {
   return (
@@ -90,7 +91,7 @@ const MentalHealthPage = () => {
      
 
       {/* Footer */}
-      
+       <Footer />
     </div>
   );
 };

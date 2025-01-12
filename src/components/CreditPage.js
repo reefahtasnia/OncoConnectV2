@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CSS/CreditPage.css";
 import cancer5 from './assets/cancer5.jpg';
+import Footer from "./Footer";
 
 function CreditPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function CreditPage() {
           {/* Left Side: Image */}
           <div className="credit-project-info">
             <img src={cancer5} alt="Project" />
-            <h2>Promoting Natural Farming Practices in Bangladesh</h2>
+            <h2>STEP FORWARD FOR A BIGGER CHANGE</h2>
             
             <select>
               <option value="4.50">15% ($4.50)</option>
@@ -56,6 +57,7 @@ function CreditPage() {
 
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

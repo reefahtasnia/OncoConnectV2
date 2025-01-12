@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import "./CSS/ai.css";
 import robot from "./assets/robot.png";
+import Footer from "./Footer";
+
 
 const UploadReportPage = () => {
   const [file, setFile] = useState(null);
@@ -119,7 +121,9 @@ const UploadReportPage = () => {
           alt="Robot illustration"
           className="object-contain"
         />
+         
       </div>
+     
     </div>
   );
 };

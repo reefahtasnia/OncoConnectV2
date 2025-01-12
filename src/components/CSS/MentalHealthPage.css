@@ -59,6 +59,7 @@
     align-items: center;
     padding: 64px 32px;
     background-color: #ede9fe;
+    background-image: url('E:\OncoConnectV2\src\components\assets\bkmental.png'); 
   }
   
   .mh-hero-content {

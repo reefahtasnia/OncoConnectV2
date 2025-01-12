@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CSS/PaypalPage.css";
 import paypalImage from './assets/cancer5.jpg'; // Replace with your actual image path
+import Footer from "./Footer";
 
 function PaypalPage() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ function PaypalPage() {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

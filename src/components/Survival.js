@@ -11,6 +11,8 @@ import pic5 from './assets/pic5.jpg';
 import pic6 from './assets/pic6.jpg';
 import pic7 from './assets/pic7.jpg';
 import pic8 from './assets/pic8.jpg';
+import Footer from "./Footer";
+
 
 const articles = [
   { id: 1, title: "Quieting the Noise: Finding Peace Amid Cancer's Challenges", imageUrl: pic1, link: "#" },
@@ -102,6 +104,7 @@ const BlogGrid = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

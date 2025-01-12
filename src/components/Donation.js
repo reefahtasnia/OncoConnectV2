@@ -6,6 +6,7 @@ import cancerr from './assets/cancerr.jpg';
 import cancer6 from './assets/cancer6.jpg';
 import Navbar from "./Nav";
 import { useNavigate } from 'react-router-dom';
+import Footer from "./Footer";
 
 const DonationPage = () => {
   const navigate = useNavigate();
@@ -85,6 +86,7 @@ const DonationPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Pie } from "react-chartjs-2";
+import Footer from "./Footer";
 import "./CSS/calorie.css";
 import {
     Chart as ChartJS,
@@ -232,6 +233,7 @@ const CalorieTracker = () => {
           </div>
         </div>
       )}
+       <Footer />
     </div>
   );
 };

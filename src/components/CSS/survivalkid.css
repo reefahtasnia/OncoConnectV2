@@ -34,7 +34,7 @@
     flex-direction: column;
     align-items: center;
     line-height: 0.9;
-    margin-right: 600px;
+    margin-right: 900px;
     font-size: 90px;
   }
   
@@ -108,7 +108,7 @@
   }
   .explore-button {
     position: absolute; /* Place the button relative to the container */
-    top: 58%; /* Adjust this value to place the button just below the title */
+    top: 78%; /* Adjust this value to place the button just below the title */
     left: 11.9%; /* Center the button horizontally */
     transform: translate(-50%, -50%); /* Adjust for proper centering */
     background-color: #6e1d1d;
@@ -129,7 +129,7 @@
 
 .link-button {
   position: absolute; /* Place the button relative to the container */
-  top: 58%; /* Adjust this value to place the button just below the title */
+  top: 78%; /* Adjust this value to place the button just below the title */
   left: 25%; /* Center the button horizontally */
   transform: translate(-50%, -50%); /* Adjust for proper centering */
   background-color: #6e1d1d;
