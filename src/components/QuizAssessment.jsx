@@ -414,7 +414,7 @@ const QuizAssessment = () => {
   <div className="result-modal">
     <div className="result-content">
       <h2>Quiz Result</h2>
-      <p><span className='highlightred'>YOUR RISK: LOWER THAN AVERAGE</span></p>
+      <p><span className='highlightcolor'>YOUR RISK: LOWER THAN AVERAGE</span></p>
       <p>Based on your responses, your likelihood of developing breast cancer is lower than the average woman. While this is reassuring, it's important to remember that maintaining a healthy lifestyle and regular check-ups can further reduce your risk. Stay proactive about your health and keep making positive changes to support your overall well-being. For more tips and resources, continue exploring ways to stay healthy and informed.</p>
       <button onClick={() => setShowResult(false)}>Close</button>
     </div>
@@ -425,7 +425,7 @@ const QuizAssessment = () => {
           <div className="info-section">
             <div className="info-card">
               <h3>How the assessment works</h3>
-              <p>We'll ask you questions about things that may affect your risk of a specific type of cancer. To find out why we're asking a particular question, click the "Why is this important?" link.</p>
+              <p>We'll ask you questions about things that may affect your risk of a specific type of cancer. </p>
               <p>The calculation of your risk is based on studies of people age 40 and over who have no previous history of cancer. But everyone can benefit by learning more about their risk and receiving a personal health action plan.</p>
               <p>Save, print or email your results to refer to later, or share them with your healthcare provider.</p>
               <p>Your risk can change over time. We suggest coming back every so often to see whether there has been a change.</p>
@@ -436,7 +436,9 @@ const QuizAssessment = () => {
             </div>
           </div>
         </div>
+        
       </div>
+       
       <Footer />
     </div>
     
