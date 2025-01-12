@@ -272,7 +272,7 @@
 /* Hero Content Styling */
 /* Hero Content Styling */
 .sur-hero-content {
-  background-image: url('G:\OncoConnectV2\src\components\assets\bkmental.png'); /* Replace with your hero background image */
+  background-image: url('../assets/bkmental.png'); /* Replace with your hero background image */
   background-size: cover;
   background-position: center;
   text-align: center;

@@ -5,6 +5,10 @@ export default function UserDropdown({ username, avatar, onLogout }) {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  const navigateToEditProfile = () => {
+    window.location.href = "/editProfile";
+  };
+
   return (
     <div className="user-dropdown-container">
       <button
@@ -29,7 +33,7 @@ export default function UserDropdown({ username, avatar, onLogout }) {
         <>
           <div className={`dropdown-overlay ${isOpen ? 'active' : ''}`} onClick={toggleDropdown}></div>
           <div className="user-dropdown-menu">
-          <button className="user-dropdown-item">
+          <button className="user-dropdown-item" onClick={navigateToEditProfile}>
             <svg
               width="20"
               height="20"
