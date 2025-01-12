@@ -15,7 +15,7 @@
 }
 
   
-  .content {
+  .kidcontent {
     max-width: 90%;
     width: 100%;
     text-align: center;
@@ -26,8 +26,8 @@
     height: 100%;
   }
   
-  .title {
-    font-family: 'Courier New', Courier, monospace;
+  .kidtitle {
+    font-family:"Permanent Marker", serif;;
     color: #6e1d1d;
     margin-bottom: 110px;
     display: flex;

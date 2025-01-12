@@ -233,7 +233,7 @@ const CalorieTracker = () => {
           </div>
         </div>
       )}
-       <Footer />
+      
     </div>
   );
 };

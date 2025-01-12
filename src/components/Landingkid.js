@@ -21,11 +21,11 @@ const MagicZoo = () => {
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         {/* Content */}
-        <div className="content">
-          <h1 className="title">
-            <span style={{ fontFamily: 'Abril Fatface, cursive' }}>The</span>
-            <span style={{ fontFamily: 'Abril Fatface, cursive' }}>Magic</span>
-            <span style={{ fontFamily: 'Abril Fatface, cursive' }}>Zoo</span>
+        <div className="kidcontent">
+          <h1 className="kidtitle">
+            <span style={{ fontFamily: "Permanent Marker" }}>The</span>
+            <span style={{ fontFamily: "Permanent Marker" }}>Magic</span>
+            <span style={{ fontFamily: "Permanent Marker" }}>Zoo</span>
           </h1>
           <div className="illustration">
             {/* Add your illustration here */}

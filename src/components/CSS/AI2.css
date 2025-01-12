@@ -1,0 +1,136 @@
+/* General Styles */
+
+  .ai2-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Header Styles */
+  .ai2-container-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    width: 100%;
+  }
+  
+  .ai2-container-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #6c63ff;
+  }
+  
+  .ai2-container-nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  .ai2-container-nav-link {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .ai2-container-login-button {
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Main Content Styles */
+  .ai2-container-main-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    width: 90%;
+  }
+  
+  /* Ultrasound Section */
+  .ai2-container-ultrasound-section {
+    text-align: center;
+    margin-right: 20px;
+  }
+  
+  .ai2-container-section-title {
+    color: #6c63ff;
+    margin-bottom: 20px;
+  }
+  
+  .ai2-container-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ai2-container-main-image {
+    width: 600px;
+    height: 500px;
+  }
+  
+  .ai2-container-thumbnail-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .ai2-container-thumbnail {
+    width: 50px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Patient Details Section */
+  .ai2-container-patient-details {
+    max-width: 400px;
+  }
+  
+  .ai2-container-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .ai2-container-buttons {
+    display: flex;
+    gap: 20px; /* Add space between buttons */
+    margin-top: 15px; /* Optional: Add space between buttons and the content above */
+  }
+  
+  
+  .ai2-container-details-table th,
+  .ai2-container-details-table td {
+    border: 1px solid #ddd;
+    padding: 9px;
+    text-align: left;
+  }
+  
+  .ai2-container-report-button {
+    background-color: #6c63ff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 15px 20px; /* Increase padding for larger buttons */
+    border-radius: 8px; /* Add border radius for rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    font-size: 1rem; /* Slightly increase font size */
+    font-weight: bold; /* Make the text bold */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  }
+  
+  .ai2-container-report-button:hover {
+    background-color: #584cd1; /* Slightly darker purple on hover */
+    transform: translateY(-2px); /* Lift the button on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+  }
+  
+  .ai2-container-report-button:active {
+    transform: translateY(0); /* Reset lift on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on click */
+  }
+  
+  
