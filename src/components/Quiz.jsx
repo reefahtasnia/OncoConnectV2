@@ -89,7 +89,7 @@ const Quiz = () => {
 
           <div className="reviews-section">
             <h3>
-              <span className="highlightred">What Our Users Say</span>
+              <span>What Our Users Say</span>
             </h3>
             <div className="review-cards">
               {reviews.map((review) => (

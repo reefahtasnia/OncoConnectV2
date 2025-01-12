@@ -4,12 +4,11 @@
   }
   
   /* Header Styles */
-  .header {
-   
-                
+  .header {          
     padding: 4rem 2rem;
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center;
+    /* background-image: url('../assets/doctorfinder.png'); */
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -155,7 +154,9 @@
   }
   
   .doctor-image {
-    width: 100%;
+    margin-left: 50px;
+    padding: 0px 15px;
+    width: 65%;
     height: 200px;
     object-fit: cover;
   }

@@ -15,6 +15,10 @@ export default function SlidingSidebar({ date, isOpen, onClose }) {
     {
       title: 'My Symptoms',
       items: ['Felt dizzy at 12 pm.']
+    },
+    {
+      title: 'My Calorie Intake',
+      items: ['Carbohydrates: 200g', 'Proteins: 50g', 'Fats: 30g']
     }
   ]
 

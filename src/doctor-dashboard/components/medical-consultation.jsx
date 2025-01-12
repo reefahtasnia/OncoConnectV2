@@ -1,4 +1,4 @@
-import "./dashboard.css";
+import "./component.css";
 export default function Consultation({ patientName }) {
     return (
       <div className="consultation">
