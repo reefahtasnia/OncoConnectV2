@@ -7,6 +7,14 @@ import caregivingVideo2 from "./assets/carevideo2.mp4";
 // Import the poster image
 import videoPoster from "./assets/videothumbcare1.jpg";
 import videoPoster2 from "./assets/videothumbcare2.jpeg";
+import selfcare from "./assets/caregiver_selfcare.jpg";
+import careemotional from "./assets/careemotional.png";
+import caregiver3 from "./assets/caregiver3_.jpg";
+import caregiver4 from "./assets/caregiver_medication.jpg";
+import caregiver5 from "./assets/carecommunication1.jpg";
+import caregiver6 from "./assets/carestress.png";
+import caregiver7 from "./assets/caregiver7.png";
+import caregiver8 from "./assets/caregiverold.png";
 
 const CaregiverPage = () => {
   return (
@@ -53,7 +61,7 @@ const CaregiverPage = () => {
           {/* Article Card 1 */}
           <div className="article-card">
             <div className="article-image">
-              <img src="path-to-your-image-1" alt="Emotional Support" />
+              <img src={careemotional} alt="Emotional Support" />
             </div>
             <h3>Emotional Support Strategies</h3>
             <p>Learn effective ways to provide emotional support to your loved one during their cancer journey.</p>
@@ -65,7 +73,7 @@ const CaregiverPage = () => {
           {/* Article Card 2 */}
           <div className="article-card">
             <div className="article-image">
-              <img src="path-to-your-image-2" alt="Daily Care" />
+              <img src={caregiver3} alt="Daily Care" />
             </div>
             <h3>Daily Care Routines</h3>
             <p>Essential tips for managing daily care responsibilities and maintaining a healthy routine.</p>
@@ -77,7 +85,7 @@ const CaregiverPage = () => {
           {/* Article Card 3 */}
           <div className="article-card">
             <div className="article-image">
-              <img src="path-to-your-image-3" alt="Medication Management" />
+              <img src={caregiver4} alt="Medication Management" />
             </div>
             <h3>Medication Management</h3>
             <p>Guidelines for helping manage medications and treatment schedules effectively.</p>
@@ -87,20 +95,21 @@ const CaregiverPage = () => {
           </div>
 
           {/* Article Card 4 */}
-          <div className="article-card">
-            <div className="article-image">
-              <img src="path-to-your-image-4" alt="Self Care" />
-            </div>
-            <h3>Caregiver Self-Care</h3>
-            <p>Important self-care practices for maintaining your own well-being while caring for others.</p>
-            <a href="#" className="read-more">
-              Read more <span className="arrow">→</span>
-            </a>
-          </div>
+          
+<div className="article-card">
+  <div className="article-image">
+    <img src={caregiver5} alt="Communication Skills" />
+  </div>
+  <h3>Effective Communication</h3>
+  <p>Improve your communication skills to better support your loved one and healthcare team.</p>
+  <a href="#" className="read-more">
+    Read more <span className="arrow">→</span>
+  </a>
+</div>
            {/* Article Card 5 */}
            <div className="article-card">
             <div className="article-image">
-              <img src="path-to-your-image-4" alt="Self Care" />
+              <img src={selfcare} alt="Self Care" />
             </div>
             <h3>Caregiver Self-Care</h3>
             <p>Important self-care practices for maintaining your own well-being while caring for others.</p>
@@ -109,38 +118,40 @@ const CaregiverPage = () => {
             </a>
           </div>
            {/* Article Card 6 */}
-           <div className="article-card">
-            <div className="article-image">
-              <img src="path-to-your-image-4" alt="Self Care" />
-            </div>
-            <h3>Caregiver Self-Care</h3>
-            <p>Important self-care practices for maintaining your own well-being while caring for others.</p>
-            <a href="#" className="read-more">
-              Read more <span className="arrow">→</span>
-            </a>
-          </div>
-           {/* Article Card 7 */}
-           <div className="article-card">
-            <div className="article-image">
-              <img src="path-to-your-image-4" alt="Self Care" />
-            </div>
-            <h3>Caregiver Self-Care</h3>
-            <p>Important self-care practices for maintaining your own well-being while caring for others.</p>
-            <a href="#" className="read-more">
-              Read more <span className="arrow">→</span>
-            </a>
-          </div>
-           {/* Article Card 8 */}
-           <div className="article-card">
-            <div className="article-image">
-              <img src="path-to-your-image-4" alt="Self Care" />
-            </div>
-            <h3>Caregiver Self-Care</h3>
-            <p>Important self-care practices for maintaining your own well-being while caring for others.</p>
-            <a href="#" className="read-more">
-              Read more <span className="arrow">→</span>
-            </a>
-          </div>
+<div className="article-card">
+  <div className="article-image">
+    <img src={caregiver6} alt="Coping with Stress" />
+  </div>
+  <h3>Coping with Stress</h3>
+  <p>Discover stress management techniques to help you stay resilient during caregiving.</p>
+  <a href="#" className="read-more">
+    Read more <span className="arrow">→</span>
+  </a>
+</div>
+
+{/* Article Card 7 */}
+<div className="article-card">
+  <div className="article-image">
+    <img src={caregiver7} alt="Navigating Healthcare" />
+  </div>
+  <h3>Navigating the Healthcare System</h3>
+  <p>Guidance on navigating the healthcare system and advocating for your loved one.</p>
+  <a href="#" className="read-more">
+    Read more <span className="arrow">→</span>
+  </a>
+</div>
+
+{/* Article Card 8 */}
+<div className="article-card">
+  <div className="article-image">
+    <img src={caregiver8} alt="End-of-Life Care" />
+  </div>
+  <h3>End-of-Life Care</h3>
+  <p>Resources and advice for providing compassionate end-of-life care for your loved one.</p>
+  <a href="#" className="read-more">
+    Read more <span className="arrow">→</span>
+  </a>
+</div>
         </div>
       </section>
 
