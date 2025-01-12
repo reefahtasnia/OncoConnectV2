@@ -35,7 +35,7 @@ const DonationPage = () => {
               <p>Martha, a young cancer fighter, urgently needs financial assistance to continue her treatment. Your support can help her embrace a healthier and brighter future.</p>
               <button className="don-btn-secondary"
                onClick={() => navigate('/credit')}
-              >Donate Now1</button>
+              >Donate Now</button>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ const DonationPage = () => {
             <div className="don-card-contents">
               
               <p>Baby Mary, a brave little fighter battling cancer, urgently needs your support to continue her treatment. Your contribution can give her a chance at life and hope for a brighter future.</p>
-              <button className="don-btn-secondary">Donate Now2</button>
+              <button className="don-btn-secondary">Donate Now</button>
             </div>
           </div>
 
@@ -53,7 +53,7 @@ const DonationPage = () => {
             <div className="don-card-contents">
              
               <p>Camila, an elderly woman courageously facing cancer, is in urgent need of financial support for her treatment. Your kindness can bring comfort and hope to her challenging journey.</p>
-              <button className="don-btn-secondary">Donate Now3</button>
+              <button className="don-btn-secondary">Donate Now</button>
             </div>
           </div>
         </div>

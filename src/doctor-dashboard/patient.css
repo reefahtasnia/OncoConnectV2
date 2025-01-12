@@ -1,0 +1,185 @@
+.doctor-dashboard-main {
+    flex: 1;
+    background: #F8F7FF;
+    min-height: 100vh;
+  }
+  
+  .doctor-dashboard-header {
+    background: white;
+    padding: 20px 0;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  
+  .doctor-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .doctor-header-content h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .doctor-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .doctor-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  
+  .doctor-user-profile img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .doctor-notifications {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .notification-indicator {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: #EF4444;
+    border-radius: 50%;
+  }
+  
+  .doctor-patients-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  
+  .doctor-patients-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .doctor-patients-section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 20px;
+  }
+  
+  .doctor-patients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .doctor-patient-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: #F8F7FF;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+  
+  .doctor-patient-item:hover {
+    background: #EEE6FF;
+  }
+  
+  .doctor-patient-initials {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 16px;
+  }
+  
+  .doctor-patient-details {
+    flex: 1;
+  }
+  
+  .doctor-patient-details h3 {
+    font-weight: 500;
+    font-size: 16px;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+  
+  .doctor-patient-status {
+    font-size: 14px;
+    color: #8B5CF6;
+  }
+  
+  .doctor-patient-time {
+    font-size: 14px;
+    color: #6B7280;
+  }
+  
+  .doctor-patient-item.upcoming {
+    background: #F3F4F6;
+    cursor: default;
+  }
+  
+  .doctor-patient-item.upcoming:hover {
+    background: #F3F4F6;
+  }
+  
+  @media (max-width: 1024px) {
+    .doctor-patients-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .doctor-header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  
+    .doctor-header-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .doctor-patients-container {
+      padding: 16px;
+    }
+  
+    .doctor-patients-section {
+      padding: 16px;
+    }
+  
+    .doctor-patient-item {
+      padding: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .doctor-patient-time {
+      display: none;
+    }
+  }
+  
+  

@@ -11,7 +11,10 @@ import NewQuestion from './components/newPost.js';
 import ViewPost from './components/viewPost.js';
 import Signup from './components/Signup.js';
 import PassordReset from './components/resetPassword.js';
-import DoctorDashboard from './dashboard.js';
+import DoctorDashboard from './doctor-dashboard/Doctordashboard.js';
+import DoctorMessages from './doctor-dashboard/DoctorMessages.js';
+import DoctorPatient from './doctor-dashboard/patient.js';
+import Patientdetail from './doctor-dashboard/patient-detail.js';
 import UserDashboard from './user-dashboard/dashboard.js';
 import UserMedicines from './user-dashboard/medicine.js';
 import UserMessages from './user-dashboard/messages.js';
@@ -71,6 +74,9 @@ function App() {
                 <Route path="/newquestion" element={<NewQuestion />} />
                 <Route path="/viewpost" element={<ViewPost />} />
                 <Route path="/doctor" element={<DoctorDashboard />} />
+                <Route path="/doctor/messages" element={<DoctorMessages />} />
+                <Route path="/doctor/patients" element={<DoctorPatient />} />
+                <Route path="doctor/patients/patient-2" element={<Patientdetail />} />
                 <Route path="/mental" element={<Mental />} />
                 <Route path="/ai" element={<Ai />} />
                 <Route path="/formpage" element={<Formpage />} />
