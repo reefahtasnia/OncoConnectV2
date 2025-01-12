@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import "./slidingsidebar.css";
 
 export default function SlidingSidebar({ date, isOpen, onClose }) {
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ export default function SlidingSidebar({ date, isOpen, onClose }) {
     {
       title: "My Symptoms",
       items: ["Felt dizzy at 12 pm."],
-      route: "/symptoms",
+      route: "/symptom",
     },
     {
       title: "My Calorie Intake",

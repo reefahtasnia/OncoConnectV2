@@ -36,6 +36,7 @@ import Credit from './components/CreditPage';
 import Calorie from './components/Calorie.js';
 import Caregiverpage from './components/Caregiverpage.jsx';
 import Paypal from './components/Paypal.js';
+import SymptomTracker from './components/SymptomTracker.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -91,6 +92,7 @@ function App() {
                 <Route path="/user/messages" element={<UserMessages />} />
                 <Route path="/user/diary" element={<UserDiary />} />
                 <Route path="/user/forum" element={<UserForum />} />
+                <Route path="/symptom" element={<SymptomTracker />} />
                 <Route path="/docfind" element={<Doctor_finder />} />
                 <Route path="/cancerscreen" element={<CancerScreen />} />
                 <Route path="/quiz" element={<Quiz />} />

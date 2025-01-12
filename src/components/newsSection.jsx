@@ -11,21 +11,21 @@ export default function NewsSection() {
       date: "April 15, 2024",
       title: "Best Cancer Patient Care Techniques for Family Members and Caregivers",
       image: newsImage1,
-      link: "/articles/caregiving"
+      link: "/care"
     },
     {
       category: "Technology",
       date: "June 20, 2023",
       title: "How AI is Revolutionizing Cancer Diagnosis and Treatment",
       image: newsImage2,
-      link: "/articles/ai-cancer"
+      link: "/care"
     },
     {
       category: "Health",
       date: "May 10, 2022",
       title: "Top Nutrition Tips for Cancer Patients to Stay Healthy During Treatment",
       image: newsImage3,
-      link: "/articles/nutrition"
+      link: "/care"
     }
   ];
 
@@ -59,7 +59,7 @@ export default function NewsSection() {
         </div>
 
         <div className="news-footer">
-          <a href="/articles" className="article-button">
+          <a href="/care" className="article-button">
             Explore more articles
           </a>
         </div>

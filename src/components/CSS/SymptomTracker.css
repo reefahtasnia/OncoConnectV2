@@ -1,0 +1,178 @@
+.patient-symptom-tracker {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .patient-symptom-header {
+    background-color: #8b5cf6;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .patient-symptom-header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 30px;
+    font-weight: 500;
+    font-family: 'Monteserrat', sans-sarif;
+  }
+  
+  .patient-symptom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .patient-symptom-section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-symptom-section h2 {
+    color: #4b5563;
+    font-size: 18px;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  
+  .patient-symptom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  
+  .patient-symptom-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .patient-symptom-field label {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .patient-symptom-field input[type="text"],
+  .patient-symptom-field input[type="number"],
+  .patient-symptom-field input[type="date"],
+  .patient-symptom-field select,
+  .patient-symptom-field textarea {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .patient-symptom-field textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .patient-symptom-field input[type="range"] {
+    width: 100%;
+  }
+  
+  .patient-symptom-range-value {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .patient-symptom-bp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .patient-symptom-bp input {
+    width: 80px;
+  }
+  
+  .patient-symptom-bp span {
+    color: #6b7280;
+  }
+  
+  .patient-symptom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .patient-symptom-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .patient-symptom-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .patient-symptom-button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .patient-symptom-button.cancel {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+  }
+  
+  .patient-symptom-button.submit {
+    background-color: #8b5cf6;
+    border: none;
+    color: white;
+  }
+  
+  .patient-symptom-button.cancel:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .patient-symptom-button.submit:hover {
+    background-color: #7c3aed;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 640px) {
+    .patient-symptom-tracker {
+      padding: 16px;
+    }
+  
+    .patient-symptom-header {
+      padding: 16px;
+    }
+  
+    .patient-symptom-section {
+      padding: 16px;
+    }
+  
+    .patient-symptom-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .patient-symptom-actions {
+      flex-direction: column;
+    }
+  
+    .patient-symptom-button {
+      width: 100%;
+    }
+  }
+  
+  

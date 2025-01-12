@@ -78,7 +78,12 @@ export default function ForumPage() {
         <header className="dashboard-header">
           <h1>My Forum Activities</h1>
           <div className="header-actions">
-            <button className="community-forum-btn">Community Forum</button>
+            <button
+              className="community-forum-btn"
+              onClick={() => window.location.href = "/forum"}
+            >
+              Community Forum
+            </button>
             <UserDropdown
               username="Username"
               avatar={userImage}

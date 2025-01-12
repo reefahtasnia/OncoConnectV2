@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronUp, ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronUp, ChevronDown, ArrowRight } from "lucide-react";
 import "./CSS/Testimonial.css";
 
 const Testimonial = ({ name, condition, age, quote, imageClass }) => (
@@ -15,7 +15,8 @@ const Testimonial = ({ name, condition, age, quote, imageClass }) => (
           <div className="onco-testimonial-author-details">
             <span className="onco-testimonial-author-type">{condition}</span>
             <span className="onco-testimonial-author-age">
-              {" "}({age} years old)
+              {" "}
+              ({age} years old)
             </span>
           </div>
         </div>
@@ -86,7 +87,7 @@ const Testimonials = () => {
           >
             <ChevronUp className="w-6 h-6" />
           </button>
-          
+
           <div className="onco-testimonial-viewport">
             <div className="onco-testimonial-slides">
               {testimonials.map((testimonial, index) => (
@@ -110,9 +111,12 @@ const Testimonials = () => {
             <ChevronDown className="w-6 h-6" />
           </button>
         </div>
-        
+
         <div className="onco-testimonial-read-more">
-          <button className="onco-read-more-button">
+          <button
+            className="onco-read-more-button"
+            onClick={() => (window.location.href = "/survival")}
+          >
             Read more stories
             <ArrowRight className="ml-2 w-4 h-4" />
           </button>
@@ -123,4 +127,3 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
-

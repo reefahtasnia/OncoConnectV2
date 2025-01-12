@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./CSS/style.css";
 import Navbar from "./Nav";
 import Footer from "./Footer";
@@ -14,41 +14,51 @@ import doctorPatientIcon from "./assets/doctorpatient1.png";
 import aiAnalyzerIcon from "./assets/AIreportanalyzer1.png";
 
 const Home = () => {
+  const aboutUsRef = useRef(null);
+  const servicesRef = useRef(null);
+  
+  const scrollToSection = (section) => {
+    if (section === "aboutUs" && aboutUsRef.current) {
+      aboutUsRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (section === "services" && servicesRef.current) {
+      servicesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const services = [
     {
       icon: quizIcon,
       title: "Cancer Risk Assessment Quiz",
       description:
         "Learn about your condition with curated articles, videos, and expert advice.",
-      link: "#learn-more",
+      link: "/quiz",
     },
     {
       icon: financialAidIcon,
       title: "Financial Aid",
       description:
         "Simplify complex medical reports with our AI-powered tool that provides clear, actionable insights.",
-      link: "#learn-more",
+      link: "/donation",
     },
     {
       icon: mentalHealthIcon,
       title: "Mental Health Support",
       description:
         "Track and monitor symptoms easily to share detailed updates with your doctor.",
-      link: "#learn-more",
+      link: "/mental",
     },
     {
       icon: doctorPatientIcon,
       title: "Doctor-Patient Connection",
       description:
         "Stay connected with your healthcare provider for real-time updates and support.",
-      link: "#learn-more",
+      link: "/docfind",
     },
     {
       icon: aiAnalyzerIcon,
       title: "AI Report Analyzer",
       description:
         "Stay connected with your healthcare provider for real-time updates and support.",
-      link: "#learn-more",
+      link: "/ai",
     },
   ];
 
@@ -78,10 +88,10 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Navbar />
+      <Navbar scrollToSection={scrollToSection} />
       <AnimatedHero />
       <div className="main-content">
-        <section className="about-us-section parallax" data-speed="0.05">
+        <section ref={aboutUsRef} className="about-us-section parallax" data-speed="0.05">
           <div className="about-us-container">
             <div className="about-us-content">
               <h2 className="about-us-heading">
@@ -104,7 +114,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="our-services parallax" data-speed="0.03">
+        <section  ref={servicesRef} className="our-services parallax" data-speed="0.03">
           <h2 className="services-title">OUR SERVICES</h2>
           <h3 className="services-subtitle">
             Comprehensive Tools to Support Your Cancer Journey
