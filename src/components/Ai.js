@@ -14,6 +14,11 @@ const UploadReportPage = () => {
     if (tabName === 'ultrasound') {
       navigate('/ai2'); // Use navigate instead of history.push
     }
+    if (tabName === 'mri') {
+      navigate('/ai3'); // Use navigate instead of history.push
+    }
+    
+    
   };
 
   const handleFileChange = (e) => {

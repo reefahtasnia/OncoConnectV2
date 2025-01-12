@@ -37,6 +37,7 @@ import Calorie from './components/Calorie.js';
 import Caregiverpage from './components/Caregiverpage.jsx';
 import Paypal from './components/Paypal.js';
 import AI2 from './components/Ai2.js';
+import AI3 from './components/AI3.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -100,6 +101,8 @@ function App() {
                 <Route path="/calorie" element={<Calorie />} />
                 <Route path="/care" element={<Caregiverpage />} />
                 <Route path="/paypal" element={<Paypal />} />
+                <Route path="/ai3" element={<AI3 />} />
+
                 <Route path="/ai2" element={<AI2 />} />
             </Routes>
         </>
