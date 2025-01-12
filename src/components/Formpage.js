@@ -3,16 +3,15 @@ import "./CSS/formpage.css"; // Import the CSS file
 import backgroundImage from "./assets/forest.png"; // Import the background image
 import Footer from "./Footer";
 
-
-const FormPage = () => {
+const KidFormPage = () => {
   return (
     <div
-      className="form-page-container"
+      className="kidform-page-container"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="form-content">
-        <h1 className="form-title">My Magical Animal Friend 🐾</h1>
-        <form className="form">
+      <div className="kidform-content">
+        <h1 className="kidform-title">My Magical Animal Friend 🐾</h1>
+        <form className="kidform">
           <label>
             What's your favorite animal?  
             <input type="text" placeholder="E.g., Bunny, Lion, Dolphin" />
@@ -33,19 +32,18 @@ const FormPage = () => {
             How would you motivate your friend not to get sad?  
             <textarea placeholder="E.g., Tell jokes, play games, give hugs..." />
           </label>
-          <div className="button-container">
-            <button type="button" className="upload-button">
+          <div className="kidform-button-container">
+            <button type="button" className="kidform-upload-button">
               Upload Your Story
             </button>
-            <button type="button" className="upload-button">
+            <button type="button" className="kidform-upload-button">
               Upload Picture of Your Friend
             </button>
           </div>
         </form>
       </div>
-      
     </div>
   );
 };
 
-export default FormPage;
+export default KidFormPage;

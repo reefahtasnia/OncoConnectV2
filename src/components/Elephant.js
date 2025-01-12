@@ -2,6 +2,7 @@ import React from "react";
 import "./CSS/elephant.css";
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from "./assets/kid3.png";
+import Footer from "./Footer";
 
 const Elephant = () => {
     const navigate = useNavigate(); // Initialize navigate function
@@ -36,6 +37,7 @@ const Elephant = () => {
           </button>
         </div>
       </div>
+       <Footer />
     </div>
   );
 };

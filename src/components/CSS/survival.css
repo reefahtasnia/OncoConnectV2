@@ -269,3 +269,44 @@
 .cancel:hover {
   background-color: #bbb;
 }
+/* Hero Content Styling */
+/* Hero Content Styling */
+.sur-hero-content {
+  background-image: url('G:\OncoConnectV2\src\components\assets\bkmental.png'); /* Replace with your hero background image */
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  padding: 100px 20px;
+  color: #3c3158;
+  border-radius: 8px;
+  margin-bottom: 40px;
+
+}
+
+.sur-hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  
+}
+
+.sur-hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero-button {
+  background-color: #8B5CF6;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #7C4BC0;
+}

@@ -154,7 +154,16 @@ const CaregiverPage = () => {
 </div>
         </div>
       </section>
-
+{/* Pagination */}
+       <div className="pagination">
+              <button className="page-btn prev">←</button>
+              <button className="page-btn active">1</button>
+              <button className="page-btn">2</button>
+              <button className="page-btn">3</button>
+              <span>...</span>
+              <button className="page-btn">8</button>
+              <button className="page-btn next">→</button>
+            </div>
       <Footer />
     </div>
   );

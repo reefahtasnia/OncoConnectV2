@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ReactQuill from 'react-quill'; // Import react-quill
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import "./CSS/survival.css";
 import pic1 from './assets/pic1.jpg';
 import pic2 from './assets/pic2.jpg';
@@ -13,7 +13,7 @@ import pic7 from './assets/pic7.jpg';
 import pic8 from './assets/pic8.jpg';
 import Footer from "./Footer";
 
-
+// Articles Data
 const articles = [
   { id: 1, title: "Quieting the Noise: Finding Peace Amid Cancer's Challenges", imageUrl: pic1, link: "#" },
   { id: 2, title: "Harnessing the Power of Hope and Insight in Cancer Recovery", imageUrl: pic2, link: "#" },
@@ -49,25 +49,32 @@ const Pagination = () => (
 );
 
 const BlogGrid = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false); // State to track the mode
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [storyContent, setStoryContent] = useState(''); // State to store the story content
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [storyContent, setStoryContent] = useState('');
 
   const handleEditorChange = (value) => {
-    setStoryContent(value); // Update the story content with the editor's value
+    setStoryContent(value);
   };
 
   const handleSubmit = () => {
-    // Handle story submission logic here
     console.log(storyContent);
-    // Close the modal after submission
     setIsModalOpen(false);
   };
 
   return (
     <div className={`blog-container ${isDarkMode ? 'dark' : 'light'}`}>
+      
+      {/* Hero Content Section */}
+      <div className="sur-hero-content">
+        <h1>Empowering Cancer Survivors</h1>
+        <p>Discover inspiring stories, resources, and guidance to help you thrive after cancer.</p>
+        <button className="hero-button">Start Your Journey</button>
+      </div>
+
+      {/* Blog Section */}
       <div className="mode-toggle">
-        <Link to="/kid" className="slide-button">Switch to Kid Mode</Link> {/* Slide button */}
+        <Link to="/kid" className="slide-button">Switch to Kid Mode</Link>
       </div>
       <div className="blog-grid">
         {articles.map((article) => (
@@ -80,7 +87,7 @@ const BlogGrid = () => {
         ))}
       </div>
       <Pagination />
-      
+
       <div className="upload-button-container">
         <button className="unique-upload-button" onClick={() => setIsModalOpen(true)}>
           Upload Your Own Story
@@ -95,7 +102,7 @@ const BlogGrid = () => {
             <ReactQuill 
               value={storyContent} 
               onChange={handleEditorChange} 
-              modules={BlogGrid.modules} // Optional: Add specific modules for customization
+              modules={BlogGrid.modules}
             />
             <div className="modal-buttons">
               <button className="cancel" onClick={() => setIsModalOpen(false)}>Cancel</button>

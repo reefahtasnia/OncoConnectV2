@@ -336,7 +336,7 @@
 }
 
 .result-content h2 {
-  color: #7C3AED;
+  color: #4510a1;
   margin-bottom: 1rem;
 }
 
@@ -359,6 +359,9 @@
   background-color: #6D28D9;
 }
 
+.highlightcolor {
+  color:#7b31f1;
+  font-weight: 3rem;
+  font-size: 1.5rem;
 
-
-  
+}

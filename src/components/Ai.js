@@ -2,21 +2,30 @@ import React, { useState } from 'react';
 import "./CSS/ai.css";
 import robot from "./assets/robot.png";
 import Footer from "./Footer";
-
+import { useNavigate } from 'react-router-dom';
 
 const UploadReportPage = () => {
-  const [file, setFile] = useState(null);
+  const navigate = useNavigate(); // Replacing useHistory with useNavigate
   const [activeTab, setActiveTab] = useState('mammogram');
+  const [file, setFile] = useState(null);
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+    if (tabName === 'ultrasound') {
+      navigate('/ai2'); // Use navigate instead of history.push
+    }
+    if (tabName === 'mri') {
+      navigate('/ai3'); // Use navigate instead of history.push
+    }
+    
+    
+  };
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const uploadedFile = e.target.files[0];
       setFile(uploadedFile);
     }
-  };
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
   };
 
   return (
@@ -121,9 +130,7 @@ const UploadReportPage = () => {
           alt="Robot illustration"
           className="object-contain"
         />
-         
       </div>
-     
     </div>
   );
 };
