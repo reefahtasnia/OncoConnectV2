@@ -1,38 +1,37 @@
 import React from "react";
-import "./CSS/AI2.css"; // Import the CSS file
+import "./CSS/AI3.css"; // Updated the CSS file name
 
 // Import the image
-import mainImage from "./assets/ultrasound.png"; // Replace with your image path
+import mainImage from "./assets/MRI.png"; // Replace with your image path
 
 const AI = () => {
   return (
-    <div className="ai2-container">
+    <div className="ai3-container">
       {/* Header Section */}
       
       {/* Main Content */}
-      <main className="ai2-container-main-content">
+      <main className="ai3-container-main-content">
         {/* Ultrasound Section */}
-        <section className="ai2-container-ultrasound-section">
-          <h2 className="ai2-container-section-title">Detect Cancer Models</h2>
-          <div className="ai2-container-image-container">
+        <section className="ai3-container-ultrasound-section">
+          <h2 className="ai3-container-section-title">Detect Cancer Models</h2>
+          <div className="ai3-container-image-container">
             <img
               src={mainImage}
               alt="Ultrasound"
-              className="ai2-container-main-image"
+              className="ai3-container-main-image"
             />
-            
           </div>
         </section>
 
         {/* Patient Details Section */}
-        <section className="ai2-container-patient-details">
+        <section className="ai3-container-patient-details">
           <h2>Patient Details</h2>
           <p>
-             Ultrasound are a critical task in medical image analysis, aiding in
+            MRI Scans are a critical task in medical image analysis, aiding in
             diagnosis and treatment planning. However, manual segmentation is
             time-consuming and prone to inter-observer variability.
           </p>
-          <table className="ai2-container-details-table">
+          <table className="ai3-container-details-table">
             <thead>
               <tr>
                 <th>Cases examined</th>
@@ -67,11 +66,11 @@ const AI = () => {
               </tr>
             </tbody>
           </table>
-          <div className="ai2-container-buttons">
-            <button className="ai2-container-report-button">
+          <div className="ai3-container-buttons">
+            <button className="ai3-container-report-button">
               Report Download
             </button>
-            <button className="ai2-container-report-button">
+            <button className="ai3-container-report-button">
               Report Email to your Doctor
             </button>
           </div>
