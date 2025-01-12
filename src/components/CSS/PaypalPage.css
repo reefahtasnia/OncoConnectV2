@@ -1,5 +1,5 @@
 /* General Container Styling */
-.credit-container {
+.paypal-container {
     font-family: 'Arial', sans-serif;
     padding: 20px;
     background-color: #F3F0FF; /* Light purple background */
@@ -7,7 +7,7 @@
 }
 
 /* Warning Box Styling */
-.credit-warning {
+.paypal-warning {
     background-color: #ffdfdf; /* Muted lavender */
     border: 1px solid #C4B5FD; /* Slightly darker border */
     padding: 15px;
@@ -18,18 +18,18 @@
     text-align: center; /* Center-align text for better readability */
 }
 
-.credit-warning a {
+.paypal-warning a {
     color: #ffffff; /* Bright purple link */
     text-decoration: underline;
     font-weight: bold;
 }
 
-.credit-warning a:hover {
+.paypal-warning a:hover {
     color: #bdabda; /* Slightly darker purple on hover */
 }
 
 /* Donation Box Styling */
-.credit-donation-box {
+.paypal-donation-box {
     border: 1px solid #D8B4FE; /* Light lavender border */
     border-radius: 12px;
     background-color: #FFFFFF; /* White background */
@@ -38,7 +38,7 @@
 }
 
 /* Flexbox Layout for Image and Form */
-.credit-content {
+.paypal-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -47,12 +47,12 @@
 }
 
 /* Project Info (Left Side) */
-.credit-project-info {
+.paypal-project-info {
     flex: 1;
     margin-bottom: 20px; /* Add space between items on smaller devices */
 }
 
-.credit-project-info img {
+.paypal-project-info img {
     width: 100%;
     max-width: 300px;
     margin-bottom: 15px;
@@ -60,19 +60,19 @@
     border: 3px solid #C4B5FD; /* Purple border */
 }
 
-.credit-project-info h2 {
+.paypal-project-info h2 {
     font-size: 18px;
     margin-bottom: 10px;
     color: #6B21A8; /* Deep purple */
     text-align: center;
 }
 
-.credit-project-info p {
+.paypal-project-info p {
     margin-bottom: 10px;
     font-size: 14px;
 }
 
-.credit-project-info select {
+.paypal-project-info select {
     padding: 10px;
     width: 100%;
     border: 1px solid #C4B5FD; /* Purple border */
@@ -82,14 +82,14 @@
     color: #050505; /* Dark purple text */
 }
 
-.credit-project-info select:focus {
+.paypal-project-info select:focus {
     outline: none;
     border-color: #8B5CF6; /* Bright purple focus */
     box-shadow: 0 0 4px #8B5CF6;
 }
 
 /* Donation Form (Right Side) */
-.credit-donation-form {
+.paypal-donation-form {
     flex: 1;
     background-color: #FAF5FF; /* Light purple-lavender background */
     padding: 20px;
@@ -98,14 +98,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.credit-donation-form h3 {
+.paypal-donation-form h3 {
     margin-bottom: 15px;
     font-size: 20px;
     color: #070707; /* Dark purple */
     text-align: center;
 }
 
-.credit-donation-form input {
+.paypal-donation-form input {
     display: block;
     width: 100%;
     margin-bottom: 12px;
@@ -116,20 +116,20 @@
     font-size: 14px;
 }
 
-.credit-donation-form input:focus {
+.paypal-donation-form input:focus {
     outline: none;
     border-color: #8B5CF6; /* Bright purple focus */
     box-shadow: 0 0 4px #8B5CF6;
 }
 
-.credit-donation-form label {
+.paypal-donation-form label {
     font-size: 14px;
     color: #000000; /* Dark purple */
     margin-bottom: 15px;
     display: block;
 }
 
-.credit-donation-form button {
+.paypal-donation-form button {
     padding: 12px 20px;
     background-color: #8B5CF6; /* Bright purple */
     color: #FFFFFF; /* White text */
@@ -141,89 +141,12 @@
     transition: background-color 0.3s ease;
 }
 
-.credit-donation-form button:hover {
+.paypal-donation-form button:hover {
     background-color: #6D28D9; /* Slightly darker purple on hover */
 }
 
 /* Navigation Button */
-.credit-navigate-btn {
-    margin-top: 20px;
-    padding: 12px 20px;
-    background-color: #8B5CF6; /* Bright purple */
-    color: #FFFFFF; /* White text */
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.credit-navigate-btn:hover {
-    background-color: #6D28D9; /* Slightly darker purple on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-    .credit-content {
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center;
-    }
-
-    .credit-project-info,
-    .credit-donation-form {
-        width: 100%; /* Full-width for smaller screens */
-    }
-
-    .credit-project-info img {
-        max-width: 80%; /* Slightly smaller image */
-    }
-
-    .credit-donation-form button,
-    .credit-navigate-btn {
-        width: 100%; /* Buttons scale for smaller screens */
-        text-align: center;
-    }
-}
-
-@media (max-width: 576px) {
-    .credit-container {
-        padding: 10px; /* Reduce padding for very small screens */
-    }
-
-    .credit-warning {
-        font-size: 12px; /* Smaller font size for compact view */
-    }
-
-    .credit-project-info h2,
-    .credit-donation-form h3 {
-        font-size: 16px; /* Adjust headers for mobile */
-    }
-
-    .credit-donation-form input {
-        font-size: 12px; /* Smaller inputs for compact view */
-    }
-
-    .credit-donation-form button {
-        font-size: 14px; /* Adjust button size */
-    }
-}
-
-/* Donation Header */
-.credit-donation-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.credit-donation-header h3 {
-    font-size: 20px;
-    color: #070707; /* Dark purple */
-    margin: 0;
-}
-
-.credit-donation-header .credit-paypal-link {
+.paypal-link {
     background: none;
     border: none;
     color: #8B5CF6; /* Bright purple */
@@ -235,6 +158,51 @@
     transition: color 0.3s ease;
 }
 
-.credit-donation-header .credit-paypal-link:hover {
+.paypal-link:hover {
     color: #fcfcfc; /* Slightly darker purple on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .paypal-content {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    .paypal-project-info,
+    .paypal-donation-form {
+        width: 100%; /* Full-width for smaller screens */
+    }
+
+    .paypal-project-info img {
+        max-width: 80%; /* Slightly smaller image */
+    }
+
+    .paypal-donation-form button {
+        width: 100%; /* Button scales for smaller screens */
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .paypal-container {
+        padding: 10px; /* Reduce padding for very small screens */
+    }
+
+    .paypal-warning {
+        font-size: 12px; /* Smaller font size for compact view */
+    }
+
+    .paypal-project-info h2,
+    .paypal-donation-form h3 {
+        font-size: 16px; /* Adjust headers for mobile */
+    }
+
+    .paypal-donation-form input {
+        font-size: 12px; /* Smaller inputs for compact view */
+    }
+
+    .paypal-donation-form button {
+        font-size: 14px; /* Adjust button size */
+    }
 }

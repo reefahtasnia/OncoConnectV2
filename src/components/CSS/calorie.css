@@ -1,163 +1,164 @@
 .calorie-tracker {
     font-family: Arial, sans-serif;
-    max-width: 700px;
+    max-width: 800px;
     margin: auto;
     border: 1px solid #ccc;
     padding: 20px;
-    background: #c7b9e9;
-  }
-  
-  .caheader {
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for text readability */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* To position the pseudo-element */
+    z-index: 1;
+    overflow: hidden; /* To clip the pseudo-element */
+}
+
+/* Blurry background image */
+.calorie-tracker::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('E:\OncoConnectV2\src\components\assets\backsurvival.png'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px); /* Adjust blur intensity */
+    z-index: -1; /* Place behind the content */
+}
+
+.caheader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    background-color: #7e6dca; /* Dark background for header */
-    padding: 15px;
+    background-color: #7e6dca; /* Rich purple for header */
+    padding: 20px;
     border-radius: 8px;
-  }
-  
-  .caheader h2 {
-    color: white; /* White color for 'Your Food Diary For' text */
-    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.caheader h2 {
+    color: #ffffff; /* White text for good contrast */
+    font-size: 26px;
     font-weight: bold;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add subtle shadow for readability */
-  }
-  
-  .date-picker {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for better readability */
+}
+
+.date-picker {
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-  
-  .date-picker span {
-    color: white; /* White color for the date */
-    font-size: 20px;
+}
+
+.date-picker span {
+    color: #ffffff; /* White text for date display */
+    font-size: 18px;
     font-weight: 500;
-    letter-spacing: 0.5px;
     text-align: center;
-  }
-  
-  .nav-button {
+}
+
+.nav-button {
     background-color: #6a4ebc; /* Light purple for buttons */
-    color: white;
+    color: #ffffff; /* White text */
     border: none;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-button:hover {
-    background-color: #5b3d9d; /* Darker purple when hovered */
-  }
-  
-  .meal-section {
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #56369a; /* Darker purple for hover effect */
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.meal-section {
     margin-top: 20px;
     border: 1px solid #ddd;
-    padding: 10px;
-    background: #fff;
+    padding: 15px;
+    background: #ffffff; /* Clean white for meal sections */
     border-radius: 5px;
-  }
-  
-  .meal-section h3 {
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  table {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add slight shadow for depth */
+}
+
+.meal-section h3 {
+    margin-bottom: 15px;
+    color: #4a4a4a; /* Neutral text color for headings */
+    font-size: 20px;
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 10px;
-  }
-  
-  table th, table td {
+}
+
+table th, table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
-  }
-  
-  .action-buttons {
+    font-size: 14px;
+}
+
+table th {
+    background-color: #f0f0f0; /* Light gray for table headers */
+    font-weight: bold;
+    color: #333333; /* Darker text color */
+}
+
+table td {
+    color: #555555; /* Softer gray for table cells */
+}
+
+.action-buttons {
     display: flex;
+    justify-content: flex-end;
     gap: 10px;
-  }
-  
-  .add-food-btn, .delete-food-btn {
-    background-color: #0073e6;
+}
+
+.add-food-btn, .delete-food-btn {
+    background-color: #6a4ebc;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
-  }
-  
-  .delete-food-btn {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-food-btn:hover {
+    background-color: #56369a;
+    transform: scale(1.05);
+}
+
+.delete-food-btn {
     background-color: #e60000;
-  }
-  
-  .summary {
+}
+
+.delete-food-btn:hover {
+    background-color: #b00000;
+}
+
+.summary {
     margin-top: 30px;
-  }
-  
-  .chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .chart {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: conic-gradient(#4caf50 0% 60%, #f44336 60% 80%, #2196f3 80% 100%);
-  }
-  
-  .complete-entry-btn {
-    display: block;
-    margin: 20px auto;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .header {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .meal-section {
-      padding: 10px;
-    }
-  
-    table th, table td {
-      font-size: 12px;
-      padding: 5px;
-    }
-  
-    .action-buttons {
-      flex-direction: column;
-      gap: 5px;
-    }
-  }
-  
-  .chart-container {
-    width: 50%;
-    margin: 20px auto;
-  }
-  
-  .pie-chart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    text-align: center;
+}
+
+.summary h3 {
+    font-size: 22px;
+    color: #333333;
+    margin-bottom: 15px;
+}
+
+.pie-chart {
+    margin: 0 auto;
+    max-width: 400px; /* Limit chart size for balance */
+}
+
   
   .modal {
     position: fixed;
@@ -181,43 +182,79 @@
     text-align: center;
   }
   
-  .modal-content h3 {
-    margin-bottom: 10px;
-  }
-  
-  .modal-content p {
-    margin-bottom: 20px;
-  }
-  
-  .modal-content label {
-    display: block;
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
+  /* Styling the modal heading (h3) */
+.modal-content h3 {
+    font-size: 24px; /* Larger heading size */
+    font-weight: bold; /* Emphasize the heading */
+    color: #56369a; /* Matches the purple theme */
+    text-align: center; /* Center align for better balance */
+    margin-bottom: 15px; /* Increased spacing below */
+    text-transform: uppercase; /* Optional: Makes the text uppercase */
+    letter-spacing: 1px; /* Adds a subtle spacing between letters */
+}
+
+/* Styling the modal paragraph (p) */
+.modal-content p {
+    font-size: 16px; /* Comfortable reading size */
+    line-height: 1.6; /* Improves text readability */
+    color: #333; /* Neutral dark color for text */
+    margin-bottom: 20px; /* Proper spacing below paragraphs */
+    text-align: justify; /* Align text for a clean block appearance */
+}
+
+/* Styling the modal labels */
+.modal-content label {
+    font-size: 14px; /* Slightly smaller for subtle emphasis */
+    font-weight: 500; /* Medium weight for readability */
+    color: #6f4bc4; /* Purple tone to match the theme */
+    margin-bottom: 10px; /* Adjusted spacing below */
+    text-align: left; /* Keeps the label aligned to the left */
+    display: block; /* Ensures the label sits above the input */
+    letter-spacing: 0.5px; /* Slight spacing for a modern touch */
+    text-transform: capitalize; /* Capitalizes first letters of words */
+}
+
   .modal-content button {
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
   }
   
-  .modal-content button:first-of-type {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-  }
-  
+  .modal-content button:first-of-type,
   .modal-content button:last-of-type {
-    background-color: #f44336;
-    color: #fff;
-    border: none;
-  }
-  .pie-chart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 600px; /* Decreased width */
-    height: 400px; /* Decreased height */
+      background-color: #56369a;
+      color: #fff;
+      border: none;
+      padding: 12px 20px; /* Adds padding for better size */
+      border-radius: 8px; /* Smooth rounded corners */
+      font-size: 16px; /* Slightly larger font */
+      font-weight: bold; /* Bold text for emphasis */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      transition: all 0.3s ease; /* Smooth animation for all properties */
+      outline: none; /* Removes outline when focused */
   }
   
- 
+  /* Hover effects */
+  .modal-content button:first-of-type:hover,
+  .modal-content button:last-of-type:hover {
+      background-color: #6f4bc4; /* Lighter purple for hover effect */
+      color: #fff; /* Ensures text remains white */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+      transform: translateY(-3px) scale(1.1); /* Moves button up and enlarges */
+      cursor: pointer; /* Pointer cursor */
+  }
+  
+  /* Active button (when clicked) */
+  .modal-content button:first-of-type:active,
+  .modal-content button:last-of-type:active {
+      transform: translateY(1px); /* Subtle press-down effect */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Reduces shadow */
+  }
+  
+  /* Additional focus styles */
+  .modal-content button:first-of-type:focus,
+  .modal-content button:last-of-type:focus {
+      border: 2px solid #9a7dda; /* Adds focus outline */
+      box-shadow: 0 0 10px rgba(111, 75, 196, 0.8); /* Glow effect on focus */
+  }
+  
