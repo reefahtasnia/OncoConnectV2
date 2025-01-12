@@ -1,0 +1,208 @@
+/* General Container Styling */
+.paypal-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #F3F0FF; /* Light purple background */
+    color: #333;
+}
+
+/* Warning Box Styling */
+.paypal-warning {
+    background-color: #ffdfdf; /* Muted lavender */
+    border: 1px solid #C4B5FD; /* Slightly darker border */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #000000; /* Dark purple text */
+    font-size: 14px;
+    text-align: center; /* Center-align text for better readability */
+}
+
+.paypal-warning a {
+    color: #ffffff; /* Bright purple link */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.paypal-warning a:hover {
+    color: #bdabda; /* Slightly darker purple on hover */
+}
+
+/* Donation Box Styling */
+.paypal-donation-box {
+    border: 1px solid #D8B4FE; /* Light lavender border */
+    border-radius: 12px;
+    background-color: #FFFFFF; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+}
+
+/* Flexbox Layout for Image and Form */
+.paypal-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Project Info (Left Side) */
+.paypal-project-info {
+    flex: 1;
+    margin-bottom: 20px; /* Add space between items on smaller devices */
+}
+
+.paypal-project-info img {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Rounded corners */
+    border: 3px solid #C4B5FD; /* Purple border */
+}
+
+.paypal-project-info h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #6B21A8; /* Deep purple */
+    text-align: center;
+}
+
+.paypal-project-info p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.paypal-project-info select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #C4B5FD; /* Purple border */
+    border-radius: 6px;
+    background-color: #F5F3FF; /* Light lavender background */
+    font-size: 14px;
+    color: #050505; /* Dark purple text */
+}
+
+.paypal-project-info select:focus {
+    outline: none;
+    border-color: #8B5CF6; /* Bright purple focus */
+    box-shadow: 0 0 4px #8B5CF6;
+}
+
+/* Donation Form (Right Side) */
+.paypal-donation-form {
+    flex: 1;
+    background-color: #FAF5FF; /* Light purple-lavender background */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #E9D8FD; /* Soft lavender border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.paypal-donation-form h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #070707; /* Dark purple */
+    text-align: center;
+}
+
+.paypal-donation-form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #C4B5FD; /* Purple border */
+    border-radius: 8px;
+    background-color: #FFFFFF; /* White background */
+    font-size: 14px;
+}
+
+.paypal-donation-form input:focus {
+    outline: none;
+    border-color: #8B5CF6; /* Bright purple focus */
+    box-shadow: 0 0 4px #8B5CF6;
+}
+
+.paypal-donation-form label {
+    font-size: 14px;
+    color: #000000; /* Dark purple */
+    margin-bottom: 15px;
+    display: block;
+}
+
+.paypal-donation-form button {
+    padding: 12px 20px;
+    background-color: #8B5CF6; /* Bright purple */
+    color: #FFFFFF; /* White text */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.paypal-donation-form button:hover {
+    background-color: #6D28D9; /* Slightly darker purple on hover */
+}
+
+/* Navigation Button */
+.paypal-link {
+    background: none;
+    border: none;
+    color: #8B5CF6; /* Bright purple */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    transition: color 0.3s ease;
+}
+
+.paypal-link:hover {
+    color: #fcfcfc; /* Slightly darker purple on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .paypal-content {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    .paypal-project-info,
+    .paypal-donation-form {
+        width: 100%; /* Full-width for smaller screens */
+    }
+
+    .paypal-project-info img {
+        max-width: 80%; /* Slightly smaller image */
+    }
+
+    .paypal-donation-form button {
+        width: 100%; /* Button scales for smaller screens */
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .paypal-container {
+        padding: 10px; /* Reduce padding for very small screens */
+    }
+
+    .paypal-warning {
+        font-size: 12px; /* Smaller font size for compact view */
+    }
+
+    .paypal-project-info h2,
+    .paypal-donation-form h3 {
+        font-size: 16px; /* Adjust headers for mobile */
+    }
+
+    .paypal-donation-form input {
+        font-size: 12px; /* Smaller inputs for compact view */
+    }
+
+    .paypal-donation-form button {
+        font-size: 14px; /* Adjust button size */
+    }
+}

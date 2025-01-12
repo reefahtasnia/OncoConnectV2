@@ -4,6 +4,8 @@ import Expert1 from "./assets/team-1.jpg";
 import Expert2 from "./assets/team-2.png";
 import Expert3 from "./assets/team-3.jpg";
 import Expert4 from "./assets/team-4.jpg";
+import Footer from "./Footer";
+
 
 const MentalHealthPage = () => {
   return (
@@ -14,7 +16,12 @@ const MentalHealthPage = () => {
       {/* Hero Section */}
       <section className="mh-hero">
         <div className="mh-hero-content">
-          <h1>At the heart of <span className="mh-highlight">children & young people's</span> mental health</h1>
+        <h1>
+  At the heart of <br />
+  <span className="mh-highlight">children & young people's</span> <br />
+  mental health
+</h1>
+
           <button className="mh-find-therapist-button">Find a Therapist</button>
         </div>
         <div className="mh-hero-search">
@@ -90,7 +97,7 @@ const MentalHealthPage = () => {
      
 
       {/* Footer */}
-      
+       <Footer />
     </div>
   );
 };

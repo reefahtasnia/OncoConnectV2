@@ -2,6 +2,7 @@ import React from "react";
 import "./CSS/bunny.css";
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from "./assets/kid2.png";
+import Footer from "./Footer";
 
 const Bunny = () => {
   const navigate = useNavigate(); // Initialize navigate function
@@ -48,6 +49,7 @@ Olive the owl saw Benny and flew down. "Let me help," she said, placing a honey-
           </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

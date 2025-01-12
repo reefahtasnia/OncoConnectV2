@@ -59,6 +59,7 @@
     align-items: center;
     padding: 64px 32px;
     background-color: #ede9fe;
+    background-image: url('E:\OncoConnectV2\src\components\assets\bkmental1.png'); 
   }
   
   .mh-hero-content {
@@ -66,15 +67,19 @@
   }
   
   .mh-hero-content h1 {
-    font-size: 42px;
+    font-size: 48px;
     line-height: 1.4;
     color: #4c1d95;
+    font-family: "Berkshire Swash", serif;; /* Bold and Eye-catching */
   }
   
   .mh-highlight {
-    color: #8B5CF6;
+    color: #64488e;
     font-weight: bold;
+    font-family: "Berkshire Swash", serif; /* Lighter but still bold for contrast */
   }
+  
+  
   
   .mh-find-therapist-button {
     background-color: #8B5CF6;
