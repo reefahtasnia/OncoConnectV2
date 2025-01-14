@@ -249,7 +249,6 @@ const UserProfileForm = () => {
 
   return (
     <div style={styles.pageBackground}>   
-    <Navbar />
       <div style={styles.container}>
         <div style={styles.header}>
           <div style={styles.imageUpload}>

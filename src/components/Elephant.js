@@ -37,7 +37,6 @@ const Elephant = () => {
           </button>
         </div>
       </div>
-       <Footer />
     </div>
   );
 };

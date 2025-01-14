@@ -49,7 +49,6 @@ Olive the owl saw Benny and flew down. "Let me help," she said, placing a honey-
           </button>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

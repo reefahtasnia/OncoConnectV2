@@ -20,7 +20,7 @@ const AnimatedHero = () => {
           <span className="title-line">Heal.</span>
         </h1>
         <p className="hero-subtitle">Your guide to cancer care starts here</p>
-        <button className="hero-button">Get Started</button>
+        <button className="hero-button" >Get Started</button>
       </div>
 
       <img src={hand2} alt="" className="hero-hand right-hand" />
