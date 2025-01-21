@@ -45,19 +45,29 @@ app.get('/', (req, res) => {
 
 // Search doctors
 app.get('/api/doctors', async (req, res) => {
-    const { service, location } = req.query;
+    const { service, location, preferredCounseling } = req.query;
 
-    console.log("Received query:", { service, location }); // Log query parameters
+    console.log("Received query:", { service, location, preferredCounseling }); // Log query parameters
 
+    // Validate that required parameters are present
     if (!service || !location) {
         return res.status(400).json({ message: "Missing service or location parameters" });
     }
 
     try {
-        const doctors = await Doctor.find({
-            "counselling types": service, // Use the exact field name
-            preferredPracticeArea: location, // Use the exact field name
-        });
+        // Create the base query
+        const query = {
+            "counselling types": service, // Match service
+            preferredPracticeArea: location, // Match location
+        };
+
+        // Add the preferredCounseling filter if provided
+        if (preferredCounseling) {
+            query["preferredCounseling"] = preferredCounseling;
+        }
+
+        // Query the database
+        const doctors = await Doctor.find(query);
 
         console.log("Query result:", doctors); // Log the query result
 

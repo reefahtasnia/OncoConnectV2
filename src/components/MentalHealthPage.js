@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import "./CSS/MentalHealthPage.css";
 import Footer from "./Footer";
@@ -7,6 +7,9 @@ const MentalHealthPage = () => {
     const [service, setService] = useState("");
     const [location, setLocation] = useState("");
     const [doctors, setDoctors] = useState([]);
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
+    const [selectedDoctor, setSelectedDoctor] = useState(null); // State for the selected doctor
+    const expertsSectionRef = useRef(null); // Reference for the experts section
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -14,16 +17,37 @@ const MentalHealthPage = () => {
             const response = await axios.get("http://localhost:5000/api/doctors", {
                 params: { service, location },
             });
-            console.log("Fetched doctors:", response.data);
             setDoctors(response.data);
+            setFilteredDoctors(response.data);
+
+            // Scroll to the experts section after search
+            if (expertsSectionRef.current) {
+                expertsSectionRef.current.scrollIntoView({ behavior: "smooth" });
+            }
         } catch (error) {
             console.error("Error fetching doctors:", error);
         }
     };
 
+    const handleFilterByCounseling = (counselingType) => {
+        const filtered = doctors.filter((doctor) =>
+            doctor.preferredCounseling.includes(counselingType)
+        );
+        setFilteredDoctors(filtered);
+    };
+
+    const handleViewMore = (doctor) => {
+        setSelectedDoctor(doctor); // Set the selected doctor for the pop-up
+    };
+
+    const closePopup = () => {
+        setSelectedDoctor(null); // Close the pop-up
+    };
+
     return (
         <div className="mh-mental-health-container">
-            <section className="mh-hero">
+            {/* Existing code for hero, search, and services sections */}
+           <section className="mh-hero">
                 <div className="mh-hero-content">
                     <h1>
                         At the heart of <br />
@@ -70,38 +94,40 @@ const MentalHealthPage = () => {
                     </form>
                 </div>
             </section>
-           {/* Services Section */}
-      <section className="mh-services">
-        <div className="mh-service-card">
-          <h3>Online Counseling</h3>
-          <p>
-            Many therapists offer counselling online or by telephone, check
-            their profile to learn more or use our online and telephone search.
-          </p>
-          <button>Find therapist →</button>
-        </div>
-        <div className="mh-service-card">
-          <h3>Advice By Phone</h3>
-          <p>
-            If you are in trouble and want our immediate help, simply pick up
-            the phone and call us anytime you need help.
-          </p>
-          <button>Find therapist →</button>
-        </div>
-        <div className="mh-service-card">
-          <h3>Direct Counseling</h3>
-          <p>
-            Psychological counseling, direct psychotherapy with leading
-            psychologists at Medcaline.
-          </p>
-          <button>Find therapist →</button>
-        </div>
-      </section>
+            {/* Services Section */}
+            <section className="mh-services">
+                <div className="mh-service-card" onClick={() => handleFilterByCounseling("Online")}>
+                    <h3>Online Counseling</h3>
+                    <p>
+                        Many therapists offer counselling online or by telephone, check
+                        their profile to learn more or use our online and telephone search.
+                    </p>
+                    <button className="Online">Find therapist →</button>
+                </div>
+                <div className="mh-service-card" onClick={() => handleFilterByCounseling("In-person")}>
+                    <h3>Direct Counseling</h3>
+                    <p>
+                        Psychological counseling, direct psychotherapy with leading
+                        psychologists at Medcaline.
+                    </p>
+                    <button className="In-person">Find therapist →</button>
+                </div>
+                <div className="mh-service-card" onClick={() => handleFilterByCounseling("Phone")}>
+                    <h3>Advice By Phone</h3>
+                    <p>
+                        If you are in trouble and want our immediate help, simply pick up
+                        the phone and call us anytime you need help.
+                    </p>
+                    <button className="Phone">Find therapist →</button>
+                </div>
+            </section>
 
-            <section className="mh-experts">
+            
+            {/* Experts Section */}
+            <section className="mh-experts" ref={expertsSectionRef}>
                 <h2>Expert Members</h2>
                 <div className="mh-experts-list">
-                    {doctors.map((doctor) => (
+                    {filteredDoctors.map((doctor) => (
                         <div className="mh-expert-card" key={doctor._id}>
                             <img
                                 src={`http://localhost:5000${doctor.imagePath}` || "default-image.jpg"}
@@ -109,13 +135,43 @@ const MentalHealthPage = () => {
                             />
                             <h3>{doctor.fullName}</h3>
                             <p>{doctor.specialization}</p>
+                            <button onClick={() => handleViewMore(doctor)}>View More</button>
                         </div>
                     ))}
                 </div>
-                {doctors.length === 0 && (
+                {filteredDoctors.length === 0 && (
                     <p className="mh-no-results">No therapists match your criteria.</p>
                 )}
             </section>
+
+            {/* Pop-Up for View More */}
+            {selectedDoctor && (
+                <div className="mh-popup">
+                    <div className="mh-popup-content">
+                        <button className="mh-popup-close" onClick={closePopup}>
+                            &times;
+                        </button>
+                        <h3>{selectedDoctor.fullName}</h3>
+                        <p>
+                            <strong>Email:</strong>{" "}
+                            <a
+    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${selectedDoctor.email}`}
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    {selectedDoctor.email}
+</a>
+
+                        </p>
+                        <p>
+                            <strong>Contact Number:</strong> {selectedDoctor.contactNumber}
+                        </p>
+                        <p>
+                            <strong>Educational Background:</strong> {selectedDoctor.educationalBackground || "Not provided"}
+                        </p>
+                    </div>
+                </div>
+            )}
              <Footer />
         </div>
     );
