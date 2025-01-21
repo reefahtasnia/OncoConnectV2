@@ -1,44 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "./CSS/MentalHealthPage.css";
-import Expert1 from "./assets/team-1.jpg";
-import Expert2 from "./assets/team-2.png";
-import Expert3 from "./assets/team-3.jpg";
-import Expert4 from "./assets/team-4.jpg";
 import Footer from "./Footer";
 
-
 const MentalHealthPage = () => {
-  return (
-    <div className="mh-mental-health-container">
-      {/* Header */}
-      
+    const [service, setService] = useState("");
+    const [location, setLocation] = useState("");
+    const [doctors, setDoctors] = useState([]);
 
-      {/* Hero Section */}
-      <section className="mh-hero">
-        <div className="mh-hero-content">
-        <h1>
-  At the heart of <br />
-  <span className="mh-highlight">children & young people's</span> <br />
-  mental health
-</h1>
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.get("http://localhost:5000/api/doctors", {
+                params: { service, location },
+            });
+            console.log("Fetched doctors:", response.data);
+            setDoctors(response.data);
+        } catch (error) {
+            console.error("Error fetching doctors:", error);
+        }
+    };
 
-          <button className="mh-find-therapist-button">Find a Therapist</button>
-        </div>
-        <div className="mh-hero-search">
-          <h3>Find the right counsellor or therapist for you</h3>
-          <form>
-            <select className="mh-input-select">
-              <option>select service</option>
-            </select>
-            <select className="mh-input-select">
-              <option>select location</option>
-            </select>
-            <button className="mh-search-button">Search Counsellor</button>
-          </form>
-        </div>
-      </section>
-
-      {/* Services Section */}
+    return (
+        <div className="mh-mental-health-container">
+            <section className="mh-hero">
+                <div className="mh-hero-content">
+                    <h1>
+                        At the heart of <br />
+                        <span className="mh-highlight">children & young people's</span> <br />
+                        mental health
+                    </h1>
+                    <button className="mh-find-therapist-button">Find a Therapist</button>
+                </div>
+                <div className="mh-hero-search">
+                    <h3>Find the right counsellor or therapist for you</h3>
+                    <form onSubmit={handleSearch}>
+                        <select
+                            className="mh-input-select"
+                            value={service}
+                            onChange={(e) => setService(e.target.value)}
+                        >
+                            <option value="">Select service</option>
+                            <option value="Couples Counselling">Couples Counselling</option>
+                            <option value="Psychodynamic Therapy">Psychodynamic Therapy</option>
+                            <option value="Career Counseling">Career Counseling</option>
+                            <option value="Cognitive Behavioral Therapy">Cognitive Behavioral Therapy</option>
+                            <option value="Mental Health Counseling">Mental Health Counseling</option>
+                            <option value="Group Therapy">Group Therapy</option>
+                            <option value="Family Therapy">Family Therapy</option>
+                            <option value="Grief Counseling">Grief Counseling</option>
+                            <option value="Abuse Counseling">Abuse Counseling</option>
+                            <option value="Behavioral Therapy">Behavioral Therapy</option>
+                        </select>
+                        <select
+                            className="mh-input-select"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                        >
+                            <option value="">Select location</option>
+                            <option value="Gulshan">Gulshan</option>
+                            <option value="Banani">Banani</option>
+                            <option value="Motijheel">Motijheel</option>
+                            <option value="Mirpur">Mirpur</option>
+                            <option value="Shahbag">Shahbag</option>
+                        </select>
+                        <button className="mh-search-button" type="submit">
+                            Search Counsellor
+                        </button>
+                    </form>
+                </div>
+            </section>
+           {/* Services Section */}
       <section className="mh-services">
         <div className="mh-service-card">
           <h3>Online Counseling</h3>
@@ -66,40 +98,27 @@ const MentalHealthPage = () => {
         </div>
       </section>
 
-      {/* Expert Members Section */}
-      <section className="mh-experts">
-        <h2>Expert Members</h2>
-        <div className="mh-experts-list">
-          <div className="mh-expert-card">
-            <img src={Expert1} alt="Philinia D. Darwin" />
-            <h3>Philinia D. Darwin</h3>
-            <p>Therapy Expert</p>
-          </div>
-          <div className="mh-expert-card">
-            <img src={Expert2} alt="Hekim D. Kwanaa" />
-            <h3>Hekim D. Kwanaa</h3>
-            <p>Therapy Expert</p>
-          </div>
-          <div className="mh-expert-card">
-            <img src={Expert3} alt="Kate Brown" />
-            <h3>Kate Brown</h3>
-            <p>Therapy Expert</p>
-          </div>
-          <div className="mh-expert-card">
-            <img src={Expert4} alt="Roman Sould" />
-            <h3>Roman Sould</h3>
-            <p>Therapy Expert</p>
-          </div>
+            <section className="mh-experts">
+                <h2>Expert Members</h2>
+                <div className="mh-experts-list">
+                    {doctors.map((doctor) => (
+                        <div className="mh-expert-card" key={doctor._id}>
+                            <img
+                                src={`http://localhost:5000${doctor.imagePath}` || "default-image.jpg"}
+                                alt={doctor.fullName}
+                            />
+                            <h3>{doctor.fullName}</h3>
+                            <p>{doctor.specialization}</p>
+                        </div>
+                    ))}
+                </div>
+                {doctors.length === 0 && (
+                    <p className="mh-no-results">No therapists match your criteria.</p>
+                )}
+            </section>
+             <Footer />
         </div>
-        <button className="mh-view-all-button">View All Counsellors</button>
-      </section>
-
-     
-
-      {/* Footer */}
-       <Footer />
-    </div>
-  );
+    );
 };
 
 export default MentalHealthPage;
