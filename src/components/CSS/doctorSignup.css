@@ -1,0 +1,172 @@
+.doctor-signup-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .doctor-image-section {
+    background-color: #f3f0ff;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .doctor-image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .doctor-form-section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem;
+    background-color: white;
+  }
+  
+  .doctor-form-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 1rem;
+  }
+  
+  .doctor-back-button {
+    color: #8b5cf6;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  .doctor-back-button svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .doctor-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 2rem;
+  }
+  
+  .doctor-subtitle {
+    font-size: 1.25rem;
+    color: #7c3aed;
+    margin: 2rem 0 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(to right bottom, #f3f0ff, #fff);
+    border-radius: 0 0 4rem 0;
+  }
+  
+  .doctor-form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .doctor-form-group:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+  
+  .doctor-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+    background-color: white;
+  }
+  
+  .doctor-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+  }
+  
+  .doctor-input::placeholder {
+    color: #9ca3af;
+  }
+  
+  .doctor-select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+  }
+  
+  .doctor-time-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+    background-color: white;
+  }
+  
+  .doctor-button {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .doctor-button:hover {
+    background-color: #7c3aed;
+  }
+  .doctor-label {
+    font-size: 1rem;
+    color: #374151;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctor-input[type="date"] {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+    background-color: white;
+  }
+  
+  .doctor-add-more {
+    color: #8b5cf6;
+    background: none;
+    border: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .doctor-signup-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .doctor-image-section {
+      display: none;
+    }
+    
+    .doctor-form-section {
+      padding: 1rem;
+    }
+  }
