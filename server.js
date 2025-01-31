@@ -282,6 +282,46 @@ router.post("/submit-appointment", async (req, res) => {
   }
 })
 
+const caregiverArticleSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  image: { type: String, required: true }, // Path to the image in the public directory
+  description: { type: String, required: true },
+  pdf: { type: String, required: true }, // Path to the PDF file in the public directory
+});
+
+const CaregiverArticle = mongoose.model('CaregiverArticle', caregiverArticleSchema);
+
+// API Route to fetch all caregiving articles
+/*app.get('/api/caregiver-articles', async (req, res) => {
+  try {
+    const articles = await CaregiverArticle.find();
+    res.json(articles);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching caregiver articles', error: err });
+  }
+});*/
+app.get("/api/caregiver_articles", async (req, res) => {
+  try {
+    const articles = await CaregiverArticle.find(); // Fetch all articles from the DB
+    console.log("Caregiving articles fetched from DB:", articles); // Log the articles
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error("Error fetching caregiving articles:", error);
+    res.status(500).json({ error: "Failed to fetch caregiving articles" });
+  }
+});
+
+// API Route to download PDF
+app.get('/api/download-pdf/:filename', (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, 'public', 'uploads', filename);
+  res.download(filePath, filename, (err) => {
+    if (err) {
+      res.status(500).send('Error downloading the file.');
+    }
+  });
+});
+
 
   
 // Start the server
