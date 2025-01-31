@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
+
+
 // MongoDB connection
 mongoose
     .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -139,6 +141,148 @@ app.get('/api/survival/stories', async (req, res) => {
       res.status(500).json({ message: 'Error uploading story', error });
     }
   });
+
+  const DoctorFinderSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    image: { type: String, required: true }, // Relative path or URL to the image
+    credentials: { type: String, required: true }, // Medical degrees and certifications
+    hospital: { type: String, required: true }, // Associated hospital or clinic
+    location: { type: String, required: true }, // City or district
+    area: { type: String, required: true }, // Specific area within the location
+    specialization: { type: String, required: true }, // Doctor's field of expertise
+    rating: { type: Number, required: true, min: 1, max: 5 }, // Rating between 1-5
+    reviews: { type: Number, required: true }, // Number of reviews
+    about: { type: String, required: true }, // Detailed description of the doctor
+    workingHours: { type: String, required: true }, // Available hours and closed days
+    maxpatient: { type: Number, required: true },
+}, { collection: 'DoctorFinder' }); // Explicitly set the collection name
+
+  // Create Model
+  const DoctorFinder = mongoose.model('DoctorFinder', DoctorFinderSchema);
+  
+
+
+
+// Filter API Endpoint for Doctors
+app.get('/api/doctor_finder', async (req, res) => {
+  let filteredDoctors = await DoctorFinder.find(); // Fetch all doctors initially
+
+  const { location, specialization, rating } = req.query;
+
+  // Filter by location
+  if (location) {
+    if (location === "Dhaka") {
+      // Filter only doctors in Dhaka
+      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() === "dhaka");
+    } else if (location === "Outside Dhaka") {
+      // Filter doctors not in Dhaka
+      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() !== "dhaka");
+    }
+  }
+
+
+  // Filter by specialization (cancer type)
+  if (specialization) {
+      filteredDoctors = filteredDoctors.filter(doctor => doctor.specialization.toLowerCase() === specialization.toLowerCase());
+  }
+
+  // Filter by rating
+  if (rating) {
+      filteredDoctors = filteredDoctors.filter(doctor => doctor.rating.toString() === rating);
+  }
+
+  
+
+  
+
+  res.json(filteredDoctors); // Return filtered doctors list
+});
+
+
+
+// Search doctors by name or hospital
+app.get("/api/doctor_finder/search", async (req, res) => {
+  const { query } = req.query; // Get the search query from request
+  try {
+    const doctors = await DoctorFinder.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } }, // Case-insensitive search for name
+        { hospital: { $regex: query, $options: "i" } }, // Case-insensitive search for hospital
+      ],
+    });
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.error("Error searching doctors:", error);
+    res.status(500).json({ error: "Failed to search doctors" });
+  }
+});
+
+
+const AppointFormSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    user_name: { type: String, required: true }, // Name of the user booking the appointment
+    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "DoctorFinder" }, // Reference to DoctorFinder model
+    doctor_name: { type: String, required: true }, // Name of the doctor
+    date: { type: Date, required: true }, // Appointment date
+    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
+  },
+  { collection: "appointform" } // Explicitly set the collection name
+);
+
+// Create Model
+const AppointForm = mongoose.model("AppointForm", AppointFormSchema);
+
+const UserSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true }, 
+  },
+  { collection: "users" } // Explicitly set the collection name
+);
+
+// Create Model
+const User = mongoose.model("users", UserSchema);
+
+
+const router = express.Router();
+
+router.post("/submit-appointment", async (req, res) => {
+  try {
+    const { user_id, user_name, doctor_id, date, medium } = req.body
+
+    // Validate input
+    if (!user_id || !user_name || !doctor_id || !date || !medium) {
+      return res.status(400).json({ error: "All fields are required" })
+    }
+
+    // Find the doctor to get their name
+    const DoctorFinder = mongoose.model("DoctorFinder")
+    const doctor = await DoctorFinder.findById(doctor_id)
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" })
+    }
+
+    // Create new appointment
+    const newAppointment = new AppointForm({
+      user_id,
+      user_name,
+      doctor_id,
+      doctor_name: doctor.name,
+      date,
+      medium,
+    })
+
+    // Save the appointment
+    await newAppointment.save()
+
+    res.status(201).json({ message: "Appointment created successfully", appointment: newAppointment })
+  } catch (error) {
+    console.error("Error submitting appointment:", error)
+    res.status(500).json({ error: "Internal server error" })
+  }
+})
+
+
   
 // Start the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

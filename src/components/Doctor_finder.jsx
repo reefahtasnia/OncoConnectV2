@@ -1,110 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./CSS/Doctor_finder.css";
 import searchIcon from "./assets/search.png";
-import doctor1Image from "./assets/doctor-1.jpg";
-import doctor2Image from "./assets/doctor-2.jpg";
-import doctor3Image from "./assets/doctor-3.jpg";
-import doctor4Image from "./assets/doctor-4.jpg";
-import doctor5Image from "./assets/Prof.-Dr.-Qamruzzaman-Chowdhury.jpg";
-import doctor6Image from "./assets/Prof.-Dr.-Md.-Mofazzel-Hossain.jpg";
-import DoctorDetailsPopup from "./DoctorDetailsPopup";
 import Footer from "./Footer";
+import DoctorDetailsPopup from "./DoctorDetailsPopup";
 
 const Doctor_finder = () => {
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [doctors, setDoctors] = useState([]); // All doctors fetched from the API
+  const [filteredDoctors, setFilteredDoctors] = useState([]); // Doctors displayed based on search
+  const [searchQuery, setSearchQuery] = useState(""); // Search input
+  const [selectedFilters, setSelectedFilters] = useState({
+    location: [],
+    specialization: [],
+    rating: [],
+  });
+
+  const [selectedDoctor, setSelectedDoctor] = useState(null); // Store selected doctor
 
   const openDoctorDetails = (doctor) => {
+    console.log("hiiii");
     setSelectedDoctor(doctor);
+    console.log("miuuuu",doctor);
   };
 
   const closeDoctorDetails = () => {
     setSelectedDoctor(null);
   };
 
-  const doctors = [
-    {
-      id: 1,
-      image: doctor1Image,
-      name: "Prof. Dr. Swapan Bandyopadhyay",
-      credentials: "MBBS, MD (Oncology), MPhil (Radiotherapy)",
-      hospital: "Medinova Medical Services, Malibagh",
-      rating: 4,
-      reviews: 1897,
-      about: "Prof. Dr. Swapan Bandyopadhyay is a Cancer Specialist in Dhaka. He is now working as a Professor & Head of the Department at Sir Salimullah Medical College & Mitford Hospital. He regularly provides treatment to his patients at Medinova Medical Services, Malibagh.",
-      workingHours: "6:30 PM to 9:30 PM (Closed: Friday)"
-    },
-    {
-      id: 2,
-      image: doctor2Image,
-      name: "Prof. Dr. Md. Moarraf Hossen",
-      credentials: "MBBS, DMRT (BSMMU), FCPS (Radiotherapy)",
-      hospital: "Green Life Hospital, Dhaka",
-      rating: 5,
-      reviews: 1897,
-      about: "Prof. Dr. Md. Moarraf Hossen is a renowned oncologist specializing in radiotherapy. He has extensive experience in treating various types of cancer.",
-      workingHours: "5:00 PM to 8:00 PM (Closed: Thursday)"
-    },
-    {
-      id: 3,
-      image: doctor3Image,
-      name: "Prof. Dr. Kazi Manzur Kader",
-      credentials: "MBBS, DMRT, MSc, FACP",
-      hospital: "Popular Diagnostic Center, Dhanmondi",
-      rating: 4,
-      reviews: 1897,
-      about: "Prof. Dr. Kazi Manzur Kader is a highly experienced oncologist with expertise in diagnostic oncology and personalized cancer treatment plans.",
-      workingHours: "4:00 PM to 8:00 PM (Closed: Friday)"
-    },
-    {
-      id: 4,
-      image: doctor4Image,
-      name: "Prof. Dr. Parveen Shahida Akhter",
-      credentials: "MBBS (SSMC), FCPS (Radiotherapy)",
-      hospital: "Medinova Medical Services, Dhanmondi",
-      rating: 4,
-      reviews: 1897,
-      about: "Prof. Dr. Parveen Shahida Akhter is a leading oncologist known for her expertise in radiotherapy and comprehensive cancer care.",
-      workingHours: "5:30 PM to 8:30 PM (Closed: Saturday)"
-    },
-    {
-      id: 5,
-      image: doctor5Image,
-      name: "Prof. Dr. Qamruzzaman Chowdhury",
-      credentials: "MBBS, FCPS (Radiation Oncology)",
-      hospital: "Bangladesh Specializes Hospital",
-      rating: 3,
-      reviews: 1897,
-      about: "Prof. Dr. Qamruzzaman Chowdhury is a specialist in radiation oncology, focusing on precise and targeted cancer treatments.",
-      workingHours: "3:00 PM to 7:00 PM (Closed: Wednesday)"
-    },
-    {
-      id: 6,
-      image: doctor6Image,
-      name: "Prof. Dr. Md. Mofazzel Hossain",
-      credentials: "MBBS, FCPS (Medicine), Fellow (Oncology)",
-      hospital: "BRB Hospital Dhaka",
-      rating: 5,
-      reviews: 1897,
-      about: "Prof. Dr. Md. Mofazzel Hossain is an accomplished oncologist with a background in internal medicine, providing comprehensive cancer care.",
-      workingHours: "6:00 PM to 9:00 PM (Closed: Tuesday)"
+
+  // Fetch doctors from API
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/doctor_finder");
+        
+        setDoctors(response.data);
+        setFilteredDoctors(response.data); // Initially show all doctors
+      } catch (error) {
+        console.error("Failed to fetch doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  
+
+  // Handle search input
+  const handleSearch = () => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+  
+    // Filter doctors based on search query first
+    let results = doctors.filter((doctor) => {
+      return (
+        (doctor.name && doctor.name.toLowerCase().includes(lowerCaseQuery)) ||
+        (doctor.hospital && doctor.hospital.toLowerCase().includes(lowerCaseQuery)) ||
+        (doctor.location && doctor.location.toLowerCase().includes(lowerCaseQuery)) ||
+        (doctor.specialization && doctor.specialization.toLowerCase().includes(lowerCaseQuery))
+      );
+    });
+  
+    // Apply filters after search query
+    results = results.filter((doctor) => 
+      (selectedFilters.location.length === 0 || selectedFilters.location.includes(doctor.location)) &&
+      (selectedFilters.specialization.length === 0 || selectedFilters.specialization.includes(doctor.specialization)) &&
+      (selectedFilters.rating.length === 0 || selectedFilters.rating.includes(doctor.rating.toString()))
+    );
+  
+    setFilteredDoctors(results);
+  };
+  
+  
+
+  // Handle filter changes
+  const handleFilterChange = (filterType, value) => {
+    const updatedFilters = { ...selectedFilters };
+    const index = updatedFilters[filterType].indexOf(value);
+
+    if (index === -1) {
+      updatedFilters[filterType].push(value); // Add value if it's not selected
+    } else {
+      updatedFilters[filterType].splice(index, 1); // Remove value if it's already selected
     }
-  ];
+
+    setSelectedFilters(updatedFilters);
+    handleSearch(); // Reapply search after filter change
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    setSelectedFilters({ location: [], specialization: [], rating: [] });
+    setFilteredDoctors(doctors); // Show all doctors after clearing filters
+  };
 
   return (
     <div className="doctor-finder-page">
-      {/* Header Section */}
       <header className="header">
         <div className="header-content">
-          <h1>Find the <span className="highlight">Right Doctor</span>,</h1>
-          <h1>Right Now: <span className="highlight">Expert Care</span></h1>
+          <h1>
+            Find the <span className="highlight">Right Doctor</span>,
+          </h1>
+          <h1>
+            Right Now: <span className="highlight">Expert Care</span>
+          </h1>
           <h1>at Your Fingertips</h1>
           <div className="search-form">
             <form>
               <div className="search-input">
                 <img src={searchIcon} alt="Search" />
-                <input 
-                  type="text" 
-                  placeholder="Search for Doctors by Name, Cancer types, Location"
+                <input
+                  type="text"
+                  placeholder="Search for Doctors by Name or Location"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyUp={handleSearch}
                 />
               </div>
             </form>
@@ -112,70 +121,74 @@ const Doctor_finder = () => {
         </div>
       </header>
 
-      {/* Main Content Section */}
       <section className="main-content">
         <div className="content-container">
           {/* Filter Section */}
           <aside className="filter-section">
             <div className="filter-header">
-              <button className="clear-filters">Clear filters</button>
+              <button className="clear-filters" onClick={clearFilters}>
+                Clear filters
+              </button>
             </div>
             <div className="filters">
-              <FilterGroup 
-                title="Location" 
+              <FilterGroup
+                title="Location"
                 options={[
-                  { label: "Inside Dhaka", count: 100 },
-                  { label: "Outside Dhaka", count: 20 }
+                  { label: "Dhaka", value: "Dhaka" },
+                  { label: "Outside Dhaka", value: "Outside Dhaka" },
                 ]}
+                selected={selectedFilters.location}
+                onChange={(value) => handleFilterChange("location", value)}
               />
-              <FilterGroup 
-                title="Cancer Type" 
+              <FilterGroup
+                title="Cancer Type"
                 options={[
-                  { label: "Breast Cancer", count: 200 },
-                  { label: "Blood Cancer", count: 20 },
-                  { label: "Lung Cancer", count: 50 },
-                  { label: "Skin Cancer", count: 5 },
-                  { label: "Colorectal Cancer", count: 15 },
-                  { label: "Prostate Cancer", count: 10 }
+                  { label: "Breast Cancer", value: "Breast Cancer" },
+                  { label: "Blood Cancer", value: "Blood Cancer" },
+                  { label: "Lung Cancer", value: "Lung Cancer" },
+                  { label: "Skin Cancer", value: "Skin Cancer" },
+                  { label: "Colorectal Cancer", value: "Colorectal Cancer" },
+                  { label: "Prostate Cancer", value: "Prostate Cancer" },
                 ]}
+                selected={selectedFilters.specialization}
+                onChange={(value) => handleFilterChange("specialization", value)}
               />
-              <FilterGroup 
-                title="Ratings" 
+              <FilterGroup
+                title="Ratings"
                 options={[
-                  { label: "★★★★★", count: null },
-                  { label: "★★★★☆", count: null },
-                  { label: "★★★☆☆", count: null },
-                  { label: "★★☆☆☆", count: null },
-                  { label: "★☆☆☆☆", count: null }
+                  { label: "★★★★★", value: "5" },
+                  { label: "★★★★☆", value: "4" },
+                  { label: "★★★☆☆", value: "3" },
+                  { label: "★★☆☆☆", value: "2" },
+                  { label: "★☆☆☆☆", value: "1" },
                 ]}
+                selected={selectedFilters.rating}
+                onChange={(value) => handleFilterChange("rating", value)}
               />
             </div>
           </aside>
-
-          {/* Doctors Grid Section */}
           <main className="doctors-section">
             <div className="doctors-header">
-              <p>Found 376 results</p>
-              <div className="sort-by">
-                <label>Sort by:</label>
-                <select name="rating">
-                  <option value="low-high">Rating: Low to High</option>
-                  <option value="high-low">Rating: High to Low</option>
-                </select>
-              </div>
+              <p>Found {filteredDoctors.length} doctors</p>
             </div>
             <div className="doctors-grid">
-              {doctors.map((doctor) => (
+              {filteredDoctors.map((doctor) => (
                 <DoctorCard
-                  key={doctor.id}
-                  {...doctor}
+                  key={doctor._id}
+              
+                  name={doctor.name}
+                  hospital={doctor.hospital}
+                  image={`http://localhost:5000${doctor.image}`}
+                  credentials={doctor.credentials}
+                  rating={doctor.rating}
+                  reviews={doctor.reviews}
                   onClick={() => openDoctorDetails(doctor)}
+                  
                 />
               ))}
             </div>
-
-            {/* Pagination */}
-            <div className="pagination">
+             {/* Pagination */}
+             <div className="pagination">
               <button className="page-btn prev">←</button>
               <button className="page-btn active">1</button>
               <button className="page-btn">2</button>
@@ -196,20 +209,26 @@ const Doctor_finder = () => {
 };
 
 // Filter Group Component
-const FilterGroup = ({ title, options }) => (
+const FilterGroup = ({ title, options, selected, onChange }) => (
   <div className="filter-group">
-    <h3>{title}</h3>
-    {options.map((option, index) => (
-      <div key={index} className="filter-option">
-        <input type="checkbox" id={`${title}-${index}`} />
-        <label htmlFor={`${title}-${index}`}>
-          {option.label}
-          {option.count !== null && <span>({option.count})</span>}
-        </label>
-      </div>
-    ))}
+    <h4>{title}</h4>
+    <ul>
+      {options.map((option, index) => (
+        <li key={index}>
+          <label>
+            <input
+              type="checkbox"
+              checked={selected.includes(option.value)}
+              onChange={() => onChange(option.value)}
+            />
+            {option.label}
+          </label>
+        </li>
+      ))}
+    </ul>
   </div>
 );
+
 
 // Doctor Card Component
 const DoctorCard = ({ image, name, credentials, hospital, rating, reviews, onClick }) => (
@@ -231,5 +250,6 @@ const DoctorCard = ({ image, name, credentials, hospital, rating, reviews, onCli
   </div>
 );
 
-export default Doctor_finder;
 
+
+export default Doctor_finder;
