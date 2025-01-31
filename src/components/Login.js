@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './CSS/login.css';
 import background from "./assets/loginbg.png";
-import { ArrowLeft } from 'lucide-react';
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    userType: ''
   });
   const [isSliding, setIsSliding] = useState(false);
 
@@ -17,11 +17,32 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+    
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          alert("Login successful!");
+        }
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
+  
 
   const handleSignUpClick = (e) => {
     e.preventDefault();
@@ -37,8 +58,11 @@ export default function Login() {
       <div className={`form-panel ${isSliding ? 'slide-left' : ''}`}>
         <div className={`form-container ${isSliding ? 'fade-out' : ''}`}>
         <button onClick={() => window.location.href = '/'} className="back-button">
-            <ArrowLeft size={20} />
-            <span>Back to Home</span>
+            <span className="arrow-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.54 19.54L9 13h13v-2H9l6.54-6.54L14 3l-9 9l9 9z"/>
+              </svg>
+            </span>
           </button>
           <h1 className="form-title">Log In</h1>
           <form onSubmit={handleSubmit}>
@@ -69,6 +93,19 @@ export default function Login() {
                 onChange={handleChange}
                 required
               />
+            </div>
+            <div className="input-group">
+              <select
+                name="userType"
+                className="form-select"
+                value={formData.userType}
+                onChange={handleChange}
+                required
+              >
+                <option value="">User Type</option>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+              </select>
             </div>
             <button type="submit" className="auth-button">
               Log In

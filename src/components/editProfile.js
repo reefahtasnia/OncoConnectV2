@@ -15,14 +15,13 @@ const UserProfileForm = () => {
     birthDay: "",
     birthYear: "",
     phone: "",
-    phoneCode: "+1",
-    genderType: "",
+    phoneCode: "+880",
     genderRange: "",
     currentStatus: "",
     emergencyName: "",
     emergencyEmail: "",
     emergencyPhone: "",
-    emergencyPhoneCode: "+1",
+    emergencyPhoneCode: "+880",
     aboutMe: "",
   });
 
@@ -47,9 +46,51 @@ const UserProfileForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
+  const handleSubmit = async(e) => {
+      e.preventDefault();
+    
+      // Concatenating phone code with phone number
+      const formattedPhone = `${formData.phoneCode}${formData.phone}`;
+      const formattedEmergencyPhone = `${formData.emergencyPhoneCode}${formData.emergencyPhone}`;
+      
+      const formattedData = {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formattedPhone, 
+        genderType: formData.genderRange,
+        birthMonth: formData.birthMonth,
+        birthDay: formData.birthDay,
+        birthYear: formData.birthYear,
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        roadNumber: formData.roadNumber,
+        houseNumber: formData.houseNumber,
+        currentStatus: formData.currentStatus,
+        emergencyName: formData.emergencyName,
+        emergencyEmail: formData.emergencyEmail,
+        emergencyPhone: formattedEmergencyPhone, 
+        aboutMe: formData.aboutMe,
+      };
+    
+      try {
+        const response = await fetch("http://localhost:5000/api/edit-profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formattedData),
+        });
+    
+        const data = await response.json();
+        if (response.ok) {
+          alert("Profile updated successfully!");
+          window.location.href = "/user"; // Redirect to user dashboard
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }    
   };
 
   const styles = {
@@ -239,6 +280,7 @@ const UserProfileForm = () => {
   );
   const countries = [
     "United States",
+    "Bangladesh",
     "United Kingdom",
     "Canada",
     "Australia",
@@ -362,7 +404,12 @@ const UserProfileForm = () => {
                 onChange={handleChange}
               >
                 <option value="">Select State/Region</option>
-                {/* Add states based on selected country */}
+                <option value="Dhaka">Dhaka</option>
+                <option value="Chittagong">Chittagong</option>
+                <option value="Khulna">Khulna</option>
+                <option value="Rajshahi">Rajshahi</option>
+                <option value="Barisal">Barisal</option>
+                <option value="Sylhet">Sylhet</option>
               </select>
             </div>
 
@@ -453,7 +500,7 @@ const UserProfileForm = () => {
                   value={formData.phoneCode}
                   onChange={handleChange}
                 >
-                  <option value="+1">+1</option>
+                  <option value="+880">+880</option>
                   <option value="+44">+44</option>
                   <option value="+91">+91</option>
                   {/* Add more country codes */}
@@ -470,29 +517,16 @@ const UserProfileForm = () => {
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Gender type</label>
-              <input
-                style={styles.input}
-                type="text"
-                name="genderType"
-                value={formData.genderType}
-                onChange={handleChange}
-                placeholder="Gender suggestions"
-              />
-            </div>
-
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Gender range</label>
+              <label style={styles.label}>Gender</label>
               <select
                 style={styles.select}
                 name="genderRange"
                 value={formData.genderRange}
                 onChange={handleChange}
               >
-                <option value="">Select gender range</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
@@ -505,9 +539,9 @@ const UserProfileForm = () => {
                 onChange={handleChange}
               >
                 <option value="">Select current status</option>
-                <option value="diagnosed">Diagnosed/Ongoing/Completed</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="completed">Completed</option>
+                <option value="diagnosed not treated">Diagnosed but Treatment not started</option>
+                <option value="ongoing">Treatment Ongoing</option>
+                <option value="completed">Treatment Completed</option>
               </select>
             </div>
           </div>
@@ -547,7 +581,7 @@ const UserProfileForm = () => {
                   value={formData.emergencyPhoneCode}
                   onChange={handleChange}
                 >
-                  <option value="+1">+1</option>
+                  <option value="+880">+880</option>
                   <option value="+44">+44</option>
                   <option value="+91">+91</option>
                   {/* Add more country codes */}
