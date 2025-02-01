@@ -291,15 +291,7 @@ const caregiverArticleSchema = new mongoose.Schema({
 
 const CaregiverArticle = mongoose.model('CaregiverArticle', caregiverArticleSchema);
 
-// API Route to fetch all caregiving articles
-/*app.get('/api/caregiver-articles', async (req, res) => {
-  try {
-    const articles = await CaregiverArticle.find();
-    res.json(articles);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching caregiver articles', error: err });
-  }
-});*/
+
 app.get("/api/caregiver_articles", async (req, res) => {
   try {
     const articles = await CaregiverArticle.find(); // Fetch all articles from the DB
@@ -321,6 +313,29 @@ app.get('/api/download-pdf/:filename', (req, res) => {
     }
   });
 });
+
+//cancer screening
+
+const cancerScreeningSchema = new mongoose.Schema({
+  type: { type: String, required: true }, // Type of cancer
+  description: { type: String, required: true }, // Short description of the screening
+  details: { type: [String], required: true }, // Array of detailed information
+  id: { type: String, required: true, unique: true } // Unique identifier for each screening type
+});
+
+const CancerScreening = mongoose.model("CancerScreening", cancerScreeningSchema);
+
+app.get("/api/cancerscreen", async (req, res) => {
+  try {
+    const screen = await CancerScreening.find(); // Fetch all articles from the DB
+    console.log("Cancer Screening fetched from DB:", screen); // Log the screens
+    res.status(200).json(screen);
+  } catch (error) {
+    console.error("Error fetching cancer screening:", error);
+    res.status(500).json({ error: "Failed to fetch cancer screening" });
+  }
+});
+
 
 
   
