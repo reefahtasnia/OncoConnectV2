@@ -39,6 +39,7 @@ import Paypal from './components/Paypal.js';
 import SymptomTracker from './components/SymptomTracker.js';
 import AI2 from './components/Ai2.js';
 import AI3 from './components/AI3.js';
+import DoctorSignup from './components/doctorSignup.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/editProfile" element={<EditProfile />} />
                 <Route path="/forum" element={<Forum />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/doctor-signup" element={<DoctorSignup />} />
                 <Route path="/forgot-password" element={<PassordReset />} />
                 <Route path="/newquestion" element={<NewQuestion />} />
                 <Route path="/viewpost" element={<ViewPost />} />
