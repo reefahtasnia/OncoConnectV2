@@ -77,7 +77,7 @@ app.get('/api/doctors', async (req, res) => {
 
     try {
         const query = {
-            counsellingTypes: service,
+            "counselling types": service,
             preferredPracticeArea: location,
         };
 
