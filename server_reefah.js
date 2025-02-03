@@ -12,7 +12,13 @@ const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],  // Add 'Cookie' here
+  exposedHeaders: ['set-cookie']  // Add this line
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -168,7 +174,7 @@ app.post("/api/login", async (req, res) => {
         return res.status(400).json({ message: "Invalid email or password" });
       }
 
-      // Check if the user profile is incomplete
+      // Check if the user profile is complete or not
       const requiredFields = ["firstName", "lastName", "phone", "gender", "dateOfBirth", "address", "treatmentStatus"];
       const isProfileIncomplete = requiredFields.some(field => !user[field]);
 
@@ -176,19 +182,24 @@ app.post("/api/login", async (req, res) => {
         return res.status(200).json({ redirect: "/editProfile" });
       }
 
-      // Generate token
       const token = jwt.sign(
-        { userId: user._id, userType: user.userType },
+        { userId: user._id, userType: "patient" },
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-
+      // console.log("Token:", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: 'lax',
+        path: '/'  // Add this to ensure cookie is sent for all paths
       });
-
+      // console.log("Cookie being set:", {
+      //   token: token,
+      //   headers: res.getHeaders()
+      // });
+      console.log("User logged in:", user,email);
       return res.status(200).json({ redirect: "/user" });
     } 
     
@@ -205,13 +216,15 @@ app.post("/api/login", async (req, res) => {
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-
+      //console.log("Token:", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: 'lax',
+        path: '/'  // Add this to ensure cookie is sent for all paths
       });
-
+      console.log("Doctor logged in:", doctor.email);
       return res.status(200).json({ redirect: "/doctor" });
     } 
     
@@ -227,6 +240,7 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/edit-profile", async (req, res) => {
   try {
     const { 
+      username,
       email, 
       firstName, 
       lastName, 
@@ -276,6 +290,7 @@ app.post("/api/edit-profile", async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { email },
       {
+        username,
         firstName,
         lastName,
         phone,
@@ -302,31 +317,56 @@ app.post("/api/edit-profile", async (req, res) => {
   }
 });
 
-
-// API Route: Get Current User (Protected)
+// Protected route to get user data
 app.get("/api/user", async (req, res) => {
   try {
     const token = req.cookies.token;
+    //console.log("Token:", token);
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+      res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
+      return res.status(401).json({ message: "Unauthorized, please log in again" });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await Users.findOne({
-      _id: new mongoose.Types.ObjectId(decoded.userId),
-    }).select("-passwordHash");
+    //console.log("Decoded token:", decoded.userId);
+    const user = await User.findById(decoded.userId).select('-password');
 
-    res.status(200).json(user);
+    if (!user) {
+      console.log("User not found");
+      res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("User found:", user.email);
+    res.status(200).json({
+      username: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth,
+      address: user.address,
+      treatmentStatus: user.treatmentStatus,
+      emergencyContact: user.emergencyContact,
+      aboutMe: user.aboutMe,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error fetching user data:", err);
+    res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
+    res.status(500).json({ message: "Server error, please log in again" });
   }
 });
 
+
+
 // API Route: Logout
 app.post("/api/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
+  // Respond with a success message
   res.status(200).json({ message: "Logged out successfully" });
 });
+
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
