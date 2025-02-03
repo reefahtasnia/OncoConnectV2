@@ -1,30 +1,47 @@
-import React, { useState } from 'react';
-import './CSS/AppointmentForm.css';
+import { useState } from "react"
+import "./CSS/AppointmentForm.css"
+import axios from "axios"
 
-const AppointmentForm = ({ onClose, doctorName }) => {
+const AppointmentForm = ({ onClose, doctorName, doctorId, userId, userName }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    medium: 'Online',
-    date: '',
-    time: '',
-    period: 'AM',
-    cancerType: ''
-  });
+    user_id: userId,
+    user_name: userName || "", // Add a default empty string
+    doctor_id: doctorId,
+    date: "",
+    medium: "Online",
+  })
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    onClose();
-  };
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setErrorMessage("")
+
+    if (!formData.date) {
+      setErrorMessage("Please select an appointment date.")
+      return
+    }
+
+    try {
+      const response = await axios.post("/api/submit-appointment", formData)
+      alert("Appointment booked successfully!")
+      onClose()
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        setErrorMessage(error.response.data.error)
+      } else {
+        setErrorMessage("Something went wrong. Please try again.")
+      }
+    }
+  }
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   return (
     <div className="appointment-overlay">
@@ -32,38 +49,31 @@ const AppointmentForm = ({ onClose, doctorName }) => {
         <div className="appointment-header">
           <h2>Add Appointment</h2>
           <button className="close-btn" onClick={onClose}>
-            <span>Close</span>
-            ✕
+            <span>Close</span>✕
           </button>
         </div>
-        
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
         <form onSubmit={handleSubmit} className="appointment-form">
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="user_name">Name</label>
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="user_name"
+                name="user_name"
                 placeholder="Write your name"
-                value={formData.name}
+                value={formData.user_name || ""} // Ensure it's always a string
                 onChange={handleChange}
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="medium">Medium</label>
-              <select
-                id="medium"
-                name="medium"
-                value={formData.medium}
-                onChange={handleChange}
-                required
-              >
+              <select id="medium" name="medium" value={formData.medium} onChange={handleChange} required>
                 <option value="Online">Online</option>
-                <option value="In-Person">In-Person</option>
-                <option value="Phone">Phone</option>
+                <option value="In-person">In-person</option>
               </select>
             </div>
           </div>
@@ -72,7 +82,7 @@ const AppointmentForm = ({ onClose, doctorName }) => {
             <div className="form-group">
               <label htmlFor="date">Date</label>
               <input
-                type="date"
+                type="datetime-local"
                 id="date"
                 name="date"
                 value={formData.date}
@@ -80,47 +90,6 @@ const AppointmentForm = ({ onClose, doctorName }) => {
                 required
               />
             </div>
-            
-            <div className="form-group time-group">
-              <label htmlFor="time">Time</label>
-              <div className="time-input-group">
-                <input
-                  type="time"
-                  id="time"
-                  name="time"
-                  value={formData.time}
-                  onChange={handleChange}
-                  required
-                />
-                <select
-                  name="period"
-                  value={formData.period}
-                  onChange={handleChange}
-                >
-                  <option value="AM">AM</option>
-                  <option value="PM">PM</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group full-width">
-            <label htmlFor="cancerType">Cancer Type</label>
-            <select
-              id="cancerType"
-              name="cancerType"
-              value={formData.cancerType}
-              onChange={handleChange}
-              required
-            >
-              <option value="">eg. breast, lung</option>
-              <option value="breast">Breast Cancer</option>
-              <option value="lung">Lung Cancer</option>
-              <option value="blood">Blood Cancer</option>
-              <option value="skin">Skin Cancer</option>
-              <option value="colorectal">Colorectal Cancer</option>
-              <option value="prostate">Prostate Cancer</option>
-            </select>
           </div>
 
           <div className="form-actions">
@@ -134,8 +103,8 @@ const AppointmentForm = ({ onClose, doctorName }) => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AppointmentForm;
+export default AppointmentForm
 
