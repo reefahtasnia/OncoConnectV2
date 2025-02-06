@@ -54,6 +54,7 @@ const UserProfileForm = () => {
       const formattedEmergencyPhone = `${formData.emergencyPhoneCode}${formData.emergencyPhone}`;
       
       const formattedData = {
+        username: formData.username,
         email: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,

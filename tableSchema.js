@@ -74,6 +74,7 @@ const doctorSchema = new mongoose.Schema({
       rating: { type: Number, min: 1, max: 5 },
     },
   ],
+  aboutDr: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
