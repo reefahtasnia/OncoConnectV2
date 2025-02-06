@@ -1,4 +1,4 @@
-require("dotenv").config({ path: ".envr" });
+/*require("dotenv").config({ path: ".envr" });
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -330,3 +330,4 @@ app.post("/api/logout", (req, res) => {
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+*/

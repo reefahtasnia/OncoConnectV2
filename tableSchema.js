@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+/*const mongoose = require("mongoose");
 
 // Explicitly connect to OncoConnect DB
 const db = mongoose.connection.useDb("OncoConnect");
@@ -84,3 +84,4 @@ const Doctor = db.model("Doctors", doctorSchema);
 
 // Export Both Models
 module.exports = { User, Doctor };
+*/

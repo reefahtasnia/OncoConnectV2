@@ -22,29 +22,30 @@ mongoose
     .catch((err) => console.error('MongoDB connection error:', err));
 
 // Define Doctor Schema
+// Define Doctor Schema
 const doctorSchema = new mongoose.Schema({
-    fullName: { type: String, required: true },
-    gender: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    specialization: { type: String, required: true },
-    preferredPracticeArea: { type: String },
-    experience: { type: Number, required: true },
-    counsellingTypes: { type: [String], required: true },
-    contactNumber: { type: String, required: true },
-    certifications: { type: [String] },
-    educationalBackground: { type: String },
-    consultationFees: { type: Number, required: true },
-    imagePath: { type: String }, // Manually saved relative path to the image
+  fullName: { type: String, required: true },
+  gender: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  specialization: { type: String, required: true },
+  preferredPracticeArea: { type: String },
+  experience: { type: Number, required: true },
+  counsellingTypes: { type: [String], required: true },
+  contactNumber: { type: String, required: true },
+  certifications: { type: [String] },
+  educationalBackground: { type: String },
+  consultationFees: { type: Number, required: true },
+  imagePath: { type: String }, // Manually saved relative path to the image
 });
 
 // Define Survival Schema
 const survivalSchema = new mongoose.Schema({
-    title: { type: String, required: true, trim: true },
-    content: { type: String, required: true },
-    authorName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true },
-    imageUrl: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
+  title: { type: String, required: true, trim: true },
+  content: { type: String, required: true },
+  authorName: { type: String, required: true, trim: true },
+  email: { type: String, required: true, trim: true },
+  imageUrl: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 // Create Models
@@ -53,53 +54,59 @@ const Survival = mongoose.model('Survival', survivalSchema);
 
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
+  destination: (req, file, cb) => {
+      cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname);
+  },
 });
 const upload = multer({ storage });
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Server is running...');
+  res.send('Server is running...');
 });
 
 // Search doctors
 app.get('/api/doctors', async (req, res) => {
-    const { service, location, preferredCounseling } = req.query;
+const { service, location, preferredCounseling } = req.query;
 
-    console.log("Received query:", { service, location, preferredCounseling }); // Log query parameters
+console.log("Received query:", { service, location, preferredCounseling }); // Log query parameters
 
-    if (!service || !location) {
-        return res.status(400).json({ message: "Missing service or location parameters" });
+// Validate that required parameters are present
+if (!service || !location) {
+    return res.status(400).json({ message: "Missing service or location parameters" });
+}
+
+try {
+    // Query with just service and location
+    const doctorsBaseQuery = await Doctor.find({
+        "counselling types": service, // Use the exact field name
+        preferredPracticeArea: location, // Use the exact field name
+    });
+
+    console.log("Base query result:", doctorsBaseQuery); // Log base query result
+
+    // Create the base query object
+    const query = {
+        "counselling types": service, // Match service
+        preferredPracticeArea: location, // Match location
+    };
+
+    // Add the preferredCounseling filter if provided
+    if (preferredCounseling) {
+        query["preferredCounseling"] = preferredCounseling;
     }
 
-    try {
-        const query = {
-            "counselling types": service,
-            preferredPracticeArea: location,
-        };
+    // Query the database with the updated query
+    const doctors = await Doctor.find(query);
 
-        if (preferredCounseling) {
-            query.preferredCounseling = preferredCounseling;
-        }
-
-        const doctors = await Doctor.find(query);
-
-        console.log("Query result:", doctors); // Log the query result
-
-        if (!doctors.length) {
-            return res.status(404).json({ message: "No doctors found for the given criteria." });
-        }
-
-        res.json(doctors);
-    } catch (error) {
-        console.error("Error fetching doctors:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+    console.log("Query result:", doctors); // Log the query result
+    res.status(200).json(doctors); // Return the doctors as response
+} catch (error) {
+    res.status(500).json({ message: "An error occurred", error });
+}
 });
 
 // Survival Routes
