@@ -1,7 +1,7 @@
-/*const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 // Explicitly connect to OncoConnect DB
-const db = mongoose.connection.useDb("OncoConnect");
+//const db = mongoose.connection.useDb("OncoConnect");
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -60,9 +60,24 @@ const doctorSchema = new mongoose.Schema({
   experience: { type: Number },
   certifications: [{ name: String, year: Number }],
   isVerified: { type: Boolean, default: false },
-  counsellingTypes: {
+  preferredCounseling: {
     type: String,
     enum: ["Physical", "Call", "Online"],
+  },
+  counsellingtypes: {
+    type: [String], // Allow multiple options
+    enum: [
+      "Couples Counselling",
+      "Psychodynamic Therapy",
+      "Career Counseling",
+      "Cognitive Behavioral Therapy",
+      "Mental Health Counseling",
+      "Group Therapy",
+      "Family Therapy",
+      "Grief Counseling",
+      "Abuse Counseling",
+      "Behavioral Therapy",
+    ],
   },
   consultationFees: { type: Number },
   imagePath: { type: String },
@@ -80,9 +95,10 @@ const doctorSchema = new mongoose.Schema({
 });
 
 // Register Models
-const User = db.model("Users", userSchema);
-const Doctor = db.model("Doctors", doctorSchema);
+//const User = db.model("Users", userSchema);
+const User = mongoose.model('User', userSchema);
+//const Doctor = db.model("Doctors", doctorSchema);
 
 // Export Both Models
-module.exports = { User, Doctor };
-*/
+//module.exports = { User, Doctor };
+module.exports = { User };

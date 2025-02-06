@@ -1,4 +1,4 @@
-/*require("dotenv").config({ path: ".envr" });
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -370,4 +370,3 @@ app.post("/api/logout", (req, res) => {
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-*/

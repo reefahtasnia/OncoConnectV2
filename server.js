@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = 5000;
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
@@ -24,20 +27,96 @@ mongoose
 // Define Doctor Schema
 // Define Doctor Schema
 const doctorSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  gender: { type: String, required: true },
+  fullName: { type: String },
+  gender: { type: String },
   email: { type: String, required: true, unique: true },
-  specialization: { type: String, required: true },
+  password: { type: String, required: true },
+  BMDC: { type: String, unique: true },
+  phoneNumber: { type: String },
+  specialization: { type: String },
   preferredPracticeArea: { type: String },
-  experience: { type: Number, required: true },
-  counsellingTypes: { type: [String], required: true },
-  contactNumber: { type: String, required: true },
-  certifications: { type: [String] },
-  educationalBackground: { type: String },
-  consultationFees: { type: Number, required: true },
-  imagePath: { type: String }, // Manually saved relative path to the image
+  practiceSchedule: [
+    {
+      hospitalName: String,
+      address: String,
+      area: String,
+      city: String,
+      startTime: String,
+      endTime: String,
+      daysAvailable: [String],
+    },
+  ],
+  preferredPatientNo: { type: Number },
+  dateOfBirth: { type: Date },
+  experience: { type: Number },
+  certifications: [{ name: String, year: Number }],
+  isVerified: { type: Boolean, default: false },
+  preferredCounseling: {
+    type: String,
+    enum: ["Physical", "Call", "Online"],
+  },
+  counsellingtypes: {
+    type: [String], // Allow multiple options
+    enum: [
+      "Couples Counselling",
+      "Psychodynamic Therapy",
+      "Career Counseling",
+      "Cognitive Behavioral Therapy",
+      "Mental Health Counseling",
+      "Group Therapy",
+      "Family Therapy",
+      "Grief Counseling",
+      "Abuse Counseling",
+      "Behavioral Therapy",
+    ],
+  },
+  consultationFees: { type: Number },
+  imagePath: { type: String },
+  ratings: { type: Number, min: 0, max: 5, default: 0 }, // Average Rating
+  reviews: [
+    {
+      patientName: String,
+      comment: String,
+      rating: { type: Number, min: 1, max: 5 },
+    },
+  ],
+  aboutDr: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
+const AppointmentSchema = new mongoose.Schema({
+  appointment_id: {
+      type: Number,
+      unique: true,
+      required: true,
+      autoIncrement: true, // Auto-increment-like behavior will be handled manually
+  },
+  user_id: {
+      type: mongoose.Schema.Types.ObjectId, // Foreign key reference to User table
+      ref: "User",
+      required: true,
+  },
+  name: {
+      type: String,
+      required: true,
+      trim: true,
+  },
+  medium: {
+      type: String,
+      enum: ["Online", "In-Person", "Phone"], // Example mediums
+      required: true,
+  },
+  date: {
+      type: Date,
+      required: true,
+  },
+  bmdc_id: {
+      type: mongoose.Schema.Types.ObjectId, // Foreign key reference (doctor's ID)
+      ref: "Doctor",
+      required: true,
+  },
+});
 // Define Survival Schema
 const survivalSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
@@ -51,6 +130,7 @@ const survivalSchema = new mongoose.Schema({
 // Create Models
 const Doctor = mongoose.model('Doctor', doctorSchema);
 const Survival = mongoose.model('Survival', survivalSchema);
+const Appointment = mongoose.model("Appointment", AppointmentSchema);
 
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
@@ -82,7 +162,7 @@ if (!service || !location) {
 try {
     // Query with just service and location
     const doctorsBaseQuery = await Doctor.find({
-        "counselling types": service, // Use the exact field name
+        counsellingtypes: service, // Use the exact field name
         preferredPracticeArea: location, // Use the exact field name
     });
 
@@ -90,13 +170,13 @@ try {
 
     // Create the base query object
     const query = {
-        "counselling types": service, // Match service
+        counsellingtypes: service, // Match service
         preferredPracticeArea: location, // Match location
     };
 
     // Add the preferredCounseling filter if provided
     if (preferredCounseling) {
-        query["preferredCounseling"] = preferredCounseling;
+        query[preferredCounseling] = preferredCounseling;
     }
 
     // Query the database with the updated query
@@ -344,6 +424,55 @@ app.get("/api/cancerscreen", async (req, res) => {
 });
 
 
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Access denied, token missing." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure JWT_SECRET is set in your .env file
+    req.user = decoded; // Add the decoded user data to the request
+    next();
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid token" });
+  }
+};
+
+// POST /api/submit-appointment - Create a new appointment
+app.post("/api/submit-appointment", verifyToken, async (req, res) => {
+  const { user_name, doctor_id, date, medium } = req.body;
+
+  // Validate required fields
+  if (!user_name || !doctor_id || !date || !medium) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  try {
+    // Retrieve doctor details by doctor_id
+    const doctor = await Doctor.findById(doctor_id);
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+
+    // Create new appointment
+    const appointment = new Appointment({
+      user_id: mongoose.Types.ObjectId(req.user.userId), // Use the userId from the decoded JWT
+      name: user_name,
+      medium,
+      date: new Date(date),
+      bmdc_id: doctor.BMDC, // Store the BMDC of the doctor
+    });
+
+    // Save the appointment to the database
+    await appointment.save();
+
+    res.status(201).json({ message: "Appointment booked successfully!" });
+  } catch (error) {
+    console.error("Error creating appointment:", error);
+    res.status(500).json({ error: "Failed to book appointment" });
+  }
+});
 
   
 // Start the server
