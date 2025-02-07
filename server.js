@@ -137,8 +137,8 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, 'public/uploads/');
   },
-  filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
   },
 });
 const upload = multer({ storage });
@@ -192,42 +192,85 @@ try {
 // Survival Routes
 // Create a new survival story
 app.get('/api/survival/stories', async (req, res) => {
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = 8; // Limit to 8 entries per page
-    const skip = (page - 1) * limit;
-  
-    try {
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = 8; // Limit to 8 entries per page
+  const skip = (page - 1) * limit;
+
+  try {
       const stories = await Survival.find()
-        .skip(skip)
-        .limit(limit)
-        .sort({ createdAt: -1 }); // Sort by most recent first
-  
-      const totalCount = await Survival.countDocuments(); // Get total number of entries
-      const totalPages = Math.ceil(totalCount / limit); // Calculate total number of pages
-  
-      res.json({
-        stories,
-        totalPages,
-        currentPage: page,
+          .skip(skip)
+          .limit(limit)
+          .sort({ createdAt: -1 })
+          .select('_id title content authorName imageUrl createdAt'); // Fetch only required fields
+
+      // Modify content to show only the first 15 words
+      const processedStories = stories.map(story => {
+          const contentWords = story.content.split(' '); // Split content into words
+          const shortContent = contentWords.slice(0, 15).join(' ') + (contentWords.length > 15 ? '...' : ''); // Get the first 15 words
+          return {
+              ...story._doc, // Spread the story object
+              content: shortContent
+          };
       });
-    } catch (error) {
+
+      const totalCount = await Survival.countDocuments();
+      const totalPages = Math.ceil(totalCount / limit);
+
+      res.json({
+          stories: processedStories,
+          totalPages,
+          currentPage: page,
+      });
+  } catch (error) {
       res.status(500).json({ message: 'Error fetching stories', error });
+  }
+});
+
+// Fetch full article by ID
+app.get('/api/survival/story/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const article = await Survival.findById(id).select('_id title content authorName imageUrl createdAt');
+
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
     }
-  });
-  
+
+    res.json(article); // Send the full article data
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching article', error });
+  }
+});
+
   
   // Endpoint for uploading stories
-  app.post('/api/survival/upload', async (req, res) => {
-    const { title, content, authorName, email, imageUrl } = req.body;
-  
+  app.post('/api/survival/upload', upload.single('image'), async (req, res) => {
     try {
-      const newStory = new Survival({ title, content, authorName, email, imageUrl });
+      const { title, content, authorName, email } = req.body;
+      const imageUrl = req.file ? `uploads/${req.file.filename}` : ''; // Store image path
+  
+      if (!title || !content || !authorName || !email) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
+  
+      const newStory = new Survival({
+        title,
+        content,
+        authorName,
+        email,
+        imageUrl, // Save file path in MongoDB
+        createdAt: new Date(),
+      });
+  
       await newStory.save();
       res.status(201).json({ message: 'Story uploaded successfully', story: newStory });
     } catch (error) {
-      res.status(500).json({ message: 'Error uploading story', error });
+      console.error('Error uploading story:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   });
+  
 
   const DoctorFinderSchema = new mongoose.Schema({
     name: { type: String, required: true },

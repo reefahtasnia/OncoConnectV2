@@ -23,7 +23,7 @@ export default function UserDashboardPage() {
   }, []);
   const fetchUserData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/user', {  // Add full URL here
+      const response = await fetch('http://localhost:5001/api/user', {  // Add full URL here
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -55,7 +55,7 @@ export default function UserDashboardPage() {
   }
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/logout', {
+      const response = await fetch('http://localhost:5001/api/logout', {
         method: 'POST',
         credentials: 'include',
       });

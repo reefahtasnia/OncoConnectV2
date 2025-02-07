@@ -173,12 +173,13 @@ app.post("/api/login", async (req, res) => {
       if (!user || user.password !== password) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
-
+      console.log("Fetched user data:", user);
       // Check if the user profile is complete or not
       const requiredFields = ["firstName", "lastName", "phone", "gender", "dateOfBirth", "address", "treatmentStatus"];
       const isProfileIncomplete = requiredFields.some(field => !user[field]);
 
       if (isProfileIncomplete) {
+        console.log("User profile is incomplete");
         return res.status(200).json({ redirect: "/editProfile" });
       }
 
