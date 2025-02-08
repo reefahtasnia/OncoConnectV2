@@ -77,7 +77,7 @@ export default function DoctorSignup() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/doctor-signup", {
+      const response = await fetch("http://localhost:5001/api/doctor-signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

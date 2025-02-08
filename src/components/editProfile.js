@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Navbar from "./Nav";
+import React, { useState, useEffect } from "react";
 const UserProfileForm = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -34,7 +33,28 @@ const UserProfileForm = () => {
       [name]: value,
     }));
   };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:5001/api/user/profile", {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        });
 
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile");
+        }
+
+        const data = await response.json();
+        setFormData(data); // Pre-fill the form with fetched data
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -96,17 +116,18 @@ const UserProfileForm = () => {
 
   const styles = {
     pageBackground: {
-      backgroundColor: "#E4CBFF", 
+      backgroundColor: "#FFFFFF", 
     },
     container: {
       maxWidth: "800px",
-      marginTop: "30px",
+      marginTop: "35px",
       margin: "0 auto",
       padding: "20px",
       fontFamily: "Arial, sans-serif",
       backgroundColor: "#fff",
       borderRadius: "8px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.2)", // Increased shadow
+    transition: "box-shadow 0.3s ease-in-out",
     },
     header: {
       marginBottom: "30px",
@@ -145,7 +166,7 @@ const UserProfileForm = () => {
     section: {
       marginBottom: "30px",
       padding: "20px",
-      backgroundColor: "#f8f9fa",
+      backgroundColor: "#ffffff",
       borderRadius: "8px",
     },
     sectionTitle: {
@@ -177,7 +198,7 @@ const UserProfileForm = () => {
       border: "1px solid #ddd",
       borderRadius: "4px",
       fontSize: "14px",
-      backgroundColor: "#fff",
+      backgroundColor: "#f8f9fa", 
     },
     phoneInput: {
       display: "flex",
@@ -347,7 +368,10 @@ const UserProfileForm = () => {
             <div style={styles.formGroup}>
               <label style={styles.label}>First Name</label>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.firstName ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -359,7 +383,10 @@ const UserProfileForm = () => {
             <div style={styles.formGroup}>
               <label style={styles.label}>Last Name</label>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.lastName ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="lastName"
                 value={formData.lastName}
@@ -371,7 +398,10 @@ const UserProfileForm = () => {
             <div style={styles.formGroup}>
               <label style={styles.label}>Email</label>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.email ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="email"
                 name="email"
                 value={formData.email}
@@ -416,7 +446,10 @@ const UserProfileForm = () => {
 
             <div style={styles.formGroup}>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.city ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="city"
                 value={formData.city}
@@ -427,7 +460,10 @@ const UserProfileForm = () => {
 
             <div style={styles.formGroup}>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.roadNumber ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="roadNumber"
                 value={formData.roadNumber}
@@ -438,7 +474,10 @@ const UserProfileForm = () => {
 
             <div style={styles.formGroup}>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.houseNumber ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="houseNumber"
                 value={formData.houseNumber}
@@ -507,7 +546,9 @@ const UserProfileForm = () => {
                   {/* Add more country codes */}
                 </select>
                 <input
-                  style={{ ...styles.input, flex: 1 }}
+                  style={{ ...styles.input, flex: 1,
+                    backgroundColor: formData.phone ? "#f8f9fa" : "#ffffff",
+                  }}
                   type="tel"
                   name="phone"
                   value={formData.phone}
@@ -552,7 +593,10 @@ const UserProfileForm = () => {
             <div style={styles.formGroup}>
               <label style={styles.label}>Full Name</label>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.emergencyName ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="text"
                 name="emergencyName"
                 value={formData.emergencyName}
@@ -564,7 +608,10 @@ const UserProfileForm = () => {
             <div style={styles.formGroup}>
               <label style={styles.label}>Email</label>
               <input
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  backgroundColor: formData.emergencyEmail ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 type="email"
                 name="emergencyEmail"
                 value={formData.emergencyEmail}
@@ -585,10 +632,11 @@ const UserProfileForm = () => {
                   <option value="+880">+880</option>
                   <option value="+44">+44</option>
                   <option value="+91">+91</option>
-                  {/* Add more country codes */}
                 </select>
                 <input
-                  style={{ ...styles.input, flex: 1 }}
+                  style={{ ...styles.input, flex: 1,
+                    backgroundColor: formData.phone ? "#f8f9fa" : "#ffffff",
+                  }}
                   type="tel"
                   name="emergencyPhone"
                   value={formData.emergencyPhone}
@@ -626,7 +674,10 @@ const UserProfileForm = () => {
                 </button>
               </div>
               <textarea
-                style={styles.textarea}
+                style={{
+                  ...styles.textarea,
+                  backgroundColor: formData.aboutMe ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                }}
                 name="aboutMe"
                 value={formData.aboutMe}
                 onChange={handleChange}

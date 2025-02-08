@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import "./CSS/style.css";
 
 export const NavBar = ({ scrollToSection }) => {
@@ -12,19 +12,35 @@ export const NavBar = ({ scrollToSection }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   useEffect(() => {
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-    if (token) {
+    const fetchToken = async () => {
       try {
-        const decoded = jwtDecode(token.split('=')[1]); // Correct usage of jwtDecode
-        if (decoded) {
+        const response = await fetch('http://localhost:5001/api/user', {
+          method: 'GET',
+          credentials: 'include', // Ensures cookies are sent
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error("User not authenticated");
+        }
+  
+        const data = await response.json();
+        if (data) {
           setIsLoggedIn(true);
         }
-      } catch (e) {
-        console.error("Invalid token", e);
+      } catch (error) {
+        console.error("User not logged in:", error);
       }
-    }
+    };
+  
+    fetchToken();
   }, []);
+  
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -106,7 +122,7 @@ export const NavBar = ({ scrollToSection }) => {
 
       <button
         className="navbar-button desktop-only"
-        onClick={() => navigate("/login")}
+        onClick={() => navigate(isLoggedIn ? "/user" : "/login")}
       >
         {isLoggedIn ? "My Dashboard" : "Login"}
       </button>

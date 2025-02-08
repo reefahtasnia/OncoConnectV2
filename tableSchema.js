@@ -93,12 +93,63 @@ const doctorSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+const patientSymptomSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Foreign key reference to User
+  date: { type: Date, required: true },
+
+  // Vital Signs
+  bp_sys: { type: Number },
+  bp_dia: { type: Number },
+  temp: { type: Number },
+  glucose: { type: Number },
+  weight: { type: Number },
+  height: { type: Number },
+  heart_rate: { type: Number },
+
+  // Symptom Severity Levels (Scale 0-10)
+  symptom_lvl: { type: Number, min: 0, max: 10 },
+  pain_lvl: { type: Number, min: 0, max: 10 },
+  pain_loc: { type: String },
+
+  fatigue_lvl: { type: Number, min: 0, max: 10 },
+  vomiting_lvl: { type: Number, min: 0, max: 10 },
+  vom_time: { type: String, enum: ["morning", "after meals", "evening", "random"] },
+
+  breath_diff: { type: Number, min: 0, max: 10 },
+  appetite_loss: { type: Number, min: 0, max: 10 },
+  fever_temp: { type: Number },
+  fever_freq: { type: String, enum: ["on and off", "persistent"] },
+
+  // Mental Health & Energy
+  skin_issue: { type: String },
+  mood: { type: Number, min: 0, max: 10 },
+  anxiety: { type: Number, min: 0, max: 10 },
+  depression: { type: Number, min: 0, max: 10 },
+  thoughts: { type: String },
+
+  // Sleep & Energy Levels
+  energy_lvl: { type: Number, min: 0, max: 10 },
+  sleep_dur: { type: String },
+  sleep_quality: { type: String },
+  sleep_disturb: { type: Boolean, default: false },
+
+  // Functional Ability
+  task_ability: { type: String },
+  need_help: { type: Boolean, default: false },
+
+  // Additional Notes
+  notes: { type: String },
+
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
 
 // Register Models
 //const User = db.model("Users", userSchema);
 const User = mongoose.model('User', userSchema);
-//const Doctor = db.model("Doctors", doctorSchema);
+const Doctor = mongoose.model("Doctors", doctorSchema);
+const PatientSymptom = mongoose.model("PatientSymptom", patientSymptomSchema);
 
 // Export Both Models
-//module.exports = { User, Doctor };
-module.exports = { User };
+module.exports = { User, Doctor, PatientSymptom };
+

@@ -22,17 +22,40 @@ export default function UserDashboardPage() {
   useEffect(() => {
     fetchUserData();
   }, []);
+  // const fetchUserData = async () => {
+  //   try {
+  //     const response = await axios.get('http://localhost:5001/api/user', {
+  //       withCredentials: true,
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //     setUserData(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error.message);
+  //     window.alert("Failed to fetch your data, logging out...");
+  //     await handleLogout();
+  //   }
+  // };
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/user', {
-        withCredentials: true,
+      const response = await fetch('http://localhost:5001/api/user', {  
+        method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      setUserData(response.data);
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+  
+      const data = await response.json();
+      console.log(data.message);
+      setUserData(data);
     } catch (error) {
-      console.error("Error fetching user data:", error.message);
+      console.error(error.message);
       window.alert("Failed to fetch your data, logging out...");
       await handleLogout();
     }
@@ -48,13 +71,30 @@ export default function UserDashboardPage() {
   }
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
-      setUserData(null);
-      window.location.href = '/login';
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+  
+      if (response.ok) {
+        setUserData(null);
+        window.location.href = '/login';
+      } else {
+        console.error('Logout failed');
+      }
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post('http://localhost:5001/api/logout', {}, { withCredentials: true });
+  //     setUserData(null);
+  //     window.location.href = '/login';
+  //   } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
+  // };
   const notifications = [
     {
       id: 1,
