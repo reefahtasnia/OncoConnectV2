@@ -1,4 +1,4 @@
-require("dotenv").config({ path: ".envr" });
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -173,12 +173,13 @@ app.post("/api/login", async (req, res) => {
       if (!user || user.password !== password) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
-
+      console.log("Fetched user data:", user);
       // Check if the user profile is complete or not
       const requiredFields = ["firstName", "lastName", "phone", "gender", "dateOfBirth", "address", "treatmentStatus"];
       const isProfileIncomplete = requiredFields.some(field => !user[field]);
 
       if (isProfileIncomplete) {
+        console.log("User profile is incomplete");
         return res.status(200).json({ redirect: "/editProfile" });
       }
 

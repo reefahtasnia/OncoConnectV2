@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = 5000;
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
@@ -22,125 +25,252 @@ mongoose
     .catch((err) => console.error('MongoDB connection error:', err));
 
 // Define Doctor Schema
+// Define Doctor Schema
 const doctorSchema = new mongoose.Schema({
-    fullName: { type: String, required: true },
-    gender: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    specialization: { type: String, required: true },
-    preferredPracticeArea: { type: String },
-    experience: { type: Number, required: true },
-    counsellingTypes: { type: [String], required: true },
-    contactNumber: { type: String, required: true },
-    certifications: { type: [String] },
-    educationalBackground: { type: String },
-    consultationFees: { type: Number, required: true },
-    imagePath: { type: String }, // Manually saved relative path to the image
+  fullName: { type: String },
+  gender: { type: String },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  BMDC: { type: String, unique: true },
+  phoneNumber: { type: String },
+  specialization: { type: String },
+  preferredPracticeArea: { type: String },
+  practiceSchedule: [
+    {
+      hospitalName: String,
+      address: String,
+      area: String,
+      city: String,
+      startTime: String,
+      endTime: String,
+      daysAvailable: [String],
+    },
+  ],
+  preferredPatientNo: { type: Number },
+  dateOfBirth: { type: Date },
+  experience: { type: Number },
+  certifications: [{ name: String, year: Number }],
+  isVerified: { type: Boolean, default: false },
+  preferredCounseling: {
+    type: String,
+    enum: ["Physical", "Call", "Online"],
+  },
+  counsellingtypes: {
+    type: [String], // Allow multiple options
+    enum: [
+      "Couples Counselling",
+      "Psychodynamic Therapy",
+      "Career Counseling",
+      "Cognitive Behavioral Therapy",
+      "Mental Health Counseling",
+      "Group Therapy",
+      "Family Therapy",
+      "Grief Counseling",
+      "Abuse Counseling",
+      "Behavioral Therapy",
+    ],
+  },
+  consultationFees: { type: Number },
+  imagePath: { type: String },
+  ratings: { type: Number, min: 0, max: 5, default: 0 }, // Average Rating
+  reviews: [
+    {
+      patientName: String,
+      comment: String,
+      rating: { type: Number, min: 1, max: 5 },
+    },
+  ],
+  aboutDr: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
+const AppointmentSchema = new mongoose.Schema({
+  appointment_id: {
+      type: Number,
+      unique: true,
+      required: true,
+      autoIncrement: true, // Auto-increment-like behavior will be handled manually
+  },
+  user_id: {
+      type: mongoose.Schema.Types.ObjectId, // Foreign key reference to User table
+      ref: "User",
+      required: true,
+  },
+  name: {
+      type: String,
+      required: true,
+      trim: true,
+  },
+  medium: {
+      type: String,
+      enum: ["Online", "In-Person", "Phone"], // Example mediums
+      required: true,
+  },
+  date: {
+      type: Date,
+      required: true,
+  },
+  bmdc_id: {
+      type: mongoose.Schema.Types.ObjectId, // Foreign key reference (doctor's ID)
+      ref: "Doctor",
+      required: true,
+  },
+});
 // Define Survival Schema
 const survivalSchema = new mongoose.Schema({
-    title: { type: String, required: true, trim: true },
-    content: { type: String, required: true },
-    authorName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true },
-    imageUrl: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
+  title: { type: String, required: true, trim: true },
+  content: { type: String, required: true },
+  authorName: { type: String, required: true, trim: true },
+  email: { type: String, required: true, trim: true },
+  imageUrl: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 // Create Models
 const Doctor = mongoose.model('Doctor', doctorSchema);
 const Survival = mongoose.model('Survival', survivalSchema);
+const Appointment = mongoose.model("Appointment", AppointmentSchema);
 
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
+  destination: (req, file, cb) => {
+      cb(null, 'public/uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+  },
 });
 const upload = multer({ storage });
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Server is running...');
+  res.send('Server is running...');
 });
 
 // Search doctors
 app.get('/api/doctors', async (req, res) => {
-    const { service, location, preferredCounseling } = req.query;
+const { service, location, preferredCounseling } = req.query;
 
-    console.log("Received query:", { service, location, preferredCounseling }); // Log query parameters
+console.log("Received query:", { service, location, preferredCounseling }); // Log query parameters
 
-    if (!service || !location) {
-        return res.status(400).json({ message: "Missing service or location parameters" });
+// Validate that required parameters are present
+if (!service || !location) {
+    return res.status(400).json({ message: "Missing service or location parameters" });
+}
+
+try {
+    // Query with just service and location
+    const doctorsBaseQuery = await Doctor.find({
+        counsellingtypes: service, // Use the exact field name
+        preferredPracticeArea: location, // Use the exact field name
+    });
+
+    console.log("Base query result:", doctorsBaseQuery); // Log base query result
+
+    // Create the base query object
+    const query = {
+        counsellingtypes: service, // Match service
+        preferredPracticeArea: location, // Match location
+    };
+
+    // Add the preferredCounseling filter if provided
+    if (preferredCounseling) {
+        query[preferredCounseling] = preferredCounseling;
     }
 
-    try {
-        const query = {
-            "counselling types": service,
-            preferredPracticeArea: location,
-        };
+    // Query the database with the updated query
+    const doctors = await Doctor.find(query);
 
-        if (preferredCounseling) {
-            query.preferredCounseling = preferredCounseling;
-        }
-
-        const doctors = await Doctor.find(query);
-
-        console.log("Query result:", doctors); // Log the query result
-
-        if (!doctors.length) {
-            return res.status(404).json({ message: "No doctors found for the given criteria." });
-        }
-
-        res.json(doctors);
-    } catch (error) {
-        console.error("Error fetching doctors:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+    console.log("Query result:", doctors); // Log the query result
+    res.status(200).json(doctors); // Return the doctors as response
+} catch (error) {
+    res.status(500).json({ message: "An error occurred", error });
+}
 });
 
 // Survival Routes
 // Create a new survival story
 app.get('/api/survival/stories', async (req, res) => {
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = 8; // Limit to 8 entries per page
-    const skip = (page - 1) * limit;
-  
-    try {
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = 8; // Limit to 8 entries per page
+  const skip = (page - 1) * limit;
+
+  try {
       const stories = await Survival.find()
-        .skip(skip)
-        .limit(limit)
-        .sort({ createdAt: -1 }); // Sort by most recent first
-  
-      const totalCount = await Survival.countDocuments(); // Get total number of entries
-      const totalPages = Math.ceil(totalCount / limit); // Calculate total number of pages
-  
-      res.json({
-        stories,
-        totalPages,
-        currentPage: page,
+          .skip(skip)
+          .limit(limit)
+          .sort({ createdAt: -1 })
+          .select('_id title content authorName imageUrl createdAt'); // Fetch only required fields
+
+      // Modify content to show only the first 15 words
+      const processedStories = stories.map(story => {
+          const contentWords = story.content.split(' '); // Split content into words
+          const shortContent = contentWords.slice(0, 15).join(' ') + (contentWords.length > 15 ? '...' : ''); // Get the first 15 words
+          return {
+              ...story._doc, // Spread the story object
+              content: shortContent
+          };
       });
-    } catch (error) {
+
+      const totalCount = await Survival.countDocuments();
+      const totalPages = Math.ceil(totalCount / limit);
+
+      res.json({
+          stories: processedStories,
+          totalPages,
+          currentPage: page,
+      });
+  } catch (error) {
       res.status(500).json({ message: 'Error fetching stories', error });
+  }
+});
+
+// Fetch full article by ID
+app.get('/api/survival/story/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const article = await Survival.findById(id).select('_id title content authorName imageUrl createdAt');
+
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
     }
-  });
-  
+
+    res.json(article); // Send the full article data
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching article', error });
+  }
+});
+
   
   // Endpoint for uploading stories
-  app.post('/api/survival/upload', async (req, res) => {
-    const { title, content, authorName, email, imageUrl } = req.body;
-  
+  app.post('/api/survival/upload', upload.single('image'), async (req, res) => {
     try {
-      const newStory = new Survival({ title, content, authorName, email, imageUrl });
+      const { title, content, authorName, email } = req.body;
+      const imageUrl = req.file ? `uploads/${req.file.filename}` : ''; // Store image path
+  
+      if (!title || !content || !authorName || !email) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
+  
+      const newStory = new Survival({
+        title,
+        content,
+        authorName,
+        email,
+        imageUrl, // Save file path in MongoDB
+        createdAt: new Date(),
+      });
+  
       await newStory.save();
       res.status(201).json({ message: 'Story uploaded successfully', story: newStory });
     } catch (error) {
-      res.status(500).json({ message: 'Error uploading story', error });
+      console.error('Error uploading story:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   });
+  
 
   const DoctorFinderSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -337,6 +467,55 @@ app.get("/api/cancerscreen", async (req, res) => {
 });
 
 
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Access denied, token missing." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure JWT_SECRET is set in your .env file
+    req.user = decoded; // Add the decoded user data to the request
+    next();
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid token" });
+  }
+};
+
+// POST /api/submit-appointment - Create a new appointment
+app.post("/api/submit-appointment", verifyToken, async (req, res) => {
+  const { user_name, doctor_id, date, medium } = req.body;
+
+  // Validate required fields
+  if (!user_name || !doctor_id || !date || !medium) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  try {
+    // Retrieve doctor details by doctor_id
+    const doctor = await Doctor.findById(doctor_id);
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found." });
+    }
+
+    // Create new appointment
+    const appointment = new Appointment({
+      user_id: mongoose.Types.ObjectId(req.user.userId), // Use the userId from the decoded JWT
+      name: user_name,
+      medium,
+      date: new Date(date),
+      bmdc_id: doctor.BMDC, // Store the BMDC of the doctor
+    });
+
+    // Save the appointment to the database
+    await appointment.save();
+
+    res.status(201).json({ message: "Appointment booked successfully!" });
+  } catch (error) {
+    console.error("Error creating appointment:", error);
+    res.status(500).json({ error: "Failed to book appointment" });
+  }
+});
 
   
 // Start the server
