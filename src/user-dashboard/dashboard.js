@@ -24,7 +24,7 @@ export default function UserDashboardPage() {
   }, []);
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/user', {
+      const response = await axios.get('http://localhost:5001/api/user', {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ export default function UserDashboardPage() {
   }
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
+      await axios.post('http://localhost:5001/api/logout', {}, { withCredentials: true });
       setUserData(null);
       window.location.href = '/login';
     } catch (error) {

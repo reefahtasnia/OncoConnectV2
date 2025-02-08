@@ -1,67 +1,64 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode"; // ✅ Correct
- 
+
 import "./CSS/AppointmentForm.css";
 const API_BASE_URL = "http://localhost:5000"; 
 
-const AppointmentForm = ({ onClose, doctor }) => {
+const AppointmentForm = ({ onClose, Doctor }) => {
   const [formData, setFormData] = useState({
-    user_id: "",  // To be filled after decoding JWT
+    user_id: "",  // To be fetched from backend
     user_name: "", 
-    doctor_id: doctor._id,
-    bmdc_id: "",  // To be fetched from backend
+    doctors_id: Doctor ? Doctor._id : "",  // Set to empty string if Doctor is not yet available
     date: "",
     medium: "Online",
   });
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Decode JWT token to get user_id
+  // Fetch user_id from backend using token
   useEffect(() => {
-    const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
-    if (token) {
-      const decoded = jwtDecode(token);
-      setFormData(prev => ({
-        ...prev,
-        user_id: decoded.userId,  // Extract user ID from JWT
-      }));
-    }
-  }, []);
-
-  // Fetch BMDC ID from backend
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
+    const fetchUserId = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/doctor/${doctor._id}`);
-        setFormData(prev => ({ ...prev, bmdc_id: response.data.bmdc_id }));
+        const response = await axios.get(`${API_BASE_URL}/api/get-userid`, {
+          withCredentials: true, // Ensures cookies are sent with the request
+        });
+        setFormData(prev => {
+          const updatedData = { ...prev, user_id: response.data.user_id };
+          return updatedData;
+        });
       } catch (error) {
-        console.error("Error fetching doctor details:", error);
+        console.error("Error fetching user ID:", error);
       }
     };
+  
+    fetchUserId();
+  }, []);
 
-    fetchDoctorDetails();
-  }, [doctor._id]);
+  if (!Doctor) {
+    return <div>Loading...</div>; // Loading state for when Doctor is not yet available
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-
+  
     if (!formData.date) {
       setErrorMessage("Please select an appointment date.");
       return;
     }
-
-    // Get the token from cookies
-    const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
-
+  
+    // Make sure the keys match the backend schema
+    const requestBody = {
+      user_id: formData.user_id,
+      user_name: formData.user_name,
+      doctor_id: formData.doctors_id,  // Changed doctors_id to doctor_id
+      date: formData.date,
+      medium: formData.medium,
+    };
+  
     try {
-      console.log("Sending token:", token);
-      // Pass the token in the headers
-      await axios.post(`${API_BASE_URL}/api/submit-appointment`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Pass the token here
-        }
+      await axios.post(`${API_BASE_URL}/api/appointments`, requestBody, {
+        withCredentials: true, // Ensures token cookies are included
       });
       alert("Appointment booked successfully!");
       onClose();
@@ -69,7 +66,7 @@ const AppointmentForm = ({ onClose, doctor }) => {
       setErrorMessage(error.response?.data?.error || "Something went wrong.");
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -90,7 +87,7 @@ const AppointmentForm = ({ onClose, doctor }) => {
         <form onSubmit={handleSubmit} className="appointment-form">
           <div className="form-group">
             <label>Doctor</label>
-            <input type="text" value={doctor.fullName} disabled />
+            <input type="text" value={Doctor.fullName} disabled />
           </div>
           <div className="form-group">
             <label>Name</label>

@@ -33,7 +33,17 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
-
+const AppointmentSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    user_name: { type: String, required: true }, // Name of the user booking the appointment
+    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "doctors" }, // Reference to DoctorFinder model
+    doctor_name: { type: String, required: true }, // Name of the doctor
+    date: { type: Date, required: true }, // Appointment date
+    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
+  },
+  { collection: "appointform" } // Explicitly set the collection name
+);
 // Doctor Schema
 const doctorSchema = new mongoose.Schema({
   fullName: { type: String },
@@ -97,8 +107,10 @@ const doctorSchema = new mongoose.Schema({
 // Register Models
 //const User = db.model("Users", userSchema);
 const User = mongoose.model('User', userSchema);
+const Appointment = mongoose.model("Appointment", AppointmentSchema);
+
 //const Doctor = db.model("Doctors", doctorSchema);
 
 // Export Both Models
 //module.exports = { User, Doctor };
-module.exports = { User };
+module.exports = { User, Appointment };
