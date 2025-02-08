@@ -10,6 +10,7 @@ import UserDropdown from "./components/user-dropdown";
 import NotificationsButton from "./components/notifications";
 import './dashboard.css';
 import userImage from './user.png'
+import axios from 'axios';
 
 export default function UserDashboardPage() {
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -23,23 +24,15 @@ export default function UserDashboardPage() {
   }, []);
   const fetchUserData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/user', {  // Add full URL here
-        method: 'GET',
-        credentials: 'include',
+      const response = await axios.get('http://localhost:5000/api/user', {
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-  
-      const data = await response.json();
-      console.log(data.message);
-      setUserData(data);
+      setUserData(response.data);
     } catch (error) {
-      console.error(error.message);
+      console.error("Error fetching user data:", error.message);
       window.alert("Failed to fetch your data, logging out...");
       await handleLogout();
     }
@@ -55,17 +48,9 @@ export default function UserDashboardPage() {
   }
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-  
-      if (response.ok) {
-        setUserData(null);
-        window.location.href = '/login';
-      } else {
-        console.error('Logout failed');
-      }
+      await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
+      setUserData(null);
+      window.location.href = '/login';
     } catch (error) {
       console.error('Error logging out:', error);
     }
