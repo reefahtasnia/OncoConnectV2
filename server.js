@@ -10,10 +10,15 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = 5000;
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',  // Allow the front-end origin
+  credentials: true,               // Allow credentials like cookies
+}));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 
@@ -85,38 +90,17 @@ const doctorSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-const AppointmentSchema = new mongoose.Schema({
-  appointment_id: {
-      type: Number,
-      unique: true,
-      required: true,
-      autoIncrement: true, // Auto-increment-like behavior will be handled manually
+const AppointmentSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    user_name: { type: String, required: true }, // Name of the user booking the appointment
+    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Doctor" }, // Reference to DoctorFinder model
+    doctor_name: { type: String, required: true }, // Name of the doctor
+    date: { type: Date, required: true }, // Appointment date
+    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
   },
-  user_id: {
-      type: mongoose.Schema.Types.ObjectId, // Foreign key reference to User table
-      ref: "User",
-      required: true,
-  },
-  name: {
-      type: String,
-      required: true,
-      trim: true,
-  },
-  medium: {
-      type: String,
-      enum: ["Online", "In-Person", "Phone"], // Example mediums
-      required: true,
-  },
-  date: {
-      type: Date,
-      required: true,
-  },
-  bmdc_id: {
-      type: mongoose.Schema.Types.ObjectId, // Foreign key reference (doctor's ID)
-      ref: "Doctor",
-      required: true,
-  },
-});
+  { collection: "appointment" } // Explicitly set the collection name
+);
 // Define Survival Schema
 const survivalSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
@@ -271,7 +255,7 @@ app.get('/api/survival/story/:id', async (req, res) => {
     }
   });
   
-
+//hridi
   const DoctorFinderSchema = new mongoose.Schema({
     name: { type: String, required: true },
     image: { type: String, required: true }, // Relative path or URL to the image
@@ -466,54 +450,84 @@ app.get("/api/cancerscreen", async (req, res) => {
   }
 });
 
+//hridi
+
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  console.log("Cookies:", req.cookies); 
+  const token = req.cookies.token; // Read token from cookies
+  
   if (!token) {
-    return res.status(401).json({ error: "Access denied, token missing." });
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure JWT_SECRET is set in your .env file
-    req.user = decoded; // Add the decoded user data to the request
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded User ID:", decoded.userId);
+    req.userId = decoded.userId; // Attach userId to request
+
     next();
-  } catch (error) {
-    return res.status(400).json({ error: "Invalid token" });
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
-
-// POST /api/submit-appointment - Create a new appointment
-app.post("/api/submit-appointment", verifyToken, async (req, res) => {
-  const { user_name, doctor_id, date, medium } = req.body;
-
-  // Validate required fields
-  if (!user_name || !doctor_id || !date || !medium) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
+app.get("/api/get-userid", verifyToken, (req, res) => {
+  return res.status(200).json({ user_id: req.userId });
+});
+app.post("/api/appointments", verifyToken, async (req, res) => {
   try {
-    // Retrieve doctor details by doctor_id
+    const { user_id, user_name, doctor_id, date, medium } = req.body;
+    console.log("Request Body:", req.body); // Debugging
+
+    if (!user_id || !doctor_id) {
+      return res.status(400).json({ error: "User ID and Doctor ID are required." });
+    }
+
+    // Find the doctor by their ID
     const doctor = await Doctor.findById(doctor_id);
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found." });
     }
 
-    // Create new appointment
-    const appointment = new Appointment({
-      user_id: mongoose.Types.ObjectId(req.user.userId), // Use the userId from the decoded JWT
-      name: user_name,
+    // Find the user by their ID
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Create new appointment with doctor and user details
+    const newAppointment = new Appointment({
+      user_id,
+      user_name,
+      doctor_id,
+      doctor_name: doctor.fullName,  // Add the doctor's name
+      date,
       medium,
-      date: new Date(date),
-      bmdc_id: doctor.BMDC, // Store the BMDC of the doctor
     });
+    await newAppointment.save();
 
-    // Save the appointment to the database
-    await appointment.save();
-
-    res.status(201).json({ message: "Appointment booked successfully!" });
+    res.status(201).json({ message: "Appointment created successfully." });
   } catch (error) {
     console.error("Error creating appointment:", error);
-    res.status(500).json({ error: "Failed to book appointment" });
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+// Fetch doctor details by ID to get BMDC ID
+app.get("/api/doctorprogga/:id", async (req, res) => {
+  try {
+    const doctorId = req.params.id;  // Extract the doctor ID from the URL parameters
+    const doctor = await Doctor.findById(doctorId);  // Find the doctor by ID in the database
+    
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+
+    // Return doctor details including BMDC ID
+    return res.status(200).json({ bmdc_id: Doctor.BMDC });
+  } catch (error) {
+    console.error("Error fetching doctor details:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 

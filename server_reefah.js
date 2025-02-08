@@ -5,6 +5,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const router = express.Router();
 
 const app = express();
 const PORT = 5001;
@@ -171,7 +172,7 @@ app.post("/api/login", async (req, res) => {
 
     if (userType === "patient") {
       const user = await User.findOne({ email });
-
+      console.log(" user data:", user); 
       if (!user || user.password !== password) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
@@ -192,13 +193,20 @@ app.post("/api/login", async (req, res) => {
         console.log("User profile is incomplete");
         return res.status(200).json({ redirect: "/editProfile" });
       }
+      console.log("in");
+      let token;
+try {
+  token = jwt.sign(
+    { userId: user._id, userType: "patient" },
+    JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+} catch (tokenError) {
+  console.error("JWT Token Generation Error:", tokenError);
+  return res.status(500).json({ message: "Token generation failed" });
+}
 
-      const token = jwt.sign(
-        { userId: user._id, userType: "patient" },
-        JWT_SECRET,
-        { expiresIn: "7d" }
-      );
-      // console.log("Token:", token);
+      console.log("Token:", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
@@ -206,6 +214,7 @@ app.post("/api/login", async (req, res) => {
         sameSite: "lax",
         path: "/", // Add this to ensure cookie is sent for all paths
       });
+      console.log("Token:", token);
       // console.log("Cookie being set:", {
       //   token: token,
       //   headers: res.getHeaders()
@@ -242,6 +251,7 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
+
 
 app.post("/api/edit-profile", async (req, res) => {
   try {
@@ -592,5 +602,25 @@ app.post("/api/logout", (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
+const verifyToken = (req, res, next) => {
+  console.log("Cookies:", req.cookies); 
+  const token = req.cookies.token; // Read token from cookies
+  
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded User ID:", decoded.userId);
+    req.userId = decoded.userId; // Attach userId to request
+
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = router;

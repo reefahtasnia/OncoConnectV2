@@ -141,7 +141,7 @@ const MentalHealthPage = () => {
 
             {/* Appointment Form Popup */}
             {showAppointmentForm && selectedDoctor && (
-                <AppointmentForm doctor={selectedDoctor} onClose={closePopup} />
+                <AppointmentForm Doctor={selectedDoctor} onClose={closePopup} />
             )}
 
             <Footer />

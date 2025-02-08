@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./CSS/style.css";
 
-export const NavBar = ({ scrollToSection }) => {
+const NavBar = ({ scrollToSection = null }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -43,26 +43,33 @@ export const NavBar = ({ scrollToSection }) => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
+      {/* Logo */}
+      <div className="navbar-logo" onClick={() => navigate("/")}>
         <span className="logo-part1">Onco</span>
         <span className="logo-part2">Connect</span>
       </div>
 
+      {/* Mobile Menu Button */}
       <button
         className="mobile-menu-button"
-        onClick={toggleMenu}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Toggle navigation menu"
       >
         <Menu className="h-6 w-6" />
       </button>
 
+      {/* Navigation Links */}
       <ul className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
         <li>
           <a
-            href="/"
+            href="#"
             onClick={(e) => {
               e.preventDefault();
-              scrollToSection("home");
+              if (scrollToSection) {
+                scrollToSection("home");
+              } else {
+                navigate("/"); // Navigate to Home
+              }
             }}
           >
             Home
@@ -73,7 +80,7 @@ export const NavBar = ({ scrollToSection }) => {
             href="#about-us"
             onClick={(e) => {
               e.preventDefault();
-              scrollToSection("aboutUs");
+              scrollToSection ? scrollToSection("aboutUs") : navigate("/about");
             }}
           >
             About Us
@@ -84,7 +91,7 @@ export const NavBar = ({ scrollToSection }) => {
             href="#services"
             onClick={(e) => {
               e.preventDefault();
-              scrollToSection("services");
+              scrollToSection ? scrollToSection("services") : navigate("/services");
             }}
           >
             Services
@@ -101,25 +108,19 @@ export const NavBar = ({ scrollToSection }) => {
             Community
           </a>
         </li>
+
+        {/* Mobile-Only Button */}
         <li className="mobile-only">
-          {isLoggedIn ? (
-            <button
-              className="navbar-button"
-              onClick={() => navigate("/user-dashboard")}
-            >
-              My Dashboard
-            </button>
-          ) : (
-            <button
-              className="navbar-button"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-          )}
+          <button
+            className="navbar-button"
+            onClick={() => navigate(isLoggedIn ? "/user-dashboard" : "/login")}
+          >
+            {isLoggedIn ? "My Dashboard" : "Login"}
+          </button>
         </li>
       </ul>
 
+      {/* Desktop-Only Button */}
       <button
         className="navbar-button desktop-only"
         onClick={() => navigate(isLoggedIn ? "/user" : "/login")}
@@ -131,3 +132,4 @@ export const NavBar = ({ scrollToSection }) => {
 };
 
 export default NavBar;
+
