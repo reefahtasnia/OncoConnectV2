@@ -32,7 +32,7 @@ const Doctor_finder = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/doctor_finder");
+        const response = await axios.get("http://localhost:5002/api/doctor_finder");
         
         setDoctors(response.data);
         setFilteredDoctors(response.data); // Initially show all doctors
@@ -178,7 +178,7 @@ const Doctor_finder = () => {
               
                   name={doctor.name}
                   hospital={doctor.hospital}
-                  image={`http://localhost:5000${doctor.image}`}
+                  image={`http://localhost:5002${doctor.image}`}
                   credentials={doctor.credentials}
                   rating={doctor.rating}
                   reviews={doctor.reviews}

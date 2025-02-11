@@ -100,7 +100,7 @@ function App() {
                 <Route path="/docfind" element={<Doctor_finder />} />
                 <Route path="/cancerscreen" element={<CancerScreen />} />
                 <Route path="/quiz" element={<Quiz />} />
-                <Route path="/quiz2" element={<Quiz2 />} />
+                <Route path="/quiz2/:cancerType" element={<Quiz2 />} />
                 <Route path="/credit" element={<Credit />} />
                 <Route path="/calorie" element={<Calorie />} />
                 <Route path="/care" element={<Caregiverpage />} />

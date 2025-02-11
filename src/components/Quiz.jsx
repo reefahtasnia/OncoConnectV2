@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 import "./CSS/Quiz.css";
 import Footer from './Footer';
-import breast from "./assets/pinkribbon.png";
-import lung from "./assets/whiteribbon.png";
-import cervical from "./assets/greenribbon.png";
 import reviewImage1 from "./assets/quizreveiw1.png";
 import reviewImage2 from "./assets/quizreveiw2.png";
 import reviewImage3 from "./assets/quizreveiw3.png";
 
+
+
 const Quiz = () => {
+  
+  const [cancerTypes, setCancerTypes] = useState([]);
   const navigate = useNavigate();
 
   const reviews = [
@@ -18,8 +20,21 @@ const Quiz = () => {
     { id: 3, name: "Michael R.", text: "Easy to use and very informative. Everyone should take this quiz.", rating: 5, image: reviewImage3 },
   ];
 
-  const handleQuizStart = () => {
-    navigate(`/quiz2/`);
+  
+
+  useEffect(() => {
+    // Fetch cancer types from the backend
+    axios.get('http://localhost:5002/api/cancer-types')
+      .then(response => {
+        setCancerTypes(response.data); // Update state with the fetched cancer types
+      })
+      .catch(err => {
+        console.error('Error fetching cancer types:', err);
+      });
+  }, []);
+
+  const handleQuizStart = (cancerId) => {
+    navigate(`/quiz2/${cancerId}`); // Send the cancer name to quiz2 page
   };
 
   return (
@@ -27,7 +42,7 @@ const Quiz = () => {
       {/* Hero Section */}
       <section className="hero">
         <h1>
-          <spanh>Understand Your Risk</spanh>
+          <span>Understand Your Risk</span>
         </h1>
         <h2>Take the Cancer Assessment Quiz Today</h2>
       </section>
@@ -38,55 +53,25 @@ const Quiz = () => {
         
         <div className="content-wrapper">
           <div className="cancer-cards">
-            {/* Breast Cancer Card */}
-            <div className="card">
-              <div className="card-content">
-                <div className="ribbon-container">
-                  <img src={breast} alt="Breast Cancer Ribbon" className="ribbon-image" />
+            {cancerTypes.map((cancerType) => (
+              <div key={cancerType._id} className="card">
+                <div className="card-content">
+                  <div className="ribbon-container">
+                    <img src={cancerType.image} alt={`${cancerType.name} Ribbon`} className="ribbon-image" />
+                  </div>
+                  <div className="card-text">
+                    <h3>{cancerType.name}</h3>
+                    <p>{cancerType.description}</p>
+                  </div>
                 </div>
-                <div className="card-text">
-                  <h3>Breast Cancer</h3>
-                  <p>In 2018, breast cancer was the most frequently diagnosed cancer in Ontario women. But did you know that there are many things you can do to help decrease your risk?</p>
-                </div>
-              </div>
-              <div className="button-container">
-                <button className="quiz-btn" onClick={handleQuizStart}>Take the quiz now</button>
-              </div>
-            </div>
-
-            {/* Lung Cancer Card */}
-            <div className="card">
-              <div className="card-content">
-                <div className="ribbon-container">
-                  <img src={lung} alt="Lung Cancer Ribbon" className="ribbon-image" />
-                </div>
-                <div className="card-text">
-                  <h3>Lung Cancer</h3>
-                  <p>Overall, lung cancer is the second most commonly diagnosed cancer in Ontario and the most common cause of cancer-related death. The good news? There's a lot you can do to help prevent it.</p>
+                <div className="button-container">
+                  <button className="quiz-btn" onClick={() => handleQuizStart(cancerType._id)}>Take the quiz now</button>
                 </div>
               </div>
-              <div className="button-container">
-                <button className="quiz-btn" onClick={() => handleQuizStart('lung')}>Take the quiz now</button>
-              </div>
-            </div>
-
-            {/* Cervical Cancer Card */}
-            <div className="card">
-              <div className="card-content">
-                <div className="ribbon-container">
-                  <img src={cervical} alt="Cervical Cancer Ribbon" className="ribbon-image" />
-                </div>
-                <div className="card-text">
-                  <h3>Cervical Cancer</h3>
-                  <p>Cervical cancer is the third most commonly diagnosed cancer for Ontario women ages 20 to 44 — but it's also one of the most preventable.</p>
-                </div>
-              </div>
-              <div className="button-container">
-                <button className="quiz-btn" onClick={() => handleQuizStart('cervical')}>Take the quiz now</button>
-              </div>
-            </div>
+            ))}
           </div>
 
+          {/* What Our Users Say Section */}
           <div className="reviews-section">
             <h3>
               <span>What Our Users Say</span>
@@ -111,6 +96,7 @@ const Quiz = () => {
             </div>
           </div>
         </div>
+
       </section>
 
       {/* Pagination */}

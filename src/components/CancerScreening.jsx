@@ -17,7 +17,7 @@ const CancerScreening = () => {
   useEffect(() => {
     const fetchScreeningData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/cancerscreen");
+        const response = await axios.get("http://localhost:5002/api/cancerscreen");
         setScreeningData(response.data);
         setLoading(false);
       } catch (err) {

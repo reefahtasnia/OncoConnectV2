@@ -6,40 +6,36 @@ import caregivingVideo from "./assets/carevideo1.mp4";
 import caregivingVideo2 from "./assets/carevideo2.mp4";
 import videoPoster from "./assets/videothumbcare1.jpg";
 import videoPoster2 from "./assets/videothumbcare2.jpeg";
-import { Link } from 'react-router-dom';
 import axios from "axios";
 
 const CaregiverPage = () => {
   const [articles, setArticles] = useState([]);
+  const [selectedPdf, setSelectedPdf] = useState(null); // State to store the selected PDF for preview
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch caregiver articles from API
-useEffect(() => {
-  const fetchArticles = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/caregiver_articles");
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get("http://localhost:5002/api/caregiver_articles");
+        setArticles(response.data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      }
+    };
+    fetchArticles();
+  }, []);
 
-      setArticles(response.data);
-      
-    } catch (error) {
-      console.error("Failed to fetch articles:", error);
-    }
+  const previewPdf = (pdfPath) => {
+    setSelectedPdf(`http://localhost:5002/api/view-pdf/${pdfPath.split('/').pop()}`);
+    setIsModalOpen(true);
   };
-
-  fetchArticles();
-}, []);
-
 
   return (
     <div className="caregiver-container">
-    {/* Hero Section */}
-    <section className="hero-section">
-      <img
-        src={caregiverbg}
-        alt="Supporting cancer caregivers"
-        className="hero-image"
-      />
-    </section>
-
+      {/* Hero Section */}
+      <section className="hero-section">
+        <img src={caregiverbg} alt="Supporting cancer caregivers" className="hero-image" />
+      </section>
 
       {/* Video Section */}
       <section className="video-section">
@@ -64,8 +60,8 @@ useEffect(() => {
         </div>
       </section>
 
-     {/* Caregiving 101 Section */}
-     <div className='care101'>
+      {/* Caregiving 101 Section */}
+      <div className="care101">
         <h1 className="section-title">Caregiving 101</h1>
       </div>
       <section className="caregiving-section">
@@ -77,27 +73,54 @@ useEffect(() => {
               </div>
               <h3>{article.title}</h3>
               <p>{article.description}</p>
-              <a href={`http://localhost:5000/api/download-pdf/${article.pdf.split('/').pop()}`} className="read-more" target="_blank" rel="noopener noreferrer">
-  Read more <span className="arrow">→</span>
-</a>
+              <div className = "button-containerpd">
+              {/* Preview and Download Buttons */}
+              <button className="preview-btn" onClick={() => previewPdf(article.pdf)}>
+                Preview PDF <span className="arrow">↓</span>
+              </button>
+              <a 
+                href={`http://localhost:5002/api/download-pdf/${article.pdf.split('/').pop()}`} 
+                className="read-more" 
+                download
+              >
+                Download PDF <span className="arrow">↓</span>
+              </a>
+              </div>
             </div>
           ))}
         </div>
       </section>
-{/* Pagination */}
-       <div className="pagination">
-              <button className="page-btn prev">←</button>
-              <button className="page-btn active">1</button>
-              <button className="page-btn">2</button>
-              <button className="page-btn">3</button>
-              <span>...</span>
-              <button className="page-btn">8</button>
-              <button className="page-btn next">→</button>
-            </div>
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button className="page-btn prev">←</button>
+        <button className="page-btn active">1</button>
+        <button className="page-btn">2</button>
+        <button className="page-btn">3</button>
+        <span>...</span>
+        <button className="page-btn">8</button>
+        <button className="page-btn next">→</button>
+      </div>
+
       <Footer />
+
+      {/* PDF Preview Modal */}
+      {isModalOpen && (
+        <div className="modalc">
+          <div className="modalc-content">
+            <span className="closec" onClick={() => setIsModalOpen(false)}>&times;</span>
+            <h2>PDF Preview</h2>
+            <iframe 
+              src={selectedPdf} 
+              width="100%" 
+              height="500px" 
+              title="PDF Preview"
+            ></iframe>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default CaregiverPage;
-

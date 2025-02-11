@@ -85,28 +85,57 @@
     padding: 1rem;
   }
   
-  .read-more {
-    display: inline-block;
-    margin-top: 1rem;
-    color: #8800cc;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
+  /* Button Container */
+.button-containerpd {
+  display: flex;
+  justify-content: space-between; /* Places buttons at opposite ends */
+  align-items: center;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Download Button */
+.read-more {
+  color: #8800cc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
   
-  .read-more:hover {
-    color: #004080;
-  }
+}
+
+.read-more:hover {
+  color: #004080;
+}
+
+.read-more .arrow {
+  margin-left: 0.25rem;
+  transition: transform 0.3s ease;
+}
+
+.read-more:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Preview Button */
+.preview-btn {
+  background: #fff;
+  color: #8800cc;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.preview-btn:hover {
+  background: #ffffff;
+}
+
+
   
-  .read-more .arrow {
-    display: inline-block;
-    margin-left: 0.25rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .read-more:hover .arrow {
-    transform: translateX(4px);
-  }
   
   .article-card {
     background: #fff;
@@ -146,6 +175,60 @@
     font-size: 0.9rem;
     line-height: 1.5;
   }
+
+  /* Modal Background */
+.modalc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above everything */
+}
+
+/* Modal Content */
+.modalc-content {
+  position: relative;
+  width: 80%;
+  max-width: 900px; /* Maximum width */
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Close Button */
+.closec {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.closec:hover {
+  color: #d9534f;
+}
+
+/* PDF Preview iframe */
+.modalc-content iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  border-radius: 5px;
+}
+
+
+
+
   
   /* Responsive Design */
   @media (max-width: 768px) {

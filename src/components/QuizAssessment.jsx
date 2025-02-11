@@ -1,434 +1,206 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './CSS/QuizAssessment.css';
-import Footer from './Footer';
+import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import axios from "axios"
+import "./CSS/QuizAssessment.css"
+import Footer from "./Footer"
 
 const QuizAssessment = () => {
-  const { cancerType } = useParams();
-  const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState('Personal');
-  const [questions, setQuestions] = useState([]);
-  const [showResult, setShowResult] = useState(false);
+  const { cancerType } = useParams()
+  const navigate = useNavigate()
 
-  const handleFinish = () => {
-    setShowResult(true);
-  };
+  const user_id = "65a2f7b9d2e6e90f9c5a1234"
 
-  const categories = [
-    'Personal',
-    'Family',
-    'Genetics',
-    'Screening',
-    'Healthy Living',
-    'Reproductive Health'
-  ];
-
-  // Sample questions data - In a real app, this would come from an API
-  const questionsByCategory = {
-    
-        Personal: [
-          {
-            id: 1,
-            question: "Have you ever been diagnosed with cancer?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 2,
-            question: "What was the sex assigned to you at birth?",
-            options: ["Male", "Female"],
-            type: "radio"
-          },
-          {
-            id: 3,
-            question: "How old are you?",
-            type: "number"
-          },
-          {
-            id: 9,
-            question: "Do you currently smoke?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 10,
-            question: "How many hours do you sleep on average per night?",
-            type: "number"
-          },
-          {
-            id: 11,
-            question: "Do you have any chronic illnesses?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 12,
-            question: "How often do you exercise per week?",
-            type: "number"
-          },
-          {
-            id: 13,
-            question: "Do you consume alcohol regularly?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 14,
-            question: "What is your height in centimeters?",
-            type: "number"
-          },
-          {
-            id: 15,
-            question: "What is your weight in kilograms?",
-            type: "number"
-          }
-        ],
-        Family: [
-          {
-            id: 4,
-            question: "Has anyone in your family been diagnosed with cancer?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 16,
-            question: "If yes, what type of cancer was it?",
-            type: "text"
-          },
-          {
-            id: 17,
-            question: "Has any family member had a heart disease diagnosis?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 18,
-            question: "How many of your immediate family members have diabetes?",
-            type: "number"
-          },
-          {
-            id: 19,
-            question: "Is there a history of genetic disorders in your family?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 20,
-            question: "Do any of your siblings have chronic illnesses?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 21,
-            question: "Has anyone in your family undergone genetic testing?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 22,
-            question: "What is your family's history with mental health issues?",
-            type: "text"
-          }
-        ],
-        Genetics: [
-          {
-            id: 5,
-            question: "Have you ever had genetic testing for cancer risk?",
-            options: ["Yes", "No", "I'm not sure"],
-            type: "radio"
-          },
-          {
-            id: 23,
-            question: "Were you found to have any genetic markers for diseases?",
-            options: ["Yes", "No", "I don't know"],
-            type: "radio"
-          },
-          {
-            id: 24,
-            question: "Would you consider genetic counseling?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 25,
-            question: "Do you have any known genetic conditions?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 26,
-            question: "Have you been tested for BRCA gene mutations?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 27,
-            question: "Would you like more information on genetic testing options?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 28,
-            question: "Do you know your genetic risk for cardiovascular diseases?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 29,
-            question: "Have you ever participated in a genetic research study?",
-            options: ["Yes", "No"],
-            type: "radio"
-          }
-        ],
-        Screening: [
-          {
-            id: 6,
-            question: "When was your last cancer screening?",
-            type: "date"
-          },
-          {
-            id: 30,
-            question: "What type of screening did you last undergo?",
-            options: ["Mammogram", "Colonoscopy", "Pap smear", "Other"],
-            type: "radio"
-          },
-          {
-            id: 31,
-            question: "How often do you go for health check-ups?",
-            type: "number"
-          },
-          {
-            id: 32,
-            question: "Have you ever had a full body scan?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 33,
-            question: "Do you perform regular self-examinations (e.g., breast, skin)?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 34,
-            question: "Are you up to date with your vaccination schedule?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 35,
-            question: "Have you ever had a bone density test?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 36,
-            question: "Do you have a history of high cholesterol levels?",
-            options: ["Yes", "No"],
-            type: "radio"
-          }
-        ],
-        "Healthy Living": [
-          {
-            id: 7,
-            question: "How many servings of fruits and vegetables do you eat daily?",
-            type: "number"
-          },
-          {
-            id: 37,
-            question: "How many glasses of water do you drink daily?",
-            type: "number"
-          },
-          {
-            id: 38,
-            question: "Do you regularly engage in physical exercise?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 39,
-            question: "How many hours do you spend sitting each day?",
-            type: "number"
-          },
-          {
-            id: 40,
-            question: "Do you avoid processed foods?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 41,
-            question: "How often do you consume fast food?",
-            type: "number"
-          },
-          {
-            id: 42,
-            question: "Do you have any dietary restrictions?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 43,
-            question: "How many hours do you spend outdoors daily?",
-            type: "number"
-          }
-        ],
-        "Reproductive Health": [
-          {
-            id: 8,
-            question: "Have you ever been pregnant?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 44,
-            question: "Have you experienced any fertility issues?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 45,
-            question: "Are you currently using any form of contraception?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 46,
-            question: "Have you ever had a miscarriage?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 47,
-            question: "How many children do you have?",
-            type: "number"
-          },
-          {
-            id: 48,
-            question: "Have you ever undergone reproductive health screening?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 49,
-            question: "Do you have any known reproductive health conditions?",
-            options: ["Yes", "No"],
-            type: "radio"
-          },
-          {
-            id: 50,
-            question: "Have you ever taken hormone therapy?",
-            options: ["Yes", "No"],
-            type: "radio"
-          }
-        ]
-      
-      
-  };
+  const [activeCategory, setActiveCategory] = useState(null)
+  const [categories, setCategories] = useState([])
+  const [questions, setQuestions] = useState([])
+  const [selectedAnswers, setSelectedAnswers] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [allQuestions, setAllQuestions] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [finalResult, setFinalResult] = useState(null); // Store final result
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false); // Toggle modal
 
   useEffect(() => {
-    setQuestions(questionsByCategory[activeCategory] || []);
-  }, [activeCategory]);
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5002/api/categories")
+        setCategories(response.data)
+        if (response.data.length > 0) {
+          setActiveCategory(response.data[0]._id)
+        }
+      } catch (err) {
+        setError("Failed to load categories")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    const fetchAllQuestions = async () => {
+      if (!cancerType || categories.length === 0) return
+
+      try {
+        const allQuestionsPromises = categories.map((category) =>
+          axios.get("http://localhost:5002/api/questions", {
+            params: { cancerId: cancerType, categoryId: category._id },
+          }),
+        )
+
+        const responses = await Promise.all(allQuestionsPromises)
+        const allQuestionsData = responses.flatMap((response) => response.data)
+        setAllQuestions(allQuestionsData)
+      } catch (err) {
+        setError("Failed to load all questions")
+      }
+    }
+
+    fetchAllQuestions()
+  }, [cancerType, categories])
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      if (!activeCategory || !cancerType) return
+
+      try {
+        const response = await axios.get("http://localhost:5002/api/questions", {
+          params: { cancerId: cancerType, categoryId: activeCategory },
+        })
+        setQuestions(response.data)
+      } catch (err) {
+        setError("Failed to load questions")
+      }
+    }
+
+    fetchQuestions()
+  }, [cancerType, activeCategory])
 
   const handleCategoryChange = (category) => {
-    setActiveCategory(category);
-  };
+    setActiveCategory(category)
+  }
 
-  const handleClose = () => {
-    navigate('/quiz'); // Navigate back to the quiz selection page
-  };
+  const handleAnswerSelect = (question_id, answer_id) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [question_id]: answer_id,
+    }))
+  }
 
+  const areAllQuestionsAnswered = () => {
+    return allQuestions.every((question) => selectedAnswers[question._id])
+  }
+
+  const handleSubmit = async () => {
+    if (!areAllQuestionsAnswered()) {
+      setIsModalOpen(true);
+      return;
+    }
   
+    const responses = Object.entries(selectedAnswers).map(([question_id, answer_id]) => ({
+      question_id,
+      answer_id,
+    }));
+  
+    try {
+      // Submit user responses
+      await axios.post("http://localhost:5002/api/user-responses", {
+        user_id,
+        cancer_id: cancerType,
+        responses,
+      });
+  
+      // Fetch final verdict (including total score and verdict text)
+      const resultResponse = await axios.get("http://localhost:5002/api/user-result", {
+        params: { user_id, cancer_id: cancerType },
+      });
+  
+      setFinalResult(resultResponse.data);
+      setIsResultModalOpen(true); // Open result modal
+    } catch (error) {
+      console.error("Error submitting responses:", error);
+      alert("Failed to submit responses.");
+    }
+  };
+  
+
+  if (loading) return <p>Loading categories...</p>
+  if (error) return <p className="error-message">{error}</p>
 
   return (
     <div className="quiz-container">
-      {/* Hero Section */}
       <section className="hero">
         <h1>
-          <spanhh>Understand Your Risk</spanhh>
+          <span>Understand Your Risk</span>
         </h1>
         <h2>Take the Cancer Assessment Quiz Today</h2>
       </section>
 
       <div className="assessment-content">
-        <h2 className="section-title">{cancerType} Cancer Assessment</h2>
-        
-        <button className="close-button" onClick={handleClose}>×</button>
+        <h2 className="section-title">Breast Cancer Assessment</h2>
+
+        <button className="close-button" onClick={() => navigate("/quiz")}>
+          ×
+        </button>
 
         <nav className="category-nav">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <button
-              key={category}
-              className={`category-btn ${activeCategory === category ? 'active' : ''}`}
-              onClick={() => handleCategoryChange(category)}
+              key={category._id}
+              className={`category-btn ${activeCategory === category._id ? "active" : ""}`}
+              onClick={() => handleCategoryChange(category._id)}
             >
-              <div className={`progress-dot ${index <= categories.indexOf(activeCategory) ? 'completed' : ''}`} />
-              {category}
+              {category.name}
             </button>
           ))}
         </nav>
 
         <div className="assessment-layout">
-          <div className="questions-section">
+          <div className="question-section">
             <div className="questions-container">
-              {questions.map((q, index) => (
-                <div key={q.id} className="question-card">
-                <div className="question-box">
-                  <h3>{index + 1}. {q.question}</h3>
-                </div>
-                <div className="answer-box">
-                  {q.type === 'radio' ? (
-                    <div className="options">
-                      {q.options.filter((option, index, self) => 
-                        self.indexOf(option) === index
-                      ).map((option, i) => (
-                        <label key={i} className="option">
-                          <input
-                            type="radio"
-                            name={`question-${q.id}`}
-                            value={option}
-                          />
-                          {option}
-                        </label>
+              {questions.length > 0 ? (
+                questions.map((question) => (
+                  <div key={question._id} className="question-card">
+                    <div className="question-box">
+                      <h3>{question.question_text}</h3>
+                    </div>
+                    <div className="answers">
+                      {question.answers.map((answer) => (
+                        <button
+                          key={answer._id}
+                          className={`answer-btn ${selectedAnswers[question._id] === answer._id ? "selected" : ""}`}
+                          onClick={() => handleAnswerSelect(question._id, answer._id)}
+                        >
+                          {answer.answer_text}
+                        </button>
                       ))}
                     </div>
-                  ) : (
-                    <input
-                      type={q.type}
-                      className="text-input"
-                      placeholder="Enter your answer"
-                    />
-                  )}
-                </div>
-                </div>
-              ))}
+                  </div>
+                ))
+              ) : (
+                <p>No questions available for this category.</p>
+              )}
             </div>
-
-            {activeCategory === 'Reproductive Health' && questions.length > 0 && (
-              <button className="finish-button" onClick={handleFinish}>
-                Finish Quiz
-              </button>
-            )}
           </div>
-          {showResult && (
-  <div className="result-modal">
-    <div className="result-content">
-      <h2>Quiz Result</h2>
-      <p><span className='highlightcolor'>YOUR RISK: LOWER THAN AVERAGE</span></p>
-      <p>Based on your responses, your likelihood of developing breast cancer is lower than the average woman. While this is reassuring, it's important to remember that maintaining a healthy lifestyle and regular check-ups can further reduce your risk. Stay proactive about your health and keep making positive changes to support your overall well-being. For more tips and resources, continue exploring ways to stay healthy and informed.</p>
-      <button onClick={() => setShowResult(false)}>Close</button>
-    </div>
-  </div>
-)}
 
-
+          {/* Info Section */}
           <div className="info-section">
             <div className="info-card">
               <h3>How the assessment works</h3>
-              <p>We'll ask you questions about things that may affect your risk of a specific type of cancer. </p>
-              <p>The calculation of your risk is based on studies of people age 40 and over who have no previous history of cancer. But everyone can benefit by learning more about their risk and receiving a personal health action plan.</p>
-              <p>Save, print or email your results to refer to later, or share them with your healthcare provider.</p>
-              <p>Your risk can change over time. We suggest coming back every so often to see whether there has been a change.</p>
+              <p>
+                We'll ask you questions about things that may affect your risk of a specific type of cancer.
+              </p>
+              <p>
+                The calculation of your risk is based on studies of people age 40 and over who have no previous history of cancer. But everyone can benefit by learning more about their risk and receiving a personal health action plan.
+              </p>
+              <p>
+                Save, print or email your results to refer to later, or share them with your healthcare provider.
+              </p>
+              <p>
+                Your risk can change over time. We suggest coming back every so often to see whether there has been a change.
+              </p>
             </div>
             <div className="info-card2">
               <h3>Disclaimer</h3>
@@ -436,17 +208,41 @@ const QuizAssessment = () => {
             </div>
           </div>
         </div>
-        
+
+        <button className="submit-btn" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
-       
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Incomplete Assessment</h2>
+            <p>Please answer all questions from all categories before submitting.</p>
+            <button className="modal-close-btn" onClick={() => setIsModalOpen(false)}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Modal for showing the result */}
+      {isResultModalOpen && finalResult && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Your Cancer Risk Assessment Result</h2>
+            <p><strong>Total Score:</strong> {finalResult.totalScore}</p>
+            <p><strong>Verdict:</strong> {finalResult.verdict}</p>
+            <button className="modal-close-btn" onClick={() => setIsResultModalOpen(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
-    
-  );
-};
+  )
+}
 
-
-
-export default QuizAssessment;
-
-
+export default QuizAssessment
