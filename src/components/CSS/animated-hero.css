@@ -106,7 +106,7 @@
   
   .right-hand {
     right: -10%;
-    top: -45%;
+    top: -50%;
     transform: translate(100%, -100%) rotate(-25deg);
     animation: slideInRightTop 1s ease-out 0.3s forwards;
   }

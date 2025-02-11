@@ -10,6 +10,7 @@ import Forum from './components/communityforum.js';
 import NewQuestion from './components/newPost.js';
 import ViewPost from './components/viewPost.js';
 import Signup from './components/Signup.js';
+import Appf from './components/AppointmentForm.jsx';
 import PassordReset from './components/resetPassword.js';
 import DoctorDashboard from './doctor-dashboard/Doctordashboard.js';
 import DoctorMessages from './doctor-dashboard/DoctorMessages.js';
@@ -72,6 +73,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/appf" element={<Appf />} />
                 <Route path="/editProfile" element={<EditProfile />} />
                 <Route path="/forum" element={<Forum />} />
                 <Route path="/signup" element={<Signup />} />

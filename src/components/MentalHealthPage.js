@@ -2,14 +2,17 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import "./CSS/MentalHealthPage.css";
 import Footer from "./Footer";
+import AppointmentForm from "./AppointmentForm"; // Import the appointment form component
 
 const MentalHealthPage = () => {
     const [service, setService] = useState("");
     const [location, setLocation] = useState("");
     const [doctors, setDoctors] = useState([]);
     const [filteredDoctors, setFilteredDoctors] = useState([]);
-    const [selectedDoctor, setSelectedDoctor] = useState(null); // State for the selected doctor
-    const expertsSectionRef = useRef(null); // Reference for the experts section
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+
+    const expertsSectionRef = useRef(null);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -20,7 +23,6 @@ const MentalHealthPage = () => {
             setDoctors(response.data);
             setFilteredDoctors(response.data);
 
-            // Scroll to the experts section after search
             if (expertsSectionRef.current) {
                 expertsSectionRef.current.scrollIntoView({ behavior: "smooth" });
             }
@@ -37,17 +39,19 @@ const MentalHealthPage = () => {
     };
 
     const handleViewMore = (doctor) => {
-        setSelectedDoctor(doctor); // Set the selected doctor for the pop-up
+        setSelectedDoctor(doctor);
+        setShowAppointmentForm(true); // Show the appointment form when clicking "Book Appointment"
     };
 
     const closePopup = () => {
-        setSelectedDoctor(null); // Close the pop-up
+        setShowAppointmentForm(false);
+        setSelectedDoctor(null);
     };
 
     return (
         <div className="mh-mental-health-container">
-            {/* Existing code for hero, search, and services sections */}
-           <section className="mh-hero">
+            {/* Hero Section */}
+            <section className="mh-hero">
                 <div className="mh-hero-content">
                     <h1>
                         At the heart of <br />
@@ -94,35 +98,26 @@ const MentalHealthPage = () => {
                     </form>
                 </div>
             </section>
+
             {/* Services Section */}
             <section className="mh-services">
                 <div className="mh-service-card" onClick={() => handleFilterByCounseling("Online")}>
                     <h3>Online Counseling</h3>
-                    <p>
-                        Many therapists offer counselling online or by telephone, check
-                        their profile to learn more or use our online and telephone search.
-                    </p>
+                    <p>Many therapists offer counselling online or by telephone, check their profile to learn more or use our online and telephone search.</p>
                     <button className="Online">Find therapist →</button>
                 </div>
-                <div className="mh-service-card" onClick={() => handleFilterByCounseling("In-person")}>
+                <div className="mh-service-card" onClick={() => handleFilterByCounseling("Physical")}>
                     <h3>Direct Counseling</h3>
-                    <p>
-                        Psychological counseling, direct psychotherapy with leading
-                        psychologists at Medcaline.
-                    </p>
+                    <p>Psychological counseling, direct psychotherapy with leading psychologists at Medcaline.</p>
                     <button className="In-person">Find therapist →</button>
                 </div>
-                <div className="mh-service-card" onClick={() => handleFilterByCounseling("Phone")}>
+                <div className="mh-service-card" onClick={() => handleFilterByCounseling("Call")}>
                     <h3>Advice By Phone</h3>
-                    <p>
-                        If you are in trouble and want our immediate help, simply pick up
-                        the phone and call us anytime you need help.
-                    </p>
+                    <p>If you are in trouble and want our immediate help, simply pick up the phone and call us anytime you need help.</p>
                     <button className="Phone">Find therapist →</button>
                 </div>
             </section>
 
-            
             {/* Experts Section */}
             <section className="mh-experts" ref={expertsSectionRef}>
                 <h2>Expert Members</h2>
@@ -135,7 +130,7 @@ const MentalHealthPage = () => {
                             />
                             <h3>{doctor.fullName}</h3>
                             <p>{doctor.specialization}</p>
-                            <button onClick={() => handleViewMore(doctor)}>View More</button>
+                            <button onClick={() => handleViewMore(doctor)}>Book Appointment</button>
                         </div>
                     ))}
                 </div>
@@ -144,35 +139,12 @@ const MentalHealthPage = () => {
                 )}
             </section>
 
-            {/* Pop-Up for View More */}
-            {selectedDoctor && (
-                <div className="mh-popup">
-                    <div className="mh-popup-content">
-                        <button className="mh-popup-close" onClick={closePopup}>
-                            &times;
-                        </button>
-                        <h3>{selectedDoctor.fullName}</h3>
-                        <p>
-                            <strong>Email:</strong>{" "}
-                            <a
-    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${selectedDoctor.email}`}
-    target="_blank"
-    rel="noopener noreferrer"
->
-    {selectedDoctor.email}
-</a>
-
-                        </p>
-                        <p>
-                            <strong>Contact Number:</strong> {selectedDoctor.contactNumber}
-                        </p>
-                        <p>
-                            <strong>Educational Background:</strong> {selectedDoctor.educationalBackground || "Not provided"}
-                        </p>
-                    </div>
-                </div>
+            {/* Appointment Form Popup */}
+            {showAppointmentForm && selectedDoctor && (
+                <AppointmentForm Doctor={selectedDoctor} onClose={closePopup} />
             )}
-             <Footer />
+
+            <Footer />
         </div>
     );
 };

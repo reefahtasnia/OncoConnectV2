@@ -359,11 +359,15 @@
   }
   
   .mh-expert-card {
-    background-color: #fff;
-    padding: 16px;
-    border-radius: 12px;
+    width: 280px; /* Increase width */
+    height: 380px; /* Increase height */
+    background-color: white;
+    padding: 24px; /* Increase padding */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 200px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -374,22 +378,22 @@
   }
   
   .mh-expert-card img {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     margin-bottom: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .mh-expert-card h3 {
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     color: #333;
     margin-bottom: 8px;
   }
   
   .mh-expert-card p {
-    font-size: 14px;
+    font-size: 18px;
     color: #666;
   }
   
@@ -508,4 +512,16 @@
         height: 35px;
     }
   }
-  
+  .mh-expert-card button {
+    background-color: #8B5CF6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mh-expert-card button:hover {
+    background-color: #7c3aed;
+}

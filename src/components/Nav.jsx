@@ -1,45 +1,134 @@
-"use client"
-
-import React, { useState } from "react";
-import { Menu } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+"use client";
+import React, { useState, useEffect } from "react";
+import { Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import "./CSS/style.css";
 
-export const NavBar = ({ scrollToSection }) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const navigate = useNavigate();
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+const NavBar = ({ scrollToSection = null }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/user', {
+          method: 'GET',
+          credentials: 'include', // Ensures cookies are sent
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error("User not authenticated");
+        }
+  
+        const data = await response.json();
+        if (data) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error("User not logged in:", error);
+      }
     };
+  
+    fetchToken();
+  }, []);
+  
 
-    return (
-        <nav className="navbar">
-            <div className="navbar-logo">
-                <span className="logo-part1">Onco</span>
-                <span className="logo-part2">Connect</span>
-            </div>
-            
-            <button 
-                className="mobile-menu-button" 
-                onClick={toggleMenu}
-                aria-label="Toggle navigation menu"
-            >
-                <Menu className="h-6 w-6" />
-            </button>
+  return (
+    <nav className="navbar">
+      {/* Logo */}
+      <div className="navbar-logo" onClick={() => navigate("/")}>
+        <span className="logo-part1">Onco</span>
+        <span className="logo-part2">Connect</span>
+      </div>
 
-            <ul className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
-                <li><a href="/" onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}>Home</a></li>
-                <li><a href="#about-us" onClick={(e) => { e.preventDefault(); scrollToSection("aboutUs"); }}>About Us</a></li>
-                <li><a href="#services" onClick={(e) => { e.preventDefault(); scrollToSection("services"); }}>Services</a></li>
-                <li><a href="/forum" onClick={(e) => { e.preventDefault(); navigate("/forum"); }}>Community</a></li>
-                <li className="mobile-only">
-                    <button className="navbar-button" onClick={() => navigate("/login")}>Login</button>
-                </li>
-            </ul>
+      {/* Mobile Menu Button */}
+      <button
+        className="mobile-menu-button"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label="Toggle navigation menu"
+      >
+        <Menu className="h-6 w-6" />
+      </button>
 
-            <button className="navbar-button desktop-only" onClick={() => navigate("/login")}>Login</button>
-        </nav>
-    );
+      {/* Navigation Links */}
+      <ul className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
+        <li>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              if (scrollToSection) {
+                scrollToSection("home");
+              } else {
+                navigate("/"); // Navigate to Home
+              }
+            }}
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="#about-us"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection ? scrollToSection("aboutUs") : navigate("/about");
+            }}
+          >
+            About Us
+          </a>
+        </li>
+        <li>
+          <a
+            href="#services"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection ? scrollToSection("services") : navigate("/services");
+            }}
+          >
+            Services
+          </a>
+        </li>
+        <li>
+          <a
+            href="/forum"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/forum");
+            }}
+          >
+            Community
+          </a>
+        </li>
+
+        {/* Mobile-Only Button */}
+        <li className="mobile-only">
+          <button
+            className="navbar-button"
+            onClick={() => navigate(isLoggedIn ? "/user-dashboard" : "/login")}
+          >
+            {isLoggedIn ? "My Dashboard" : "Login"}
+          </button>
+        </li>
+      </ul>
+
+      {/* Desktop-Only Button */}
+      <button
+        className="navbar-button desktop-only"
+        onClick={() => navigate(isLoggedIn ? "/user" : "/login")}
+      >
+        {isLoggedIn ? "My Dashboard" : "Login"}
+      </button>
+    </nav>
+  );
 };
 
 export default NavBar;

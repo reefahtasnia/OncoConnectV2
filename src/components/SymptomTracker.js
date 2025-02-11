@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CSS/SymptomTracker.css";
 
 export default function SymptomTracker() {
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split("T")[0],
-    patientId: "P12345", // Auto-filled example
-    patientName: "John Doe", // Auto-filled example
+    patientId: "",
+    patientName: "",
     vitals: {
       systolic: "",
       diastolic: "",
@@ -14,28 +14,15 @@ export default function SymptomTracker() {
       weight: "",
       height: "",
       heartRate: "",
-      oxygenSaturation: "",
     },
     symptoms: {
       overallSeverity: "5",
-      pain: {
-        severity: "0",
-        location: [],
-        fatigue: "0",
-      },
-      nausea: {
-        severity: "0",
-        timing: "",
-      },
+      pain: { severity: "0", location: "" },
+      nausea: { severity: "0", timing: "" },
       appetiteLoss: "0",
       breathingDifficulty: "0",
-      fever: {
-        temperature: "",
-        frequency: "",
-      },
-      skinIssues: {
-        type: "",
-      },
+      fever: { temperature: "", frequency: "" },
+      skinIssues: { type: "" }, // 🛠️ Added default object for skinIssues
     },
     emotional: {
       moodRating: "5",
@@ -47,34 +34,216 @@ export default function SymptomTracker() {
       energyLevel: "5",
       duration: "",
       quality: "",
-      disturbances: {
-        has: false,
-        details: "",
-      },
+      disturbances: { has: false, details: "" },
     },
-    activities: {
-      performTasks: "",
-      needAssistance: false,
-    },
+    activities: { performTasks: "", needAssistance: false },
     additionalNotes: "",
   });
+  const transformFormData = (data) => {
+    return {
+      date: data.date || "",
+      patientId: data.patientId || "",
+      patientName: data.patientName || "",
+      vitals: {
+        systolic: data.vitals.systolic || "",
+        diastolic: data.vitals.diastolic || "",
+        temperature: data.vitals.temperature || "",
+        glucoseLevel: data.vitals.glucoseLevel || "",
+        weight: data.vitals.weight || "",
+        height: data.vitals.height || "",
+        heartRate: data.vitals.heartRate || "",
+      },
+      symptoms: {
+        overallSeverity: String(data.symptoms.overallSeverity || "5"),
+        pain: {
+          severity: String(data.symptoms.pain.severity || "0"),
+          location: data.symptoms.pain.location || "",
+          fatigue: String(data.symptoms.pain.fatigue || "0"),
+        },
+        nausea: {
+          severity: String(data.symptoms.nausea.severity || "0"),
+          timing: data.symptoms.nausea.timing || "",
+        },
+        appetiteLoss: String(data.symptoms.appetiteLoss || "0"),
+        breathingDifficulty: String(data.symptoms.breathingDifficulty || "0"),
+        fever: {
+          temperature: data.symptoms.fever?.temperature || "",
+          frequency: data.symptoms.fever?.frequency || "",
+        },
+        skinIssues: {
+          type: data.symptoms.skinIssues?.type || "",
+        },
+      },
+      emotional: {
+        moodRating: String(data.emotional.moodRating || "5"),
+        anxiety: String(data.emotional.anxiety || "0"),
+        depression: String(data.emotional.depression || "0"),
+        additionalThoughts: data.emotional.additionalThoughts || "",
+      },
+      sleep: {
+        energyLevel: String(data.sleep.energyLevel || "5"),
+        duration: data.sleep.duration || "",
+        quality: data.sleep.quality || "",
+        disturbances: {
+          has: Boolean(data.sleep.disturbances?.has),
+          details: data.sleep.disturbances?.details || "",
+        },
+      },
+      activities: {
+        performTasks: data.activities.performTasks || "",
+        needAssistance: Boolean(data.activities.needAssistance),
+      },
+      additionalNotes: data.additionalNotes || "",
+    };
+  };
+  useEffect(() => {
+    const fetchSymptoms = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/symptoms?date=${formData.date}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+  
+        if (!response.ok) {
+          if (response.status === 404) return; // No previous record, keep form empty
+          throw new Error("Failed to fetch symptom data");
+        }
+  
+        const data = await response.json();
+  
+        // Ensure all required fields exist when setting data
+        setFormData((prev) => ({
+          ...prev,
+          patientId: data.userId || "",
+          patientName: data.patientName || "",
+          vitals: {
+            systolic: data.vitals?.systolic || "",
+            diastolic: data.vitals?.diastolic || "",
+            temperature: data.vitals?.temperature || "",
+            glucoseLevel: data.vitals?.glucoseLevel || "",
+            weight: data.vitals?.weight || "",
+            height: data.vitals?.height || "",
+            heartRate: data.vitals?.heartRate || "",
+          },
+          symptoms: {
+            overallSeverity: data.symptoms?.overallSeverity || "5",
+            pain: {
+              severity: data.symptoms?.pain?.severity || "0",
+              location: data.symptoms?.pain?.location || "",
+              fatigue: data.symptoms?.pain?.fatigue || "0",
+            },
+            nausea: {
+              severity: data.symptoms?.nausea?.severity || "0",
+              timing: data.symptoms?.nausea?.timing || "",
+            },
+            appetiteLoss: data.symptoms?.appetiteLoss || "0",
+            breathingDifficulty: data.symptoms?.breathingDifficulty || "0",
+            fever: {
+              temperature: data.symptoms?.fever?.temperature || "",
+              frequency: data.symptoms?.fever?.frequency || "",
+            },
+            skinIssues: {
+              type: data.symptoms?.skinIssues?.type || "",
+            },
+          },
+          emotional: {
+            moodRating: data.emotional?.moodRating || "5",
+            anxiety: data.emotional?.anxiety || "0",
+            depression: data.emotional?.depression || "0",
+            additionalThoughts: data.emotional?.additionalThoughts || "",
+          },
+          sleep: {
+            energyLevel: data.sleep?.energyLevel || "5",
+            duration: data.sleep?.duration || "",
+            quality: data.sleep?.quality || "",
+            disturbances: {
+              has: data.sleep?.disturbances?.has || false,
+              details: data.sleep?.disturbances?.details || "",
+            },
+          },
+          activities: {
+            performTasks: data.activities?.performTasks || "",
+            needAssistance: data.activities?.needAssistance || false,
+          },
+          additionalNotes: data.additionalNotes || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching symptoms:", error);
+      }
+    };
+  
+    fetchSymptoms();
+  }, [formData.date]);
 
-  const handleSubmit = (e) => {
+  // ✅ Submit Form Data to Server
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    try {
+      const response = await fetch("http://localhost:5001/api/user/symptom", {
+        // Match backend endpoint
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(transformFormData(formData)), // Transform data before sending
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Error saving symptoms");
+      }
+
+      alert("Symptoms saved successfully!");
+    } catch (error) {
+      console.error("Error saving symptoms:", error);
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value; // ✅ Get the string value directly
+    handleChange("date", null, selectedDate);
   };
 
   const handleChange = (section, field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]:
-        typeof field === "string"
-          ? value
-          : {
-              ...(prev[section] || {}), // Ensure section exists
-              [field]: value,
+    setFormData((prev) => {
+      if (typeof field === "object") {
+        // Handle the case where field is the entire object to update
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            ...field,
+          },
+        };
+      }
+
+      if (typeof value === "object" && field) {
+        // Handle nested object updates
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            [field]: {
+              ...(prev[section]?.[field] || {}),
+              ...value,
             },
-    }));
+          },
+        };
+      }
+
+      // Handle simple field updates
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: value,
+        },
+      };
+    });
   };
 
   return (
@@ -93,7 +262,7 @@ export default function SymptomTracker() {
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => handleChange("date", null, e.target.value)}
+                onChange={handleDateChange}
               />
             </div>
             <div className="patient-symptom-field">
@@ -131,7 +300,7 @@ export default function SymptomTracker() {
               </div>
             </div>
             <div className="patient-symptom-field">
-              <label>Temperature (°C)</label>
+              <label>Temperature (°F)</label>
               <input
                 type="number"
                 step="0.1"
@@ -216,27 +385,27 @@ export default function SymptomTracker() {
                 type="range"
                 min="0"
                 max="10"
-                value={formData.symptoms?.pain?.severity || 0}
+                value={formData.symptoms.pain.severity}
                 onChange={(e) =>
-                  handleChange("symptoms", {
-                    pain: {
-                      ...(formData.symptoms?.pain || {}),
-                      severity: e.target.value,
-                    },
+                  handleChange("symptoms", "pain", {
+                    ...formData.symptoms.pain,
+                    severity: e.target.value,
                   })
                 }
               />
+              <span className="patient-symptom-range-value">
+                {formData.symptoms.pain.severity}
+              </span>{" "}
             </div>
+
             <div className="patient-symptom-field">
               <label>Pain Location</label>
               <select
-                value={formData.symptoms.pain.location}
+                value={formData.symptoms?.pain?.location || ""}
                 onChange={(e) =>
-                  handleChange("symptoms", {
-                    pain: {
-                      ...formData.symptoms.pain,
-                      location: e.target.value,
-                    },
+                  handleChange("symptoms", "pain", {
+                    ...formData.symptoms.pain,
+                    location: e.target.value,
                   })
                 }
               >
@@ -342,28 +511,25 @@ export default function SymptomTracker() {
               <input
                 type="number"
                 step="0.1"
-                placeholder="°C"
-                value={formData.symptoms.fever.temperature}
+                placeholder="°F"
+                value={formData.symptoms.fever?.temperature || ""}
                 onChange={(e) =>
-                  handleChange("symptoms", {
-                    fever: {
-                      ...formData.symptoms.fever,
-                      temperature: e.target.value,
-                    },
+                  handleChange("symptoms", "fever", {
+                    ...formData.symptoms.fever, // Ensure fever object exists
+                    temperature: e.target.value, // Update temperature
                   })
                 }
               />
             </div>
+
             <div className="patient-symptom-field">
               <label>Fever Frequency</label>
               <select
-                value={formData.symptoms.fever.frequency}
+                value={formData.symptoms.fever.frequency || ""}
                 onChange={(e) =>
-                  handleChange("symptoms", {
-                    fever: {
-                      ...formData.symptoms.fever,
-                      frequency: e.target.value,
-                    },
+                  handleChange("symptoms", "fever", {
+                    ...(formData.symptoms.fever || {}), // Ensure fever object exists
+                    frequency: e.target.value, // Update frequency
                   })
                 }
               >
@@ -375,13 +541,11 @@ export default function SymptomTracker() {
             <div className="patient-symptom-field">
               <label>Skin Issues</label>
               <select
-                value={formData.symptoms.skinIssues.type}
+                value={formData.symptoms.skinIssues.type || ""}
                 onChange={(e) =>
-                  handleChange("symptoms", {
-                    skinIssues: {
-                      ...formData.symptoms.skinIssues,
-                      type: e.target.value,
-                    },
+                  handleChange("symptoms", "skinIssues", {
+                    ...(formData.symptoms.skinIssues || {}), // Ensure skinIssues object exists
+                    type: e.target.value, // Update type
                   })
                 }
               >
@@ -394,7 +558,6 @@ export default function SymptomTracker() {
             </div>
           </div>
         </section>
-
         {/* Emotional Well-being */}
         <section className="patient-symptom-section">
           <h2>Emotional Well-being</h2>
@@ -410,6 +573,9 @@ export default function SymptomTracker() {
                   handleChange("emotional", "moodRating", e.target.value)
                 }
               />
+              <span className="patient-symptom-range-value">
+                {formData.emotional.moodRating}
+              </span>{" "}
             </div>
             <div className="patient-symptom-field">
               <label>Anxiety (0-3)</label>
@@ -442,7 +608,7 @@ export default function SymptomTracker() {
             <div className="patient-symptom-field">
               <label>Additional Thoughts</label>
               <textarea
-                value={formData.emotional.additionalThoughts}
+                value={formData.emotional.additionalThoughts || ""} // ✅ Ensure it's always a string
                 onChange={(e) =>
                   handleChange(
                     "emotional",
@@ -507,29 +673,37 @@ export default function SymptomTracker() {
               <label>Sleep Disturbances</label>
               <div className="patient-symptom-checkbox">
                 <input
-                  type="checkbox"
-                  checked={formData.sleep.disturbances.has}
-                  onChange={(e) =>
-                    handleChange("sleep", {
-                      disturbances: {
-                        ...formData.sleep.disturbances,
-                        has: e.target.checked,
-                      },
-                    })
+                  type="radio"
+                  name="sleepDisturbance"
+                  checked={formData.sleep.disturbances.has === true}
+                  onChange={() =>
+                    handleChange("sleep", "disturbances", { has: true })
                   }
                 />
                 <span>Yes</span>
+
+                <input
+                  type="radio"
+                  name="sleepDisturbance"
+                  checked={formData.sleep.disturbances.has === false}
+                  onChange={() =>
+                    handleChange("sleep", "disturbances", {
+                      has: false,
+                      details: "",
+                    })
+                  }
+                />
+                <span>No</span>
               </div>
+
               {formData.sleep.disturbances.has && (
                 <textarea
                   placeholder="Please provide details about sleep disturbances..."
                   value={formData.sleep.disturbances.details}
                   onChange={(e) =>
-                    handleChange("sleep", {
-                      disturbances: {
-                        ...formData.sleep.disturbances,
-                        details: e.target.value,
-                      },
+                    handleChange("sleep", "disturbances", {
+                      ...(formData.sleep.disturbances || {}),
+                      details: e.target.value,
                     })
                   }
                 />
@@ -560,17 +734,24 @@ export default function SymptomTracker() {
               <label>Need for Assistance</label>
               <div className="patient-symptom-checkbox">
                 <input
-                  type="checkbox"
-                  checked={formData.activities.needAssistance}
-                  onChange={(e) =>
-                    handleChange(
-                      "activities",
-                      "needAssistance",
-                      e.target.checked
-                    )
+                  type="radio"
+                  name="needAssistance"
+                  checked={formData.activities.needAssistance === true}
+                  onChange={() =>
+                    handleChange("activities", "needAssistance", true)
                   }
                 />
                 <span>Yes</span>
+
+                <input
+                  type="radio"
+                  name="needAssistance"
+                  checked={formData.activities.needAssistance === false}
+                  onChange={() =>
+                    handleChange("activities", "needAssistance", false)
+                  }
+                />
+                <span>No</span>
               </div>
             </div>
           </div>
@@ -580,15 +761,13 @@ export default function SymptomTracker() {
         <section className="patient-symptom-section">
           <h2>Additional Notes</h2>
           <div className="patient-symptom-field">
-            <label>
-              Anything else you'd like to share about how you're feeling today?
-            </label>
+            <label>Additional Notes</label>
             <textarea
-              value={formData.additionalNotes}
+              value={formData.additionalNotes || ""}
               onChange={(e) =>
                 handleChange("additionalNotes", null, e.target.value)
               }
-              rows="4"
+              placeholder="Any other information you'd like to share..."
             />
           </div>
         </section>

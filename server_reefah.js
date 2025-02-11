@@ -1,18 +1,27 @@
-require("dotenv").config({ path: ".envr" });
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const router = express.Router();
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"], // Add 'Cookie' here
+    exposedHeaders: ["set-cookie"], // Add this line
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -22,10 +31,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB"))
+  .then(() => console.log("Connected to MongoDB OncoConnect"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const { User, Doctor } = require("./tableSchema.js");
+const { User, Doctor, PatientSymptom } = require("./tableSchema.js");
 
 app.post("/api/signup", async (req, res) => {
   try {
@@ -163,36 +172,56 @@ app.post("/api/login", async (req, res) => {
 
     if (userType === "patient") {
       const user = await User.findOne({ email });
-
+      console.log(" user data:", user); 
       if (!user || user.password !== password) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
-
-      // Check if the user profile is incomplete
-      const requiredFields = ["firstName", "lastName", "phone", "gender", "dateOfBirth", "address", "treatmentStatus"];
-      const isProfileIncomplete = requiredFields.some(field => !user[field]);
+      console.log("Fetched user data:", user);
+      // Check if the user profile is complete or not
+      const requiredFields = [
+        "firstName",
+        "lastName",
+        "phone",
+        "gender",
+        "dateOfBirth",
+        "address",
+        "treatmentStatus",
+      ];
+      const isProfileIncomplete = requiredFields.some((field) => !user[field]);
 
       if (isProfileIncomplete) {
+        console.log("User profile is incomplete");
         return res.status(200).json({ redirect: "/editProfile" });
       }
+      console.log("in");
+      let token;
+try {
+  token = jwt.sign(
+    { userId: user._id, userType: "patient" },
+    JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+} catch (tokenError) {
+  console.error("JWT Token Generation Error:", tokenError);
+  return res.status(500).json({ message: "Token generation failed" });
+}
 
-      // Generate token
-      const token = jwt.sign(
-        { userId: user._id, userType: user.userType },
-        JWT_SECRET,
-        { expiresIn: "7d" }
-      );
-
+      console.log("Token:", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: "lax",
+        path: "/", // Add this to ensure cookie is sent for all paths
       });
-
+      console.log("Token:", token);
+      // console.log("Cookie being set:", {
+      //   token: token,
+      //   headers: res.getHeaders()
+      // });
+      console.log("User logged in:", user, email);
       return res.status(200).json({ redirect: "/user" });
-    } 
-    
-    else if (userType === "doctor") {
+    } else if (userType === "doctor") {
       const doctor = await Doctor.findOne({ email });
 
       if (!doctor || doctor.password !== password) {
@@ -205,46 +234,47 @@ app.post("/api/login", async (req, res) => {
         JWT_SECRET,
         { expiresIn: "7d" }
       );
-
+      //console.log("Token:", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: "lax",
+        path: "/", // Add this to ensure cookie is sent for all paths
       });
-
+      console.log("Doctor logged in:", doctor.email);
       return res.status(200).json({ redirect: "/doctor" });
-    } 
-    
-    else {
+    } else {
       return res.status(400).json({ message: "Invalid user type" });
     }
-
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 
+
 app.post("/api/edit-profile", async (req, res) => {
   try {
-    const { 
-      email, 
-      firstName, 
-      lastName, 
-      phone, 
-      genderType, 
-      birthMonth, 
-      birthDay, 
-      birthYear, 
-      country, 
-      state, 
-      city, 
-      roadNumber, 
-      houseNumber, 
-      currentStatus, 
-      emergencyName, 
-      emergencyEmail, 
-      emergencyPhone, 
-      aboutMe 
+    const {
+      username,
+      email,
+      firstName,
+      lastName,
+      phone,
+      genderType,
+      birthMonth,
+      birthDay,
+      birthYear,
+      country,
+      state,
+      city,
+      roadNumber,
+      houseNumber,
+      currentStatus,
+      emergencyName,
+      emergencyEmail,
+      emergencyPhone,
+      aboutMe,
     } = req.body;
 
     if (!email) {
@@ -268,14 +298,16 @@ app.post("/api/edit-profile", async (req, res) => {
     };
 
     // Construct date of birth (Ensure valid Date object)
-    const dateOfBirth = birthMonth && birthDay && birthYear
-      ? new Date(`${birthYear}-${birthMonth}-${birthDay}`)
-      : null;
+    const dateOfBirth =
+      birthMonth && birthDay && birthYear
+        ? new Date(`${birthYear}-${birthMonth}-${birthDay}`)
+        : null;
 
     // Update user profile in MongoDB
     const updatedUser = await User.findOneAndUpdate(
       { email },
       {
+        username,
         firstName,
         lastName,
         phone,
@@ -294,39 +326,301 @@ app.post("/api/edit-profile", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
-
+    res
+      .status(200)
+      .json({ message: "Profile updated successfully", user: updatedUser });
   } catch (err) {
     console.error("Error updating profile:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 
-
-// API Route: Get Current User (Protected)
+// Protected route to get user data
 app.get("/api/user", async (req, res) => {
   try {
     const token = req.cookies.token;
+    console.log("Token:", token);
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+      });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized, please log in again" });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await Users.findOne({
-      _id: new mongoose.Types.ObjectId(decoded.userId),
-    }).select("-passwordHash");
+    console.log("Decoded token:", decoded.userId);
+    const user = await User.findById(decoded.userId).select("-password");
 
-    res.status(200).json(user);
+    if (!user) {
+      console.log("User not found");
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+      });
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("User found:", user.email);
+    res.status(200).json({
+      username: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth,
+      address: user.address,
+      treatmentStatus: user.treatmentStatus,
+      emergencyContact: user.emergencyContact,
+      aboutMe: user.aboutMe,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error fetching user data:", err);
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+    });
+    res.status(500).json({ message: "Server error, please log in again" });
   }
 });
 
+// ✅ **GET API - Fetch User Profile Data**
+app.get("/api/user/profile", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, please log in" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decoded.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      username: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      country: user.address?.country || "",
+      state: user.address?.region || "",
+      city: user.address?.city || "",
+      roadNumber: user.address?.roadno || "",
+      houseNumber: user.address?.houseno || "",
+      birthMonth: user.dateOfBirth
+        ? new Date(user.dateOfBirth).toLocaleString("en-US", { month: "long" })
+        : "",
+      birthDay: user.dateOfBirth ? new Date(user.dateOfBirth).getDate() : "",
+      birthYear: user.dateOfBirth
+        ? new Date(user.dateOfBirth).getFullYear()
+        : "",
+      phone: user.phone,
+      phoneCode: "+880", // Default Bangladesh Code, modify if necessary
+      genderRange: user.gender,
+      currentStatus: user.treatmentStatus,
+      emergencyName: user.emergencyContact?.name || "",
+      emergencyEmail: user.emergencyContact?.email || "",
+      emergencyPhone: user.emergencyContact?.phone || "",
+      emergencyPhoneCode: "+880",
+      aboutMe: user.aboutMe,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error, please try again" });
+  }
+});
+
+// ✅ **POST API - Update User Profile**
+app.post("/api/user/profile", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, please log in" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+
+    const {
+      username,
+      firstName,
+      lastName,
+      email,
+      country,
+      state,
+      city,
+      roadNumber,
+      houseNumber,
+      birthMonth,
+      birthDay,
+      birthYear,
+      phone,
+      phoneCode,
+      genderRange,
+      currentStatus,
+      emergencyName,
+      emergencyEmail,
+      emergencyPhone,
+      emergencyPhoneCode,
+      aboutMe,
+    } = req.body;
+
+    const formattedDate =
+      birthYear && birthMonth && birthDay
+        ? new Date(`${birthMonth} ${birthDay}, ${birthYear}`)
+        : null;
+
+    const updateFields = {
+      firstName,
+      lastName,
+      email,
+      phone: phoneCode + phone,
+      gender: genderRange,
+      dateOfBirth: formattedDate,
+      address: {
+        country,
+        region: state,
+        city,
+        roadno: roadNumber,
+        houseno: houseNumber,
+      },
+      treatmentStatus: currentStatus,
+      emergencyContact: {
+        name: emergencyName,
+        email: emergencyEmail,
+        phone: emergencyPhoneCode + emergencyPhone,
+      },
+      aboutMe,
+    };
+
+    await User.findByIdAndUpdate(userId, updateFields, { new: true });
+
+    res.status(200).json({ message: "Profile updated successfully!" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Failed to update profile" });
+  }
+});
+
+// ✅ **POST API - Save or Update Patient Symptoms**
+app.post("/api/symptoms", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, please log in" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Add validation for required fields
+    const requiredFields = ['date', 'symptoms', 'vitals'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({ message: `${field} is required` });
+      }
+    }
+
+    let { date, ...symptomData } = req.body;
+
+    const formattedDate = new Date(date);
+    if (isNaN(formattedDate)) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    const newSymptom = new PatientSymptom({
+      user_id: userId,
+      date: formattedDate.toISOString().split("T")[0],
+      ...symptomData,
+    });
+
+    await newSymptom.save();
+    res.status(201).json({ message: "Symptoms recorded successfully!" });
+  } catch (error) {
+    console.error("Error saving symptoms:", error);
+    res.status(500).json({ message: "Server error while saving symptoms" });
+  }
+});
+
+
+app.get("/api/symptoms", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, please log in" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+    let { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ message: "Date is required in query params" });
+    }
+
+    // ✅ Convert date to valid format
+    const formattedDate = new Date(date);
+    if (isNaN(formattedDate)) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    const symptomRecord = await PatientSymptom.findOne({
+      user_id: userId,
+      date: formattedDate.toISOString().split("T")[0],
+    });
+
+    if (!symptomRecord) {
+      return res.status(404).json({ message: "No symptoms found for this date" });
+    }
+
+    res.status(200).json(symptomRecord);
+  } catch (error) {
+    console.error("Error fetching symptoms:", error);
+    res.status(500).json({ message: "Server error while fetching symptoms" });
+  }
+});
+
+
+
+
 // API Route: Logout
 app.post("/api/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict",
+  });
+  // Respond with a success message
   res.status(200).json({ message: "Logged out successfully" });
 });
 
+const verifyToken = (req, res, next) => {
+  console.log("Cookies:", req.cookies); 
+  const token = req.cookies.token; // Read token from cookies
+  
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded User ID:", decoded.userId);
+    req.userId = decoded.userId; // Attach userId to request
+
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = router;
