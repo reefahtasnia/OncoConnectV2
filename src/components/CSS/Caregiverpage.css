@@ -95,7 +95,7 @@
 }
 
 /* Download Button */
-.read-more {
+.read-morec {
   color: #8800cc;
   text-decoration: none;
   font-weight: 600;
@@ -103,16 +103,16 @@
   
 }
 
-.read-more:hover {
+.read-morec:hover {
   color: #004080;
 }
 
-.read-more .arrow {
+.read-morec .arrow {
   margin-left: 0.25rem;
   transition: transform 0.3s ease;
 }
 
-.read-more:hover .arrow {
+.read-morec:hover .arrow {
   transform: translateX(4px);
 }
 

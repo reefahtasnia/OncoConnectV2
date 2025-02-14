@@ -80,7 +80,7 @@ const CaregiverPage = () => {
               </button>
               <a 
                 href={`http://localhost:5002/api/download-pdf/${article.pdf.split('/').pop()}`} 
-                className="read-more" 
+                className="read-morec" 
                 download
               >
                 Download PDF <span className="arrow">↓</span>
