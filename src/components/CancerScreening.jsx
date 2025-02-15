@@ -10,7 +10,6 @@ const CancerScreening = () => {
   const [screeningData, setScreeningData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Display 4 items per page
 
@@ -36,8 +35,7 @@ const CancerScreening = () => {
     setSearchInput(event.target.value);
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+ 
 
   // Filtering based on search input
   const filteredScreenings = screeningData.filter(screening =>
@@ -111,7 +109,7 @@ const CancerScreening = () => {
                     {screening.details.map((detail, index) => (
                       <p key={index}>{detail}</p>
                     ))}
-                    <button className="toggle-btn" onClick={openModal}>Book Appointment</button>
+                    
                   </div>
                 )}
               </div>
@@ -148,46 +146,7 @@ const CancerScreening = () => {
           </button>
         </div>
 
-        {/* Modal for Booking Appointment */}
-        {isModalOpen && (
-          <div className={`modal ${isModalOpen ? 'show' : ''}`}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <h2>Add Appointment</h2>
-                <span className="close" onClick={closeModal}>&times;</span>
-              </div>
-              <form className="appointment-form">
-                <div className="form-row">
-                  <label>Name</label>
-                  <input type="text" placeholder="Write your name" required />
-                </div>
-                <div className="form-row">
-                  <label>Date</label>
-                  <input type="date" required />
-                </div>
-                <div className="form-row">
-                  <label>Time</label>
-                  <input type="time" required />
-                </div>
-                <div className="form-row">
-                  <label>Medium</label>
-                  <select required>
-                    <option value="online">In-person</option>
-                    <option value="in-person">Home-Test</option>
-                  </select>
-                </div>
-                <div className="form-row">
-                  <label>Phone Number</label>
-                  <input type="text" placeholder="01..." required />
-                </div>
-                <div className="form-actions">
-                  <button type="button" className="cancel-btn" onClick={closeModal}>Cancel</button>
-                  <button type="submit" className="confirm-btn">Confirm</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+     
       </div>
       <Footer />
     </>
