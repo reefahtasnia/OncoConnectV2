@@ -23,7 +23,7 @@ import UserDiary from './user-dashboard/diary.js';
 import UserForum from './user-dashboard/forum.js';
 import Mental from './components/MentalHealthPage.js';
 import Donation from './components/Donation.js';
-import Ai from './components/Ai.js';
+import Ai from './components/Upload.js';
 import Survival from './components/Survival.js';
 import Survivalkid from './components/Landingkid.js';
 import Bunny from './components/Bunny.js';
