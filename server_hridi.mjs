@@ -35,59 +35,125 @@ mongoose
     .catch((err) => console.error('MongoDB connection error:', err));
 
   
- 
-  const DoctorFinderSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    image: { type: String, required: true }, // Relative path or URL to the image
-    credentials: { type: String, required: true }, // Medical degrees and certifications
-    hospital: { type: String, required: true }, // Associated hospital or clinic
-    location: { type: String, required: true }, // City or district
-    area: { type: String, required: true }, // Specific area within the location
-    specialization: { type: String, required: true }, // Doctor's field of expertise
-    rating: { type: Number, required: true, min: 1, max: 5 }, // Rating between 1-5
-    reviews: { type: Number, required: true }, // Number of reviews
-    about: { type: String, required: true }, // Detailed description of the doctor
-    workingHours: { type: String, required: true }, // Available hours and closed days
-    maxpatient: { type: Number, required: true },
-}, { collection: 'DoctorFinder' }); // Explicitly set the collection name
 
-  // Create Model
-  const DoctorFinder = mongoose.model('DoctorFinder', DoctorFinderSchema);
-  
+// Doctor Schema
+const doctorSchema = new mongoose.Schema({
+  fullName: { type: String },
+  gender: { type: String },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  BMDC: { type: String, unique: true },
+  phoneNumber: { type: String },
+  specialization: { type: String },
+  preferredPracticeArea: { type: String },
+  practiceSchedule: [
+    {
+      hospitalName: String,
+      address: String,
+      area: String,
+      city: String,
+      startTime: String,
+      endTime: String,
+      daysAvailable: [String],
+    },
+  ],
+  preferredPatientNo: { type: Number },
+  dateOfBirth: { type: Date },
+  experience: { type: Number },
+  certifications: [{ name: String, year: Number }],
+  isVerified: { type: Boolean, default: false },
+  preferredCounseling: {
+    type: String,
+    enum: ["Physical", "Call", "Online"],
+  },
+  counsellingtypes: {
+    type: [String], // Allow multiple options
+    enum: [
+      "Couples Counselling",
+      "Psychodynamic Therapy",
+      "Career Counseling",
+      "Cognitive Behavioral Therapy",
+      "Mental Health Counseling",
+      "Group Therapy",
+      "Family Therapy",
+      "Grief Counseling",
+      "Abuse Counseling",
+      "Behavioral Therapy",
+    ],
+  },
+  consultationFees: { type: Number },
+  imagePath: { type: String },
+  ratings: { type: Number, min: 0, max: 5, default: 0 }, // Average Rating
+  reviews: [
+    {
+      patientName: String,
+      comment: String,
+      rating: { type: Number, min: 1, max: 5 },
+    },
+  ],
+  aboutDr: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+ 
+const Doctor = mongoose.model("doctors", doctorSchema);
 
 
 
 // Filter API Endpoint for Doctors
+// Filter API Endpoint for Doctors
 app.get('/api/doctor_finder', async (req, res) => {
-  let filteredDoctors = await DoctorFinder.find(); // Fetch all doctors initially
+  // Fetch doctors with 'cancer' in specialization (case-insensitive)
+  let filteredDoctors = await Doctor.find({
+    specialization: /cancer/i, // Using regex to match 'cancer' in specialization
+  });
+  console.log("Fetched doctors with 'cancer' in specialization:", filteredDoctors.length);
 
   const { location, specialization, rating } = req.query;
+  console.log("Received query parameters:", { location, specialization, rating });
 
   // Filter by location
   if (location) {
+    console.log("Filtering by location:", location);
     if (location === "Dhaka") {
-      // Filter only doctors in Dhaka
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() === "dhaka");
+      filteredDoctors = filteredDoctors.filter(doctor =>
+        doctor.practiceSchedule.some((schedule) => schedule.city.toLowerCase() === "dhaka")
+      );
+      console.log("Filtered doctors in Dhaka:", filteredDoctors.length);
     } else if (location === "Outside Dhaka") {
-      // Filter doctors not in Dhaka
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() !== "dhaka");
+      filteredDoctors = filteredDoctors.filter(doctor =>
+        doctor.practiceSchedule.some((schedule) => schedule.city.toLowerCase() !== "dhaka")
+      );
+      console.log("Filtered doctors outside Dhaka:", filteredDoctors.length);
     }
   }
 
-
-  // Filter by specialization (cancer type)
+  // Filter by specialization (cancer type) if provided
   if (specialization) {
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.specialization.toLowerCase() === specialization.toLowerCase());
+    console.log("Filtering by specialization:", specialization);
+    filteredDoctors = filteredDoctors.filter(doctor =>
+      doctor.specialization.toLowerCase() === specialization.toLowerCase()
+    );
+    console.log("Filtered doctors by specialization:", filteredDoctors.length);
   }
 
-  // Filter by rating
+  // Filter by rating if provided
   if (rating) {
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.rating.toString() === rating);
+    console.log("Filtering by rating:", rating);
+    filteredDoctors = filteredDoctors.filter(doctor =>
+      doctor.ratings.toString() === rating
+    );
+    console.log("Filtered doctors by rating:", filteredDoctors.length);
   }
- 
 
-  res.json(filteredDoctors); // Return filtered doctors list
+  // Return the filtered list of doctors
+  console.log("Final filtered doctors:", filteredDoctors.length);
+  res.json(filteredDoctors);
 });
+
+
+
+
 
 
 
