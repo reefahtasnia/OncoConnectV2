@@ -1,109 +1,125 @@
-import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import axios from "axios"
-import "./CSS/QuizAssessment.css"
-import Footer from "./Footer"
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import "./CSS/QuizAssessment.css";
+import Footer from "./Footer";
 
 const QuizAssessment = () => {
-  const { cancerType } = useParams()
-  const navigate = useNavigate()
+  const { cancerType } = useParams();
+  const navigate = useNavigate();
 
-  const user_id = "65a2f7b9d2e6e90f9c5a1234"
-
-  const [activeCategory, setActiveCategory] = useState(null)
-  const [categories, setCategories] = useState([])
-  const [questions, setQuestions] = useState([])
-  const [selectedAnswers, setSelectedAnswers] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [allQuestions, setAllQuestions] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [user_id, setUserId] = useState(null); // State to store user ID
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [allQuestions, setAllQuestions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [finalResult, setFinalResult] = useState(null); // Store final result
   const [isResultModalOpen, setIsResultModalOpen] = useState(false); // Toggle modal
+
+  // Fetch user ID from the API
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get("http://localhost:5002/api/get-userid", {
+          withCredentials: true, // Ensure cookies are sent with the request
+        });
+        setUserId(response.data.user_id); // Set the user ID from the response
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+        setError("Failed to fetch user ID");
+      }
+    };
+
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/api/categories")
-        setCategories(response.data)
+        const response = await axios.get("http://localhost:5002/api/categories");
+        setCategories(response.data);
         if (response.data.length > 0) {
-          setActiveCategory(response.data[0]._id)
+          setActiveCategory(response.data[0]._id);
         }
       } catch (err) {
-        setError("Failed to load categories")
+        setError("Failed to load categories");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchAllQuestions = async () => {
-      if (!cancerType || categories.length === 0) return
+      if (!cancerType || categories.length === 0) return;
 
       try {
         const allQuestionsPromises = categories.map((category) =>
           axios.get("http://localhost:5002/api/questions", {
             params: { cancerId: cancerType, categoryId: category._id },
-          }),
-        )
+          })
+        );
 
-        const responses = await Promise.all(allQuestionsPromises)
-        const allQuestionsData = responses.flatMap((response) => response.data)
-        setAllQuestions(allQuestionsData)
+        const responses = await Promise.all(allQuestionsPromises);
+        const allQuestionsData = responses.flatMap((response) => response.data);
+        setAllQuestions(allQuestionsData);
       } catch (err) {
-        setError("Failed to load all questions")
+        setError("Failed to load all questions");
       }
-    }
+    };
 
-    fetchAllQuestions()
-  }, [cancerType, categories])
+    fetchAllQuestions();
+  }, [cancerType, categories]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      if (!activeCategory || !cancerType) return
+      if (!activeCategory || !cancerType) return;
 
       try {
         const response = await axios.get("http://localhost:5002/api/questions", {
           params: { cancerId: cancerType, categoryId: activeCategory },
-        })
-        setQuestions(response.data)
+        });
+        setQuestions(response.data);
       } catch (err) {
-        setError("Failed to load questions")
+        setError("Failed to load questions");
       }
-    }
+    };
 
-    fetchQuestions()
-  }, [cancerType, activeCategory])
+    fetchQuestions();
+  }, [cancerType, activeCategory]);
 
   const handleCategoryChange = (category) => {
-    setActiveCategory(category)
-  }
+    setActiveCategory(category);
+  };
 
   const handleAnswerSelect = (question_id, answer_id) => {
     setSelectedAnswers((prev) => ({
       ...prev,
       [question_id]: answer_id,
-    }))
-  }
+    }));
+  };
 
   const areAllQuestionsAnswered = () => {
-    return allQuestions.every((question) => selectedAnswers[question._id])
-  }
+    return allQuestions.every((question) => selectedAnswers[question._id]);
+  };
 
   const handleSubmit = async () => {
     if (!areAllQuestionsAnswered()) {
       setIsModalOpen(true);
       return;
     }
-  
+
     const responses = Object.entries(selectedAnswers).map(([question_id, answer_id]) => ({
       question_id,
       answer_id,
     }));
-  
+
     try {
       // Submit user responses
       await axios.post("http://localhost:5002/api/user-responses", {
@@ -111,12 +127,12 @@ const QuizAssessment = () => {
         cancer_id: cancerType,
         responses,
       });
-  
+
       // Fetch final verdict (including total score and verdict text)
       const resultResponse = await axios.get("http://localhost:5002/api/user-result", {
         params: { user_id, cancer_id: cancerType },
       });
-  
+
       setFinalResult(resultResponse.data);
       setIsResultModalOpen(true); // Open result modal
     } catch (error) {
@@ -124,10 +140,9 @@ const QuizAssessment = () => {
       alert("Failed to submit responses.");
     }
   };
-  
 
-  if (loading) return <p>Loading categories...</p>
-  if (error) return <p className="error-message">{error}</p>
+  if (loading) return <p>Loading categories...</p>;
+  if (error) return <p className="error-message">{error}</p>;
 
   return (
     <div className="quiz-container">
@@ -225,7 +240,7 @@ const QuizAssessment = () => {
           </div>
         </div>
       )}
-      
+
       {/* Modal for showing the result */}
       {isResultModalOpen && finalResult && (
         <div className="modal-overlay">
@@ -242,7 +257,7 @@ const QuizAssessment = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default QuizAssessment
+export default QuizAssessment;
