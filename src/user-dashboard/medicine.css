@@ -164,6 +164,397 @@
   gap: 8px;
   padding: 16px;
   background: white;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timing-option:hover,
+.timing-option.selected {
+  background: #ede9fe;
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.timing-option.selected {
+  background: #8b5cf6;
+  color: white;
+}
+
+
+.notification-time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  color: #8b5cf6;
+}
+
+.notification-time select {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.notification-time select::-ms-expand {
+  display: none;
+}
+
+.notification-time input[type="time"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #374151;
+  background: transparent;
+}
+
+.add-time {
+  color: #8b5cf6;
+  background: #f3f0ff;
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.add-time:hover {
+  background: #ede9fe;
+}
+
+.submit-btn {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background: #7c3aed;
+}
+
+.days-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.day-picker {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+  color: #374151;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frequency-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.frequency-input input {
+  width: 48px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.frequency-input span {
+  color: #6b7280;
+}
+.days-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.days-select option {
+  padding: 8px;
+}
+
+.days-select option:checked {
+  background-color: #4299e1;
+  color: white;
+}
+.days-selection-group {
+  margin-top: 16px;
+}
+
+.days-selection {
+  display: flex;
+  flex-direction: start;
+  gap: 12px;
+  margin-top: 8px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.day-option {
+  display: flex;
+  align-items: center;
+}
+
+.day-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.day-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #8b5cf6;
+  border-radius: 4px;
+  accent-color: #8b5cf6;
+  cursor: pointer;
+}
+
+.day-label input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.day-label input[type="checkbox"]:disabled + span {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.day-label span {
+  font-size: 14px;
+  color: #374151;
+  flex: 1;
+}
+
+.days-helper {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .days-selection {
+    padding: 12px;
+  }
+  
+  .day-option {
+    padding: 4px 0;
+  }
+}
+@media (max-width: 480px) {
+  .medicines-content {
+    padding: 16px;
+    margin-bottom: 70px;
+  }
+
+  .amount-duration {
+    flex-direction: column;
+  }
+
+  .timing-options {
+    flex-direction: column;
+  }
+
+  .timing-option {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+/* .medicines-content {
+  padding: 24px;
+}
+
+.medicines-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .medicines-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.daily-review-section,
+.add-plan-section {
+  background: #f3f0ff;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.medicine-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.medicine-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.medicine-icon {
+  color: #8b5cf6;
+  background: #f3f0ff;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.medicine-details {
+  flex: 1;
+}
+
+.medicine-details h3 {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.medicine-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.dot {
+  color: #d1d5db;
+}
+
+.status {
+  font-weight: 500;
+}
+
+.status.completed {
+  color: #10b981;
+}
+
+.status.skipped {
+  color: #ef4444;
+}
+
+.status.before-eating {
+  color: #f59e0b;
+}
+
+.medicine-action {
+  color: #8b5cf6;
+  padding: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.add-plan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.pills-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  color: #8b5cf6;
+}
+
+.pills-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.amount-duration {
+  display: flex;
+  gap: 12px;
+}
+
+.pills-amount,
+.duration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.pills-amount input,
+.duration input {
+  width: 48px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.timing-options {
+  display: flex;
+  gap: 12px;
+}
+
+.timing-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: white;
   border: none;
   border-radius: 12px;
   color: #6b7280;
@@ -251,4 +642,4 @@
     flex-direction: row;
     justify-content: center;
   }
-}
+} */

@@ -33,17 +33,27 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
 const AppointmentSchema = new mongoose.Schema(
   {
-    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
-    user_name: { type: String, required: true }, // Name of the user booking the appointment
-    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "doctors" }, // Reference to DoctorFinder model
-    doctor_name: { type: String, required: true }, // Name of the doctor
-    date: { type: Date, required: true }, // Appointment date
-    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "users",
+    }, 
+    user_name: { type: String, required: true }, 
+    doctor_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "doctors",
+    }, 
+    doctor_name: { type: String, required: true }, 
+    date: { type: Date, required: true }, 
+    medium: { type: String, required: true, enum: ["In-person", "Online"] },
   },
-  { collection: "appointform" } // Explicitly set the collection name
+  { collection: "appointform" } 
 );
+
 // Doctor Schema
 const doctorSchema = new mongoose.Schema({
   fullName: { type: String },
@@ -104,7 +114,11 @@ const doctorSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 const patientSymptomSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Foreign key reference to User
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }, // Foreign key reference to User
   date: { type: Date, required: true },
 
   // Vital Signs
@@ -123,7 +137,10 @@ const patientSymptomSchema = new mongoose.Schema({
 
   fatigue_lvl: { type: Number, min: 0, max: 10 },
   vomiting_lvl: { type: Number, min: 0, max: 10 },
-  vom_time: { type: String, enum: ["morning", "after meals", "evening", "random"] },
+  vom_time: {
+    type: String,
+    enum: ["morning", "after meals", "evening", "random"],
+  },
 
   breath_diff: { type: Number, min: 0, max: 10 },
   appetite_loss: { type: Number, min: 0, max: 10 },
@@ -153,17 +170,39 @@ const patientSymptomSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+// Define the Medicine schema
+const medicineSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
+  amount: { type: Number, required: true }, // Number of pills
+  daysPerWeek: { type: Number, required: true }, // How many days in a week
+  selectedDays: [{ 
+    type: String,
+    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+  }],
+  foodTiming: {
+    type: String,
+    enum: ['Before', 'After', 'Any'],
+    required: true
+  },
+  timesPerDay: { type: Number, required: true },
+  notificationTimes: [{ 
+    time: { type: String, required: true }, // Store as HH:mm format
+    enabled: { type: Boolean, default: true }
+  }],
+  taken: { type: Boolean, default: false },
+  nextDoseDate: { type: Date, required: true },
+  dateMedicineWasAdded: { type: Date, required: true }  // New field for the next dose date
+});
+
+
 
 // Register Models
-//const User = db.model("Users", userSchema);
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
-
-//const Doctor = db.model("Doctors", doctorSchema);
+const Medicine = mongoose.model('Medicine', medicineSchema);
 const Doctor = mongoose.model("Doctors", doctorSchema);
 const PatientSymptom = mongoose.model("PatientSymptom", patientSymptomSchema);
 
 // Export Both Models
-//module.exports = { User, Doctor };
-module.exports = { User, Doctor, PatientSymptom, Appointment };
-
+module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine };

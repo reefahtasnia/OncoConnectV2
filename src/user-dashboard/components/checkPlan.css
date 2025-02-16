@@ -1,0 +1,204 @@
+.checkplan-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure it's above everything */
+  overflow-y: auto; /* Allow scrolling if popup is too tall */
+  padding: 20px;
+}
+
+.checkplan-container {
+  background: #f3f0ff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 100px;
+  /*margin: 16px;*/
+  padding: 24px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 #f3f0ff;
+}
+.checkplan-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkplan-container::-webkit-scrollbar-track {
+  background: #f3f0ff;
+}
+
+.checkplan-container::-webkit-scrollbar-thumb {
+  background-color: #8b5cf6;
+  border-radius: 4px;
+  border: 2px solid #f3f0ff;
+}
+
+.checkplan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.checkplan-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.checkplan-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.checkplan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.checkplan-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkplan-group label {
+  font-weight: 500;
+  color: #111827;
+}
+
+.checkplan-pills-input,
+.checkplan-amount,
+.checkplan-frequency,
+.checkplan-notification {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #374151;
+}
+
+.checkplan-amount {
+  width: fit-content;
+}
+
+.checkplan-timing {
+  display: flex;
+  gap: 12px;
+}
+
+.checkplan-timing-btn {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  aspect-ratio: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.checkplan-timing-btn.active {
+  background: #8b5cf6;
+  color: white;
+}
+
+.checkplan-add {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkplan-radio {
+  display: flex;
+  gap: 24px;
+}
+
+.checkplan-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkplan-radio-label input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #8b5cf6;
+  border-radius: 50%;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkplan-radio-label input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #8b5cf6;
+  border-radius: 50%;
+}
+
+.checkplan-submit {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 12px;
+}
+
+.checkplan-submit:hover {
+  background: #7c3aed;
+}
+
+@media (max-width: 480px) {
+  .checkplan-overlay {
+    padding: 0; /* Remove padding on mobile */
+    align-items: flex-end; /* Align to bottom on mobile */
+  }
+
+  .checkplan-container {
+    margin: 0; /* Remove margin on mobile */
+    border-radius: 24px 24px 0 0; /* Round only top corners on mobile */
+    max-height: 85vh; /* Slightly smaller on mobile */
+  }
+}

@@ -86,15 +86,6 @@ export default function UserDashboardPage() {
       console.error('Error logging out:', error);
     }
   };
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post('http://localhost:5001/api/logout', {}, { withCredentials: true });
-  //     setUserData(null);
-  //     window.location.href = '/login';
-  //   } catch (error) {
-  //     console.error('Error logging out:', error);
-  //   }
-  // };
   const notifications = [
     {
       id: 1,
