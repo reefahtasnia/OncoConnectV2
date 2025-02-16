@@ -16,24 +16,22 @@ const Doctor_finder = () => {
   });
 
   const [selectedDoctor, setSelectedDoctor] = useState(null); // Store selected doctor
+  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const doctorsPerPage = 6; // Max number of doctors per page
 
   const openDoctorDetails = (doctor) => {
-    console.log("hiiii");
     setSelectedDoctor(doctor);
-    console.log("miuuuu",doctor);
   };
 
   const closeDoctorDetails = () => {
     setSelectedDoctor(null);
   };
 
-
   // Fetch doctors from API
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get("http://localhost:5002/api/doctor_finder");
-        
         setDoctors(response.data);
         setFilteredDoctors(response.data); // Initially show all doctors
       } catch (error) {
@@ -44,33 +42,28 @@ const Doctor_finder = () => {
     fetchDoctors();
   }, []);
 
-  
-
   // Handle search input
   const handleSearch = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-  
+
     // Filter doctors based on search query first
     let results = doctors.filter((doctor) => {
       return (
-        (doctor.name && doctor.name.toLowerCase().includes(lowerCaseQuery)) ||
-        (doctor.hospital && doctor.hospital.toLowerCase().includes(lowerCaseQuery)) ||
-        (doctor.location && doctor.location.toLowerCase().includes(lowerCaseQuery)) ||
-        (doctor.specialization && doctor.specialization.toLowerCase().includes(lowerCaseQuery))
+        (doctor.fullName && doctor.fullName.toLowerCase().includes(lowerCaseQuery)) ||
+        (doctor.preferredPracticeArea && doctor.preferredPracticeArea.toLowerCase().includes(lowerCaseQuery)) ||
+        (doctor.practiceSchedule.some(schedule => schedule.city && schedule.city.toLowerCase().includes(lowerCaseQuery)))
       );
     });
-  
+
     // Apply filters after search query
-    results = results.filter((doctor) => 
-      (selectedFilters.location.length === 0 || selectedFilters.location.includes(doctor.location)) &&
+    results = results.filter((doctor) =>
+      (selectedFilters.location.length === 0 || selectedFilters.location.includes(doctor.practiceSchedule[0]?.city)) &&
       (selectedFilters.specialization.length === 0 || selectedFilters.specialization.includes(doctor.specialization)) &&
-      (selectedFilters.rating.length === 0 || selectedFilters.rating.includes(doctor.rating.toString()))
+      (selectedFilters.rating.length === 0 || selectedFilters.rating.includes(doctor.ratings.toString()))
     );
-  
+
     setFilteredDoctors(results);
   };
-  
-  
 
   // Handle filter changes
   const handleFilterChange = (filterType, value) => {
@@ -92,6 +85,19 @@ const Doctor_finder = () => {
     setSelectedFilters({ location: [], specialization: [], rating: [] });
     setFilteredDoctors(doctors); // Show all doctors after clearing filters
   };
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Slice the filteredDoctors array to show only the doctors for the current page
+  const indexOfLastDoctor = currentPage * doctorsPerPage;
+  const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
+  const currentDoctors = filteredDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage);
 
   return (
     <div className="doctor-finder-page">
@@ -133,15 +139,12 @@ const Doctor_finder = () => {
             <div className="filters">
               <FilterGroup
                 title="Location"
-                options={[
-                  { label: "Dhaka", value: "Dhaka" },
-                  { label: "Outside Dhaka", value: "Outside Dhaka" },
-                ]}
+                options={[{ label: "Dhaka", value: "Dhaka" }, { label: "Outside Dhaka", value: "Outside Dhaka" }]}
                 selected={selectedFilters.location}
                 onChange={(value) => handleFilterChange("location", value)}
               />
               <FilterGroup
-                title="Cancer Type"
+                title="Specialization"
                 options={[
                   { label: "Breast Cancer", value: "Breast Cancer" },
                   { label: "Blood Cancer", value: "Blood Cancer" },
@@ -167,35 +170,51 @@ const Doctor_finder = () => {
               />
             </div>
           </aside>
+
           <main className="doctors-section">
             <div className="doctors-header">
               <p>Found {filteredDoctors.length} doctors</p>
             </div>
             <div className="doctors-grid">
-              {filteredDoctors.map((doctor) => (
+              {currentDoctors.map((doctor) => (
                 <DoctorCard
                   key={doctor._id}
-              
-                  name={doctor.name}
-                  hospital={doctor.hospital}
-                  image={`http://localhost:5002${doctor.image}`}
-                  credentials={doctor.credentials}
-                  rating={doctor.rating}
-                  reviews={doctor.reviews}
+                  name={doctor.fullName}
+                  hospital={doctor.practiceSchedule[0]?.hospitalName}
+                  image={`http://localhost:5002${doctor.imagePath}`}
+                  credentials={doctor.certifications?.map(cert => `${cert.name} (${cert.year})`).join(", ")}
+                  rating={doctor.ratings}
+                  reviews={doctor.reviews?.length || 0}
                   onClick={() => openDoctorDetails(doctor)}
-                  
                 />
               ))}
             </div>
-             {/* Pagination */}
-             <div className="pagination">
-              <button className="page-btn prev">←</button>
-              <button className="page-btn active">1</button>
-              <button className="page-btn">2</button>
-              <button className="page-btn">3</button>
-              <span>...</span>
-              <button className="page-btn">8</button>
-              <button className="page-btn next">→</button>
+
+            {/* Pagination */}
+            <div className="pagination">
+              <button
+                className="page-btn prev"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                ←
+              </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  className={`page-btn ${index + 1 === currentPage ? "active" : ""}`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                className="page-btn next"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                →
+              </button>
             </div>
           </main>
         </div>
@@ -229,7 +248,6 @@ const FilterGroup = ({ title, options, selected, onChange }) => (
   </div>
 );
 
-
 // Doctor Card Component
 const DoctorCard = ({ image, name, credentials, hospital, rating, reviews, onClick }) => (
   <div className="doctor-card" onClick={onClick}>
@@ -249,7 +267,5 @@ const DoctorCard = ({ image, name, credentials, hospital, rating, reviews, onCli
     </div>
   </div>
 );
-
-
 
 export default Doctor_finder;

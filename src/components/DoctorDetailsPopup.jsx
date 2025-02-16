@@ -17,34 +17,53 @@ const DoctorDetailsPopup = ({ doctor, onClose }) => {
     <>
       <div className="popup-overlay">
         <div className="popup-content">
-        <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="close-btn" onClick={onClose}>&times;</button>
           <div className="doctor-details">
-            <img src={doctor.image} alt={doctor.name} className="doctor-image" />
-            <h2>{doctor.name}</h2>
-            <p className="credentials">{doctor.credentials}</p>
-            <p className="hospital">{doctor.hospital}</p>
+            <img src={doctor.imagePath} alt={doctor.fullName} className="doctor-image" />
+            <h2>{doctor.fullName}</h2>
+            <p className="credentials">{doctor.specialization}</p>
+            <p className="hospital">{doctor.preferredPracticeArea}</p>
+            
             <div className="rating">
               {[...Array(5)].map((_, index) => (
-                <span key={index} className={`star ${index < doctor.rating ? 'filled' : ''}`}>
+                <span key={index} className={`star ${index < doctor.ratings ? 'filled' : ''}`}>
                   ★
                 </span>
               ))}
-              <span className="review-count">({doctor.reviews} reviews)</span>
+              <span className="review-count">({doctor.reviews.length} reviews)</span>
             </div>
+            
             <h3>About</h3>
-            <p>{doctor.about}</p>
-            <h3>Working Hours</h3>
-            <p>{doctor.workingHours}</p>
+            <p>{doctor.aboutDr}</p>
+            
+            <h3>Practice Schedule</h3>
+            {doctor.practiceSchedule.map((schedule, index) => (
+              <div key={index} className="practice-schedule">
+                <h4>{schedule.hospitalName}</h4>
+                <p>{schedule.address}, {schedule.city}</p>
+                <p>Available: {schedule.daysAvailable.join(', ')}</p>
+                <p>Timing: {schedule.startTime} - {schedule.endTime}</p>
+              </div>
+            ))}
+            
+            <h3>Certifications</h3>
+            <ul>
+              {doctor.certifications.map((cert, index) => (
+                <li key={index}>{cert.name} ({cert.year})</li>
+              ))}
+            </ul>
+
             <button className="book-now-btn" onClick={handleBooking}>
               Book Now
             </button>
           </div>
         </div>
       </div>
+
       {showAppointmentForm && (
         <AppointmentForm 
           onClose={handleCloseAppointment}
-          doctorName={doctor.name}
+          doctorName={doctor.fullName}
         />
       )}
     </>
@@ -52,4 +71,3 @@ const DoctorDetailsPopup = ({ doctor, onClose }) => {
 };
 
 export default DoctorDetailsPopup;
-
