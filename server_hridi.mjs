@@ -11,6 +11,8 @@ import multer from 'multer';
 import Tesseract from "tesseract.js";
 import fs from "fs";
 import { pipeline } from "@xenova/transformers";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 
 
@@ -525,7 +527,7 @@ app.get("/api/user-result", async (req, res) => {
 //AI Try
 
 // Define the Image schema for storing data in MongoDB
-const imageSchema = new mongoose.Schema({
+/*const imageSchema = new mongoose.Schema({
   userId: String,
   originalImage: String,
   extractedText: String,
@@ -593,8 +595,76 @@ app.get("/images/:userId", async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: "Error fetching images" });
   }
+});*/
+
+
+// Initialize Gemini AI 
+const genAI = new GoogleGenerativeAI("AIzaSyDJz6uxTZOqxZ9TAIO-7vyeVLe4ooX0tEs");
+
+// MongoDB Image Schema
+const imageSchema = new mongoose.Schema({
+  userId: String,
+  originalImage: String,
+  extractedText: String,
+  simplifiedText: String,
+});
+const ImageModel = mongoose.model("Image", imageSchema);
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+  destination: "./uploads",
+  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
+});
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) cb(null, true);
+    else cb(new Error("File type is not supported!"));
+  },
 });
 
+// **Upload & Process Image**
+app.post("/upload", upload.single("file"), async (req, res) => {
+  const filePath = req.file.path;
+
+  try {
+    // OCR: Extract text from image
+    const { data } = await Tesseract.recognize(filePath, "eng");
+    const extractedText = data.text;
+    console.log("Extracted Text:", extractedText);
+
+    // Use Gemini API for summarization
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const result = await model.generateContent(`Summarize this medical text: ${extractedText}`);
+    const simplifiedText = result.response.text();
+
+    console.log("Simplified Text:", simplifiedText);
+
+    // Save to MongoDB
+    const newImage = new ImageModel({
+      userId: req.body.userId || "defaultUser",
+      originalImage: filePath,
+      extractedText,
+      simplifiedText,
+    });
+    await newImage.save();
+
+    res.json({ success: true, extractedText, simplifiedText });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Error processing image" });
+  }
+});
+
+// Retrieve processed images for a user
+app.get("/images/:userId", async (req, res) => {
+  try {
+    const images = await ImageModel.find({ userId: req.params.userId });
+    res.json(images);
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Error fetching images" });
+  }
+});
 
 
 
