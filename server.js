@@ -118,12 +118,24 @@ const diarySchema = new mongoose.Schema({
   entry: { type: String, required: true },
 });
 
+
+//Nutrition
+const NutritionSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    date: { type: Date, required: true }, // Date of nutrition record
+    total_calories: { type: Number, required: true } // Total calories intake
+  },
+  { collection: "Nutrition" } // Explicitly set the collection name
+);
+
+
 // Create Models
 const Doctor = mongoose.model('Doctor', doctorSchema);
 const Survival = mongoose.model('Survival', survivalSchema);
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
 const Diary = mongoose.model('Diary', diarySchema);
-
+const Nutrition = mongoose.model("Nutrition", NutritionSchema);
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -263,202 +275,6 @@ app.get('/api/survival/story/:id', async (req, res) => {
     }
   });
   
-//hridi
-  const DoctorFinderSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    image: { type: String, required: true }, // Relative path or URL to the image
-    credentials: { type: String, required: true }, // Medical degrees and certifications
-    hospital: { type: String, required: true }, // Associated hospital or clinic
-    location: { type: String, required: true }, // City or district
-    area: { type: String, required: true }, // Specific area within the location
-    specialization: { type: String, required: true }, // Doctor's field of expertise
-    rating: { type: Number, required: true, min: 1, max: 5 }, // Rating between 1-5
-    reviews: { type: Number, required: true }, // Number of reviews
-    about: { type: String, required: true }, // Detailed description of the doctor
-    workingHours: { type: String, required: true }, // Available hours and closed days
-    maxpatient: { type: Number, required: true },
-}, { collection: 'DoctorFinder' }); // Explicitly set the collection name
-
-  // Create Model
-  const DoctorFinder = mongoose.model('DoctorFinder', DoctorFinderSchema);
-  
-
-
-
-// Filter API Endpoint for Doctors
-app.get('/api/doctor_finder', async (req, res) => {
-  let filteredDoctors = await DoctorFinder.find(); // Fetch all doctors initially
-
-  const { location, specialization, rating } = req.query;
-
-  // Filter by location
-  if (location) {
-    if (location === "Dhaka") {
-      // Filter only doctors in Dhaka
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() === "dhaka");
-    } else if (location === "Outside Dhaka") {
-      // Filter doctors not in Dhaka
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.location.toLowerCase() !== "dhaka");
-    }
-  }
-
-
-  // Filter by specialization (cancer type)
-  if (specialization) {
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.specialization.toLowerCase() === specialization.toLowerCase());
-  }
-
-  // Filter by rating
-  if (rating) {
-      filteredDoctors = filteredDoctors.filter(doctor => doctor.rating.toString() === rating);
-  }
-
-  
-
-  
-
-  res.json(filteredDoctors); // Return filtered doctors list
-});
-
-
-
-// Search doctors by name or hospital
-app.get("/api/doctor_finder/search", async (req, res) => {
-  const { query } = req.query; // Get the search query from request
-  try {
-    const doctors = await DoctorFinder.find({
-      $or: [
-        { name: { $regex: query, $options: "i" } }, // Case-insensitive search for name
-        { hospital: { $regex: query, $options: "i" } }, // Case-insensitive search for hospital
-      ],
-    });
-    res.status(200).json(doctors);
-  } catch (error) {
-    console.error("Error searching doctors:", error);
-    res.status(500).json({ error: "Failed to search doctors" });
-  }
-});
-
-
-const AppointFormSchema = new mongoose.Schema(
-  {
-    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
-    user_name: { type: String, required: true }, // Name of the user booking the appointment
-    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "DoctorFinder" }, // Reference to DoctorFinder model
-    doctor_name: { type: String, required: true }, // Name of the doctor
-    date: { type: Date, required: true }, // Appointment date
-    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
-  },
-  { collection: "appointform" } // Explicitly set the collection name
-);
-
-// Create Model
-const AppointForm = mongoose.model("AppointForm", AppointFormSchema);
-
-const UserSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true }, 
-  },
-  { collection: "users" } // Explicitly set the collection name
-);
-
-// Create Model
-const User = mongoose.model("users", UserSchema);
-
-
-const router = express.Router();
-
-router.post("/submit-appointment", async (req, res) => {
-  try {
-    const { user_id, user_name, doctor_id, date, medium } = req.body
-
-    // Validate input
-    if (!user_id || !user_name || !doctor_id || !date || !medium) {
-      return res.status(400).json({ error: "All fields are required" })
-    }
-
-    // Find the doctor to get their name
-    const DoctorFinder = mongoose.model("DoctorFinder")
-    const doctor = await DoctorFinder.findById(doctor_id)
-    if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found" })
-    }
-
-    // Create new appointment
-    const newAppointment = new AppointForm({
-      user_id,
-      user_name,
-      doctor_id,
-      doctor_name: doctor.name,
-      date,
-      medium,
-    })
-
-    // Save the appointment
-    await newAppointment.save()
-
-    res.status(201).json({ message: "Appointment created successfully", appointment: newAppointment })
-  } catch (error) {
-    console.error("Error submitting appointment:", error)
-    res.status(500).json({ error: "Internal server error" })
-  }
-})
-
-const caregiverArticleSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  image: { type: String, required: true }, // Path to the image in the public directory
-  description: { type: String, required: true },
-  pdf: { type: String, required: true }, // Path to the PDF file in the public directory
-});
-
-const CaregiverArticle = mongoose.model('CaregiverArticle', caregiverArticleSchema);
-
-
-app.get("/api/caregiver_articles", async (req, res) => {
-  try {
-    const articles = await CaregiverArticle.find(); // Fetch all articles from the DB
-    console.log("Caregiving articles fetched from DB:", articles); // Log the articles
-    res.status(200).json(articles);
-  } catch (error) {
-    console.error("Error fetching caregiving articles:", error);
-    res.status(500).json({ error: "Failed to fetch caregiving articles" });
-  }
-});
-
-// API Route to download PDF
-app.get('/api/download-pdf/:filename', (req, res) => {
-  const { filename } = req.params;
-  const filePath = path.join(__dirname, 'public', 'uploads', filename);
-  res.download(filePath, filename, (err) => {
-    if (err) {
-      res.status(500).send('Error downloading the file.');
-    }
-  });
-});
-
-//cancer screening
-
-const cancerScreeningSchema = new mongoose.Schema({
-  type: { type: String, required: true }, // Type of cancer
-  description: { type: String, required: true }, // Short description of the screening
-  details: { type: [String], required: true }, // Array of detailed information
-  id: { type: String, required: true, unique: true } // Unique identifier for each screening type
-});
-
-const CancerScreening = mongoose.model("CancerScreening", cancerScreeningSchema);
-
-app.get("/api/cancerscreen", async (req, res) => {
-  try {
-    const screen = await CancerScreening.find(); // Fetch all articles from the DB
-    console.log("Cancer Screening fetched from DB:", screen); // Log the screens
-    res.status(200).json(screen);
-  } catch (error) {
-    console.error("Error fetching cancer screening:", error);
-    res.status(500).json({ error: "Failed to fetch cancer screening" });
-  }
-});
-
-//hridi
 
 
 const verifyToken = (req, res, next) => {
@@ -571,6 +387,28 @@ app.post('/api/save-diary', verifyToken, async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
+
+
+
+// API to save calorie data
+app.post("/api/nutrition", async (req, res) => {
+  const { user_id, date, total_calories } = req.body;
+
+  if (!user_id || !date || total_calories == null) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  try {
+    const newEntry = new Nutrition({ user_id, date, total_calories });
+    await newEntry.save();
+    res.json({ message: "Data saved successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
 
   
 // Start the server
