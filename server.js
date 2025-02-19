@@ -110,11 +110,19 @@ const survivalSchema = new mongoose.Schema({
   imageUrl: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
+//diary
+const diarySchema = new mongoose.Schema({
+  
+  user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" },
+  timestamp: { type: Date, default: Date.now },
+  entry: { type: String, required: true },
+});
 
 // Create Models
 const Doctor = mongoose.model('Doctor', doctorSchema);
 const Survival = mongoose.model('Survival', survivalSchema);
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
+const Diary = mongoose.model('Diary', diarySchema);
 
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
@@ -528,6 +536,39 @@ app.get("/api/doctorprogga/:id", async (req, res) => {
   } catch (error) {
     console.error("Error fetching doctor details:", error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+});
+app.post('/api/save-diary', verifyToken, async (req, res) => {
+  console.log("Request Body:", req.body);
+
+  const { entry, date } = req.body;
+  console.log(entry);
+  console.log(date);
+  const userId = req.userId; // From the verifyToken middleware
+  console.log(userId);
+
+  if (!entry || !date) {
+    return res.status(400).json({ message: 'Entry and date are required' });
+  }
+
+  // Format the date to match the date format in your state (YYYY-MM-DD)
+  const formattedDate = new Date(date).toISOString().split('T')[0];
+  console.log("Formatted Date:", formattedDate);
+
+  try {
+    // Create a new diary entry without checking for existing ones
+    const newDiary = new Diary({
+      user_id: userId,
+      timestamp: new Date(formattedDate),
+      entry: entry,
+    });
+
+    // Save the new diary entry
+    await newDiary.save();
+    return res.status(201).json({ message: 'Diary entry saved successfully' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
