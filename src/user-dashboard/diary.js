@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "./components/sidebar";
 import BottomNav from "./components/bottom-nav";
 import userImage from "./user.png";
 import UserDropdown from "./components/user-dropdown";
-import NotificationsButton from "./components/notifications.js";
 import "./diary.css";
+
+const API_BASE_URL = "http://localhost:5000"; // Update with your actual API base URL
 
 export default function DiaryPage() {
   const [activeSection, setActiveSection] = useState("diary");
@@ -15,8 +17,8 @@ export default function DiaryPage() {
   const [showEntryPopup, setShowEntryPopup] = useState(false);
   const [currentEntry, setCurrentEntry] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [userId, setUserId] = useState(null); // Store the user ID
 
-  // Sample diary entries with the example entry for Jan 7, 2025
   const [diaryEntries, setDiaryEntries] = useState({
     "2025-01-07": "It was a mix of ups and downs. The morning started slow, with fatigue weighing me down, but a warm cup of tea gave me some comfort. My treatment session in the afternoon left me feeling weak, but I reminded myself it's a step toward healing. A friend stopped by for a short visit, and their laughter brought light to my day. In the evening, I sat by the window and let the cool breeze calm my mind. It wasn't easy, but I'm grateful for making it through another day.",
   });
@@ -38,13 +40,22 @@ export default function DiaryPage() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const formattedDate = formatDate(selectedDate);
-    setDiaryEntries(prev => ({
-      ...prev,
-      [formattedDate]: currentEntry
-    }));
-    setIsEditing(false);
+    try {
+      await axios.post(
+        `${API_BASE_URL}/api/save-diary`,
+        { user_id: userId ,date: formattedDate, entry: currentEntry },
+        { withCredentials: true }
+      );
+      setDiaryEntries(prev => ({
+        ...prev,
+        [formattedDate]: currentEntry
+      }));
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving diary entry:", error);
+    }
   };
 
   const getDaysInMonth = (date) => {
@@ -69,32 +80,6 @@ export default function DiaryPage() {
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-  const notifications = [
-    {
-      id: 1,
-      type: "reply",
-      user: "Sarah Johnson",
-      content: "replied to your post about managing side effects",
-      timestamp: "1 hour ago",
-      isRead: false,
-    },
-    {
-      id: 2,
-      type: "like",
-      user: "Michael Chen",
-      content: "liked your comment about nutrition tips",
-      timestamp: "2 hours ago",
-      isRead: false,
-    },
-    {
-      id: 3,
-      type: "mention",
-      user: "Emma Wilson",
-      content: "mentioned you in a discussion",
-      timestamp: "1 day ago",
-      isRead: true,
-    },
-  ];
 
   const formatDisplayDate = (date) => {
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
@@ -106,6 +91,21 @@ export default function DiaryPage() {
     setSelectedDate(newDate);
   };
 
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/get-userid`, {
+          withCredentials: true, // Ensures cookies are sent with the request
+        });
+        setUserId(response.data.user_id); // Set the user ID
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   return (
     <div className="user-dashboard">
       <Sidebar isOpen={sidebarOpen} />
@@ -114,14 +114,13 @@ export default function DiaryPage() {
         <header className="dashboard-header">
           <h1>My Diary</h1>
           <div className="header-actions">
-          <UserDropdown
+            <UserDropdown
               username="Username"
               avatar={userImage}
               onLogout={() => {
                 /* handle logout */
               }}
             />
-            <NotificationsButton notifications={notifications} />
           </div>
         </header>
 
@@ -166,9 +165,9 @@ export default function DiaryPage() {
               </div>
 
               <div className="diary-calendar-grid">
-                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
-                  <div key={day} className="diary-calendar-day-name">{day}</div>
-                ))}
+              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+  <div key={`${day}-${index}`} className="diary-calendar-day-name">{day}</div>
+))}
                 {getDaysInMonth(selectedDate).map((day, index) => (
                   <button
                     key={index}
