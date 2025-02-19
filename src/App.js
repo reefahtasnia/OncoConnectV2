@@ -80,7 +80,7 @@ function App() {
                 <Route path="/doctor-signup" element={<DoctorSignup />} />
                 <Route path="/forgot-password" element={<PassordReset />} />
                 <Route path="/newquestion" element={<NewQuestion />} />
-                <Route path="/viewpost" element={<ViewPost />} />
+                <Route path="/viewpost/:postId" element={<ViewPost />} />
                 <Route path="/doctor" element={<DoctorDashboard />} />
                 <Route path="/doctor/messages" element={<DoctorMessages />} />
                 <Route path="/doctor/patients" element={<DoctorPatient />} />

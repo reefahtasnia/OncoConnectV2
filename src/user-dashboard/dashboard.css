@@ -118,12 +118,12 @@
   flex-direction: row; /* Ensures side-by-side layout */
   gap: 24px;/* Space between Calendar and Day Details */
   align-items: flex-start;
-  justify-content: space-between;
-  width: 100%; /* Adjust width as needed */
+  /* justify-content: space-between;*/
+  width: 100%; 
 }
 .calendar-section {
   flex: 1;
-  max-width: 50%;
+  border-radius: 24px;
 }
 
 .details-section {
@@ -226,10 +226,13 @@
 
 /* Day Details */
 .day-details {
+  height: auto; /* Change from fixed height to auto */
+  min-height: 350px; /* Set a minimum height */
+  max-height: 600px; /* Set a maximum height if needed */
+  overflow-y: auto; /* Add scrolling for overflow content */
   background: white;
   border-radius: 16px;
   padding: 24px;
-  margin-top: 24px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -269,6 +272,95 @@
   margin: 0;
   color: #374151;
   font-size: 14px;
+}
+/* Feature Cards Row */
+.feature-cards-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.feature-title {
+  color: #8b5cf6;
+  font-size: 1 rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.feature-description {
+  color: #374151;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.feature-button {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.6 rem;
+}
+
+/* Support Cards Row */
+.support-cards-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.support-card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.support-title {
+  color: #8b5cf6;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.support-description {
+  color: #374151;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.support-button {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.6 rem;
 }
 
 /* Sliding Sidebar */
@@ -443,6 +535,10 @@
     max-width: 100%;
     margin-bottom: 150px;
   }
+  .feature-cards-row,
+  .support-cards-row {
+    grid-template-columns: 1fr;
+  }
 
 }
 
@@ -510,6 +606,9 @@
 @media (max-width: 1024px) {
   .dashboard-content {
     grid-template-columns: 1fr;
+  }
+  .feature-cards-row {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
