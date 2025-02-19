@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 // User Schema
 const userSchema = new mongoose.Schema({
+  username: {type: String},
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
   firstName: { type: String },
@@ -195,6 +196,37 @@ const medicineSchema = new mongoose.Schema({
   dateMedicineWasAdded: { type: Date, required: true }  // New field for the next dose date
 });
 
+const forumPostSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  content: { type: String, required: true },
+  attachment: { type: String }, // Link to an attachment (optional)
+  views: { type: Number, default: 0 },
+  category: { type: String, enum: ["nutrition", "emotional", "treatment", "side-effects"], required: true },
+  created_at: { type: Date, default: Date.now },
+  comments: { type: Number, default: 0 }, // Count of comments
+  votes: { type: Number, default: 0 },
+  reported: { type: Boolean, default: false },
+  reports: [{
+    reported_by: { type: String, required: true },
+    reason: { type: String, required: true },
+    reported_at: { type: Date, default: Date.now }
+  }]
+});
+
+const commentSchema = new mongoose.Schema({
+  post_id: { type: mongoose.Schema.Types.ObjectId, ref: "ForumPost", required: true },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  content: { type: String, required: true },
+  likes: { type: Number, default: 0 },
+  replies: [{
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    content: { type: String, required: true },
+    created_at: { type: Date, default: Date.now }
+  }],
+  created_at: { type: Date, default: Date.now },
+});
+
 
 
 // Register Models
@@ -203,6 +235,8 @@ const Appointment = mongoose.model("Appointment", AppointmentSchema);
 const Medicine = mongoose.model('Medicine', medicineSchema);
 const Doctor = mongoose.model("Doctors", doctorSchema);
 const PatientSymptom = mongoose.model("PatientSymptom", patientSymptomSchema);
+const ForumPost = mongoose.model("ForumPost", forumPostSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 // Export Both Models
-module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine };
+module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment};
