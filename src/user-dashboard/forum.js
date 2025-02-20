@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/sidebar";
 import BottomNav from "./components/bottom-nav";
 import userImage from "./user.png";
@@ -13,35 +11,8 @@ export default function ForumPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-
-  // Sample forum activities data
-  const forumActivities = [
-    {
-      id: 1,
-      title: "Managing Fatigue During Chemotherapy – Tips and Advice?",
-      type: "reply",
-      user: {
-        name: "Maureline Adams",
-        avatar: "/user.png",
-      },
-      content:
-        "Hi there! I completely understand how draining chemo can be – you're not alone in this. What worked for me was pacing myself throughout the day. Short naps (no longer than 30 minutes) helped me recharge without disrupting my sleep schedule. Gentle exercises like stretching or short walks also boosted my energy levels. And don't forget to prioritize hydration and balanced meals – I noticed a big difference when I added more whole grains and fresh veggies to my diet. Hang in there, and remember to listen to your body – rest when it tells you to.",
-      timestamp: "2 hours ago",
-    },
-    {
-      id: 2,
-      title:
-        "How to Talk to My Family About My Diagnosis Without Overwhelming Them?",
-      type: "like",
-      user: {
-        name: "Ava Mitchell",
-        avatar: "/user.png",
-      },
-      content: "liked your comment on this post",
-      timestamp: "4 hours ago",
-    },
-  ];
-
+  const [userData, setUserData] = useState("");
+  const [forumActivities, setForumActivities] = useState([]); // State to hold the activities
   // Sample notifications data
   const notifications = [
     {
@@ -69,6 +40,78 @@ export default function ForumPage() {
       isRead: true,
     },
   ];
+  useEffect(() => {
+    fetchUserData();
+    fetchForumActivities();
+  }, []);
+
+  // Fetch user data
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      setUserData(data);
+    } catch (error) {
+      console.error(error.message);
+      window.alert("Failed to fetch your data, logging out...");
+      await handleLogout();
+    }
+  };
+
+  // Fetch forum activities data (comments and replies)
+  const fetchForumActivities = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/forumActivities",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch forum activities");
+      }
+
+      const data = await response.json();
+      setForumActivities(data.activities); // Assuming the API returns an array of activities
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setUserData(null);
+        window.location.href = "/login";
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
     <div className="user-dashboard">
@@ -80,16 +123,14 @@ export default function ForumPage() {
           <div className="header-actions">
             <button
               className="community-forum-btn"
-              onClick={() => window.location.href = "/forum"}
+              onClick={() => (window.location.href = "/forum")}
             >
               Community Forum
             </button>
             <UserDropdown
-              username="Username"
-              avatar={userImage}
-              onLogout={() => {
-                /* handle logout */
-              }}
+              username={userData.username}
+              avatar={userData.profilePicture}
+              onLogout={handleLogout}
             />
             <NotificationsButton notifications={notifications} />
           </div>
@@ -100,7 +141,14 @@ export default function ForumPage() {
             <div key={activity.id} className="forum-activity-card">
               <div className="activity-header">
                 <h2>{activity.title}</h2>
-                <button className="go-to-post-btn">Go to Post →</button>
+                <button
+                  className="go-to-post-btn"
+                  onClick={() =>
+                    (window.location.href = `/viewpost/${activity.postId}`)
+                  }
+                >
+                  Go to Post →
+                </button>
               </div>
               <div className="activity-content">
                 <div className="activity-icon">
@@ -131,14 +179,16 @@ export default function ForumPage() {
                 <div className="activity-details">
                   <p className="activity-meta">
                     <img
-                      src={activity.user.avatar}
+                      src={activity.user.avatar || "/default-avatar.png"}
                       alt={activity.user.name}
                       className="user-avatar-small"
                     />
                     <strong>{activity.user.name}</strong>{" "}
-                    {activity.type === "reply"
+                    {activity.type === "post_reply"
                       ? "replied to your community post"
-                      : "liked your comment on this post"}
+                      : activity.type === "comment_reply"
+                      ? "replied to your comment"
+                      : "liked your post"}
                   </p>
                   {activity.type === "reply" && (
                     <p className="activity-text">{activity.content}</p>

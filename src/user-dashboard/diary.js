@@ -18,10 +18,33 @@ export default function DiaryPage() {
   const [currentEntry, setCurrentEntry] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [userId, setUserId] = useState(null); // Store the user ID
-
+  const [userData, setUserData] = useState("");
   const [diaryEntries, setDiaryEntries] = useState({
     "2025-01-07": "It was a mix of ups and downs. The morning started slow, with fatigue weighing me down, but a warm cup of tea gave me some comfort. My treatment session in the afternoon left me feeling weak, but I reminded myself it's a step toward healing. A friend stopped by for a short visit, and their laughter brought light to my day. In the evening, I sat by the window and let the cool breeze calm my mind. It wasn't easy, but I'm grateful for making it through another day.",
   });
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      setUserData(data);
+    } catch (error) {
+      console.error(error.message);
+      window.alert("Failed to fetch your data, logging out...");
+      await handleLogout();
+    }
+  };
 
   const formatDate = (date) => {
     return date.toISOString().split('T')[0];
@@ -90,7 +113,23 @@ export default function DiaryPage() {
     newDate.setMonth(newDate.getMonth() + increment);
     setSelectedDate(newDate);
   };
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
+      if (response.ok) {
+        setUserData(null);
+        window.location.href = "/login";
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -102,9 +141,9 @@ export default function DiaryPage() {
         console.error("Error fetching user ID:", error);
       }
     };
-
+    fetchUserData();
     fetchUserId();
-  }, []);
+  }, []);// Fetch user data when the user ID changes
 
   return (
     <div className="user-dashboard">
@@ -115,11 +154,9 @@ export default function DiaryPage() {
           <h1>My Diary</h1>
           <div className="header-actions">
             <UserDropdown
-              username="Username"
-              avatar={userImage}
-              onLogout={() => {
-                /* handle logout */
-              }}
+              username={userData.username}
+              avatar={userData.profilePicture}
+              onLogout={() => {handleLogout}}
             />
           </div>
         </header>

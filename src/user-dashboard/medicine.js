@@ -16,7 +16,7 @@ export default function MedicinesPage() {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [dailyReview, setDailyReview] = useState([]);
-
+  const [userData, setUserData] = useState("");
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -45,6 +45,7 @@ export default function MedicinesPage() {
 
   useEffect(() => {
     fetchTodaysMedicines();
+    fetchUserData();
   }, []);
   useEffect(() => {
     const allDays = [
@@ -69,6 +70,29 @@ export default function MedicinesPage() {
       }));
     }
   }, [formData.daysPerWeek]);
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      setUserData(data);
+    } catch (error) {
+      console.error(error.message);
+      window.alert("Failed to fetch your data, logging out...");
+      await handleLogout();
+    }
+  };
   const fetchTodaysMedicines = async () => {
     try {
       const timezoneOffset = new Date().getTimezoneOffset();
@@ -226,7 +250,23 @@ export default function MedicinesPage() {
       console.error("Error updating status:", error);
     }
   };
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
+      if (response.ok) {
+        setUserData(null);
+        window.location.href = "/login";
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   return (
     <div className="user-dashboard">
       <Sidebar isOpen={sidebarOpen} />
@@ -236,11 +276,9 @@ export default function MedicinesPage() {
           <h1>My Medicines</h1>
           <div className="header-actions">
             <UserDropdown
-              username="Username"
-              avatar={userImage}
-              onLogout={() => {
-                /* handle logout */
-              }}
+              username={userData.username}
+              avatar={userData.profilePicture}
+              onLogout={() => {handleLogout}}
             />
           </div>
         </header>

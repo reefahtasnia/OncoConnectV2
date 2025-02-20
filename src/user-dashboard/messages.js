@@ -13,12 +13,52 @@ export default function MessagesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [userData, setUserData] = useState("");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
+      if (response.ok) {
+        setUserData(null);
+        window.location.href = "/login";
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      setUserData(data);
+    } catch (error) {
+      console.error(error.message);
+      window.alert("Failed to fetch your data, logging out...");
+      await handleLogout();
+    }
+  };
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+    fetchUserData();
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
@@ -92,7 +132,7 @@ export default function MessagesPage() {
       isRead: true,
     },
   ];
-
+  
   const handleChatSelect = (chat) => {
     setActiveChat(chat);
     // Add body class to prevent scrolling when chat is open on mobile
@@ -118,11 +158,9 @@ export default function MessagesPage() {
           <h1>My Messages</h1>
           <div className="header-actions">
             <UserDropdown
-              username="Username"
-              avatar={userImage}
-              onLogout={() => {
-                /* handle logout */
-              }}
+              username={userData.username}
+              avatar={userData.profilePicture}
+              onLogout={() => {handleLogout}}
             />
             <NotificationsButton notifications={notifications} />
           </div>

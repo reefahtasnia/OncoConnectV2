@@ -1235,8 +1235,80 @@ app.post("/api/posts/:postId/vote", async (req, res) => {
       res.status(500).json({ message: "Error voting on post", error: error.message });
   }
 });
+//API to get user forum activities
+app.get("/api/forumActivities", async (req, res) => {
+  console.log("Get Forum Activities API");
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, please log in" });
+    }
 
+    // Verify the token to extract the user ID
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
 
+    // Fetch comments where the user is the main commenter
+    const mainComments = await Comment.find({ user_id: userId })
+      .populate("user_id", "username profilePicture")
+      .populate("post_id", "title")
+      .select("content created_at post_id user_id");
+
+    // Fetch comments where the user has replied
+    const commentsWithUserReplies = await Comment.find({
+      "replies.user_id": userId
+    })
+      .populate("user_id", "username profilePicture")
+      .populate("post_id", "title")
+      .select("content created_at post_id user_id replies");
+
+    // Extract the user's replies from comments
+    const userReplies = commentsWithUserReplies.flatMap(comment => 
+      comment.replies
+        .filter(reply => reply.user_id.toString() === userId.toString())
+        .map(reply => ({
+          type: "comment_reply",
+          user: {
+            name: comment.user_id.username,
+            avatar: comment.user_id.profilePicture,
+          },
+          content: reply.content,
+          timestamp: new Date(reply.created_at).toLocaleString(),
+          title: comment.post_id.title,
+          postId: comment.post_id._id
+        }))
+    );
+
+    // Map main comments
+    const mainCommentActivities = mainComments.map(comment => ({
+      type: "post_reply",
+      user: {
+        name: comment.user_id.username,
+        avatar: comment.user_id.profilePicture,
+      },
+      content: comment.content,
+      timestamp: new Date(comment.created_at).toLocaleString(),
+      title: comment.post_id.title,
+      postId: comment.post_id._id
+    }));
+
+    // Combine all activities
+    const activities = [...mainCommentActivities, ...userReplies];
+
+    // Sort activities by timestamp (most recent first)
+    activities.sort((a, b) => 
+      new Date(b.timestamp) - new Date(a.timestamp)
+    );
+
+    // Send the activities back in the response
+    res.status(200).json({ activities });
+  } catch (error) {
+    console.error("Error fetching forum activities:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching forum activities", error: error.message });
+  }
+});
 // API Route: Logout
 app.post("/api/logout", (req, res) => {
   res.clearCookie("token", {
