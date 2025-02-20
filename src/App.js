@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Login from './components/Login';
-import Footer from './components/Footer';
 import Navbar from './components/Nav';
 import Home from './components/Home.js';
 import EditProfile from './components/editProfile.js';
@@ -41,6 +40,11 @@ import SymptomTracker from './components/SymptomTracker.js';
 import AI2 from './components/Ai2.js';
 import AI3 from './components/AI3.js';
 import DoctorSignup from './components/doctorSignup.js';
+import Test from './components/test';
+import AdminDashboard from './admin-dashboard/dashboard.js';
+import ReportedPost from './admin-dashboard/reportedPost.js';
+import ReportedPostDetail from './admin-dashboard/reportedPostDetail.js';
+import DoctorApprovals from './admin-dashboard/DoctorApproval.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -72,6 +76,7 @@ function App() {
             
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/test" element={<Test />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/appf" element={<Appf />} />
                 <Route path="/editProfile" element={<EditProfile />} />
@@ -108,8 +113,11 @@ function App() {
                 <Route path="/care" element={<Caregiverpage />} />
                 <Route path="/paypal" element={<Paypal />} />
                 <Route path="/ai3" element={<AI3 />} />
-
                 <Route path="/ai2" element={<AI2 />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/reported-posts" element={<ReportedPost />} />
+                <Route path="/admin/reported-posts/detail" element={<ReportedPostDetail />} /> //remember to change it to postId later
+                <Route path="/admin/doctor-approvals" element={<DoctorApprovals />} />
             </Routes>
         </>
     );

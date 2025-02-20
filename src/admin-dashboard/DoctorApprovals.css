@@ -1,0 +1,194 @@
+.admin-doctor-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f7ff;
+  }
+  
+  .admin-doctor-main {
+    flex: 1;
+    margin-left: 200px;
+    padding: 30px;
+  }
+  
+  .admin-doctor-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .admin-doctor-subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .admin-doctor-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .admin-doctor-table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .admin-doctor-table-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+    background: #f3f0ff;
+    padding: 12px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .admin-doctor-table-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+  }
+  
+  .admin-doctor-view-button {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-doctor-view-button:hover {
+    background: #6528e0;
+  }
+  
+  .admin-doctor-details {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .admin-doctor-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .admin-doctor-info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .admin-doctor-info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .admin-doctor-info-row label {
+    min-width: 140px;
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .admin-doctor-info-row span {
+    color: #333;
+    flex: 1;
+  }
+  
+  .admin-doctor-schedule-section {
+    grid-column: 1 / -1;
+  }
+  
+  .admin-doctor-schedule-section label {
+    display: block;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  
+  .admin-doctor-schedule {
+    background: #f8f7ff;
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  .admin-doctor-schedule-item {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .admin-doctor-schedule-item:last-child {
+    border-bottom: none;
+  }
+  
+  .admin-doctor-schedule-item strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .admin-doctor-schedule-item p {
+    margin: 4px 0;
+    color: #666;
+  }
+  
+  .admin-doctor-content-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .admin-doctor-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    margin-top: 8px;
+  }
+  
+  .admin-doctor-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+  
+  .admin-doctor-verify-button {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-doctor-verify-button:hover {
+    background: #059669;
+  }
+  
+  .admin-doctor-reject-button {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-doctor-reject-button:hover {
+    background: #dc2626;
+  }

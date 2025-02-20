@@ -227,6 +227,20 @@ const commentSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
 });
 
+const notificationSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor", required: false }, // Optional for doctor notifications
+  type: {
+    type: String,
+    enum: ["appointment", "medicine", "forum", "message", "reminder", "alert"],
+    required: true,
+  },
+  content: { type: String, required: true }, // The notification message
+  referenceId: { type: String, required: false }, // Related item (appointment ID, message ID, etc.)
+  isRead: { type: Boolean, default: false }, // Has the user seen this?
+  timestamp: { type: Date, default: Date.now }, // When was it sent?
+});
+
 
 
 // Register Models
@@ -237,6 +251,7 @@ const Doctor = mongoose.model("Doctors", doctorSchema);
 const PatientSymptom = mongoose.model("PatientSymptom", patientSymptomSchema);
 const ForumPost = mongoose.model("ForumPost", forumPostSchema);
 const Comment = mongoose.model("Comment", commentSchema);
+const Notification = mongoose.model("Notification", notificationSchema);
 
 // Export Both Models
-module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment};
+module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment, Notification };

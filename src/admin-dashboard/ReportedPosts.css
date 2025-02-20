@@ -1,0 +1,117 @@
+.admin-reported-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f7ff;
+  }
+  
+  .admin-reported-main {
+    flex: 1;
+    margin-left: 200px;
+    padding: 30px;
+  }
+  
+  .admin-reported-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .admin-reported-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .admin-reported-post-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .admin-reported-post-header {
+    margin-bottom: 15px;
+  }
+  
+  .admin-reported-post-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .admin-reported-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .admin-reported-author-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin-reported-author-name {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .admin-reported-post-time {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .admin-reported-post-content {
+    margin-bottom: 20px;
+  }
+  
+  .admin-reported-post-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .admin-reported-post-text {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .admin-reported-post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .admin-reported-post-stats {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .admin-reported-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .admin-reported-stat svg {
+    stroke-width: 2;
+  }
+  
+  .admin-reported-check-button {
+    background-color: #4318FF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-reported-check-button:hover {
+    background-color: #3311cc;
+  }
