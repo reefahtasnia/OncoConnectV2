@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { supabase } from "../SupabaseClient";
 const UserProfileForm = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -23,7 +24,7 @@ const UserProfileForm = () => {
     emergencyPhoneCode: "+880",
     aboutMe: "",
   });
-
+  const [uploading, setUploading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
 
   const handleChange = (e) => {
@@ -47,7 +48,10 @@ const UserProfileForm = () => {
         }
 
         const data = await response.json();
-        setFormData(data); // Pre-fill the form with fetched data
+        setFormData(data);
+        if (data.profilePicture) {
+          setProfileImage(data.profilePicture);
+        }
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -55,68 +59,92 @@ const UserProfileForm = () => {
 
     fetchProfile();
   }, []);
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    try {
+      setUploading(true);
+
+      // Upload to Supabase
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      let { error: uploadError } = await supabase.storage
+        .from("User-Profile-pic")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const {
+        data: { publicUrl },
+      } = await supabase.storage
+        .from("User-Profile-pic")
+        .getPublicUrl(filePath);
+
+      // Update form data and preview
+      setFormData((prev) => ({ ...prev, profilePicture: publicUrl }));
+      setProfileImage(publicUrl);
+    } catch (error) {
+      alert("Error uploading image: " + error.message);
+    } finally {
+      setUploading(false);
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async(e) => {
-      e.preventDefault();
-    
-      // Concatenating phone code with phone number
-      const formattedPhone = `${formData.phoneCode}${formData.phone}`;
-      const formattedEmergencyPhone = `${formData.emergencyPhoneCode}${formData.emergencyPhone}`;
-      
-      const formattedData = {
-        username: formData.username,
-        email: formData.email,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        phone: formattedPhone, 
-        genderType: formData.genderRange,
-        birthMonth: formData.birthMonth,
-        birthDay: formData.birthDay,
-        birthYear: formData.birthYear,
-        country: formData.country,
-        state: formData.state,
-        city: formData.city,
-        roadNumber: formData.roadNumber,
-        houseNumber: formData.houseNumber,
-        currentStatus: formData.currentStatus,
-        emergencyName: formData.emergencyName,
-        emergencyEmail: formData.emergencyEmail,
-        emergencyPhone: formattedEmergencyPhone, 
-        aboutMe: formData.aboutMe,
-      };
-    
-      try {
-        const response = await fetch("http://localhost:5001/api/edit-profile", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formattedData),
-        });
-    
-        const data = await response.json();
-        if (response.ok) {
-          alert("Profile updated successfully!");
-          window.location.href = "/user"; // Redirect to user dashboard
-        } else {
-          alert(data.message);
-        }
-      } catch (error) {
-        console.error("Error updating profile:", error);
-      }    
+    // Concatenating phone code with phone number
+    const formattedPhone = `${formData.phoneCode}${formData.phone}`;
+    const formattedEmergencyPhone = `${formData.emergencyPhoneCode}${formData.emergencyPhone}`;
+
+    const formattedData = {
+      username: formData.username,
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phone: formattedPhone,
+      profilePicture: formData.profilePicture,
+      genderType: formData.genderRange,
+      birthMonth: formData.birthMonth,
+      birthDay: formData.birthDay,
+      birthYear: formData.birthYear,
+      country: formData.country,
+      state: formData.state,
+      city: formData.city,
+      roadNumber: formData.roadNumber,
+      houseNumber: formData.houseNumber,
+      currentStatus: formData.currentStatus,
+      emergencyName: formData.emergencyName,
+      emergencyEmail: formData.emergencyEmail,
+      emergencyPhone: formattedEmergencyPhone,
+      aboutMe: formData.aboutMe,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5001/api/edit-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formattedData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Profile updated successfully!");
+        window.location.href = "/user"; // Redirect to user dashboard
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   const styles = {
     pageBackground: {
-      backgroundColor: "#FFFFFF", 
+      backgroundColor: "#FFFFFF",
     },
     container: {
       maxWidth: "800px",
@@ -127,7 +155,7 @@ const UserProfileForm = () => {
       backgroundColor: "#fff",
       borderRadius: "8px",
       boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.2)", // Increased shadow
-    transition: "box-shadow 0.3s ease-in-out",
+      transition: "box-shadow 0.3s ease-in-out",
     },
     header: {
       marginBottom: "30px",
@@ -198,7 +226,7 @@ const UserProfileForm = () => {
       border: "1px solid #ddd",
       borderRadius: "4px",
       fontSize: "14px",
-      backgroundColor: "#f8f9fa", 
+      backgroundColor: "#f8f9fa",
     },
     phoneInput: {
       display: "flex",
@@ -312,7 +340,7 @@ const UserProfileForm = () => {
   ];
 
   return (
-    <div style={styles.pageBackground}>   
+    <div style={styles.pageBackground}>
       <div style={styles.container}>
         <div style={styles.header}>
           <div style={styles.imageUpload}>
@@ -323,13 +351,14 @@ const UserProfileForm = () => {
                 style={styles.imagePreview}
               />
             ) : (
-              <span>Upload Image</span>
+              <span>{uploading ? "Uploading..." : "Upload Image"}</span>
             )}
             <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
               style={styles.imageInput}
+              disabled={uploading}
             />
           </div>
           <h2>User Name</h2>
@@ -546,7 +575,9 @@ const UserProfileForm = () => {
                   {/* Add more country codes */}
                 </select>
                 <input
-                  style={{ ...styles.input, flex: 1,
+                  style={{
+                    ...styles.input,
+                    flex: 1,
                     backgroundColor: formData.phone ? "#f8f9fa" : "#ffffff",
                   }}
                   type="tel"
@@ -581,7 +612,9 @@ const UserProfileForm = () => {
                 onChange={handleChange}
               >
                 <option value="">Select current status</option>
-                <option value="diagnosed not treated">Diagnosed but Treatment not started</option>
+                <option value="diagnosed not treated">
+                  Diagnosed but Treatment not started
+                </option>
                 <option value="ongoing">Treatment Ongoing</option>
                 <option value="completed">Treatment Completed</option>
               </select>
@@ -595,7 +628,9 @@ const UserProfileForm = () => {
               <input
                 style={{
                   ...styles.input,
-                  backgroundColor: formData.emergencyName ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                  backgroundColor: formData.emergencyName
+                    ? "#f8f9fa"
+                    : "#ffffff", // Lighter purple if filled
                 }}
                 type="text"
                 name="emergencyName"
@@ -610,7 +645,9 @@ const UserProfileForm = () => {
               <input
                 style={{
                   ...styles.input,
-                  backgroundColor: formData.emergencyEmail ? "#f8f9fa" : "#ffffff", // Lighter purple if filled
+                  backgroundColor: formData.emergencyEmail
+                    ? "#f8f9fa"
+                    : "#ffffff", // Lighter purple if filled
                 }}
                 type="email"
                 name="emergencyEmail"
@@ -634,7 +671,9 @@ const UserProfileForm = () => {
                   <option value="+91">+91</option>
                 </select>
                 <input
-                  style={{ ...styles.input, flex: 1,
+                  style={{
+                    ...styles.input,
+                    flex: 1,
                     backgroundColor: formData.phone ? "#f8f9fa" : "#ffffff",
                   }}
                   type="tel"

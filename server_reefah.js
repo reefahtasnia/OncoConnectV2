@@ -263,6 +263,7 @@ app.post("/api/edit-profile", async (req, res) => {
       firstName,
       lastName,
       phone,
+      profilePicture,
       genderType,
       birthMonth,
       birthDay,
@@ -313,6 +314,7 @@ app.post("/api/edit-profile", async (req, res) => {
         firstName,
         lastName,
         phone,
+        profilePicture,
         gender: genderType,
         dateOfBirth,
         address,
@@ -374,6 +376,7 @@ app.get("/api/user", async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       phone: user.phone,
+      profilePicture: user.profilePicture,
       gender: user.gender,
       dateOfBirth: user.dateOfBirth,
       address: user.address,
@@ -1086,13 +1089,17 @@ app.post("/api/posts/:postId/report", async (req, res) => {
 app.get("/api/posts/:postId", async (req, res) => {
   console.log("View post er postID api");
   try {
-    const post = await ForumPost.findById(req.params.postId).populate(
-      "user_id", 
-      "username"
-    );
+    const post = await ForumPost.findByIdAndUpdate(
+      req.params.postId,
+      { $inc: { views: 1 } }, // Increment view count by 1
+      { new: true } // Return the updated document
+    ).populate("user_id", "username profilePicture");
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+    if (post.votes === undefined || post.votes === null) {
+      post.votes = 0;
+  }
     console.log("Post User:", post.user_id.username); 
     res.status(200).json({ post });
   } catch (error) {
@@ -1102,6 +1109,7 @@ app.get("/api/posts/:postId", async (req, res) => {
       .json({ message: "Error fetching post", error: error.message });
   }
 });
+//API to get comments
 app.get("/api/posts/:postId/comments", async (req, res) => {
   console.log("Get Comments API");
   try{
@@ -1115,6 +1123,7 @@ app.get("/api/posts/:postId/comments", async (req, res) => {
     res.status(500).json({ message: "Error fetching comments", error: error.message });
   }
 });
+//API to create comments
 app.post("/api/posts/:postId/comments", async (req, res) => {
   console.log("Create Comment API");
   try {
@@ -1155,6 +1164,7 @@ app.post("/api/posts/:postId/comments", async (req, res) => {
     res.status(500).json({ message: "Error creating comment", error: error.message });
   }
 });
+//API to create reply
 app.post("/api/comments/:commentId/reply", async (req, res) => {
   console.log("Create Reply API");
   try {
@@ -1202,6 +1212,30 @@ app.post("/api/comments/:commentId/reply", async (req, res) => {
     res.status(500).json({ message: "Error creating reply", error: error.message });
   }
 });
+//API to increase vote count
+app.post("/api/posts/:postId/vote", async (req, res) => {
+  try {
+      const { postId } = req.params;
+      
+      // Fetch the post first to check if it exists
+      const post = await ForumPost.findById(postId);
+      if (!post) {
+          return res.status(404).json({ message: "Post not found" });
+      }
+
+      // Increment votes
+      post.votes = (post.votes || 0) + 1;
+      await post.save();
+
+      console.log("Updated Votes:", post.votes); // Debugging log
+
+      res.status(200).json({ message: "Vote added", votes: post.votes });
+  } catch (error) {
+      console.error("Error voting on post:", error);
+      res.status(500).json({ message: "Error voting on post", error: error.message });
+  }
+});
+
 
 // API Route: Logout
 app.post("/api/logout", (req, res) => {

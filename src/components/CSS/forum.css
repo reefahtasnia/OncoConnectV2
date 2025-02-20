@@ -456,6 +456,16 @@
   margin-bottom: 10px;
 }
 
+.forum-comment .comment-author {
+  font-weight: 500;
+  color: #333;
+  margin-right: 10px;
+}
+.forum-comment .comment-time{
+  color: #333;
+  font-size: 12px;
+}
+
 .forum-reply-button {
   background-color: #007bff;
   color: white;
@@ -548,18 +558,19 @@ textarea:focus {
   margin-bottom: 8px;
 }
 
-.forum-reply-author {
+.reply-author {
   font-weight: 500;
   color: var(--text-primary);
+  margin-right: 8px;
 }
 
 .forum-reply-text {
   color: var(--text-secondary);
 }
 
-.forum-reply-meta {
+.reply-time {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* Profile Card Styles */

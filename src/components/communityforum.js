@@ -329,7 +329,7 @@ export default function Forum() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    {post.upvotes}
+                    {post.votes}
                   </span>
                 </div>
               </article>
@@ -389,20 +389,6 @@ export default function Forum() {
             {mustReadPosts.map((post, index) => (
               <li key={index} className="forum-link-item">
                 <a href="#">{post}</a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="forum-sidebar-section">
-          <h3 className="forum-section-title">
-            <span>🔗</span>
-            Featured links
-          </h3>
-          <ul className="forum-link-list">
-            {featuredLinks.map((link, index) => (
-              <li key={index} className="forum-link-item">
-                <a href="#">{link}</a>
               </li>
             ))}
           </ul>

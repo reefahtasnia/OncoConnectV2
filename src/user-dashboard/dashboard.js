@@ -18,7 +18,6 @@ export default function UserDashboardPage() {
   const [activeSection, setActiveSection] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
-
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -123,7 +122,7 @@ export default function UserDashboardPage() {
             {userData && (
               <UserDropdown
                 username={userData.username}
-                avatar={userImage}
+                avatar={userData.profilePicture}
                 onLogout={handleLogout}
               />
             )}

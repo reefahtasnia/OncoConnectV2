@@ -14,6 +14,7 @@ export default function PostView() {
     username: '',
     reason: ''
   });
+  const [votes, setVotes] = useState("");
   const FlagIcon = () => (
     <svg
       width="16"
@@ -143,6 +144,26 @@ export default function PostView() {
       alert("Error reporting post: " + error.message);
     }
   };
+  const handleVote = async () => {
+    try {
+        const response = await fetch(`http://localhost:5001/api/posts/${postId}/vote`, {
+            method: "POST",
+            credentials: "include",// Send cookies for authentication
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setVotes(data.votes);
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error voting:", error);
+        alert("Error voting on post.");
+    }
+};
+
   return (
     <div className="forum-container">
       {/* Left Sidebar*/}
@@ -181,8 +202,8 @@ export default function PostView() {
         <div className="forum-menu-section">
           <div className="forum-menu-label">MENU</div>
           <nav className="forum-nav-menu">
-            <button className="forum-nav-item active">
-              <span className="forum-nav-icon">📑</span>
+            <button className="forum-nav-item active" onClick={() => (window.location.href = "/forum")}>
+              <span className="forum-nav-icon" >📑</span>
               Main Feed
             </button>
             <button
@@ -230,7 +251,7 @@ export default function PostView() {
             <FlagIcon />
             Report Post
           </button>
-          <button className="forum-vote-button">Vote</button>
+          <button className="forum-vote-button" onClick={handleVote}>Vote ({post.votes})</button>
         </article>
 
         {/* Submit Comment */}
@@ -303,7 +324,7 @@ export default function PostView() {
       <aside className="forum-right-sidebar">
         <div className="forum-profile-card">
           <img
-            src="/placeholder.svg?height=120&width=120"
+            src={post.user_id.profilePicture}
             alt="Profile"
             className="forum-profile-avatar"
           />
