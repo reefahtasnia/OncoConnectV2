@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import "../dashboard.css";
 
 export default function Sidebar() {
   const location = useLocation()
@@ -84,7 +85,7 @@ export default function Sidebar() {
   ]
 
   return (
-    <aside className="user-sidebar">
+    <aside className="user-sidebar" style={{ background: 'white', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}} >
       <div className="sidebar-header">
         <h2 className="menu-label">MENU</h2>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./CSS/style.css";
@@ -8,26 +8,53 @@ import "./CSS/style.css";
 const NavBar = ({ scrollToSection = null }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [servicesDropdown, setServicesDropdown] = useState(false);
+  const [resourcesDropdown, setResourcesDropdown] = useState(false);
   const navigate = useNavigate();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const [dropdownRefs] = useState({
+    services: React.createRef(),
+    resources: React.createRef()
+  });
+  
+  // Add this useEffect for handling clicks outside dropdowns
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (servicesDropdown && 
+          dropdownRefs.services.current && 
+          !dropdownRefs.services.current.contains(event.target)) {
+        setServicesDropdown(false);
+      }
+      if (resourcesDropdown && 
+          dropdownRefs.resources.current && 
+          !dropdownRefs.resources.current.contains(event.target)) {
+        setResourcesDropdown(false);
+      }
+    }
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [servicesDropdown, resourcesDropdown]);
 
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/user', {
-          method: 'GET',
-          credentials: 'include', // Ensures cookies are sent
+        const response = await fetch("http://localhost:5001/api/user", {
+          method: "GET",
+          credentials: "include", // Ensures cookies are sent
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         });
-  
+
         if (!response.ok) {
           throw new Error("User not authenticated");
         }
-  
+
         const data = await response.json();
         if (data) {
           setIsLoggedIn(true);
@@ -36,10 +63,9 @@ const NavBar = ({ scrollToSection = null }) => {
         console.error("User not logged in:", error);
       }
     };
-  
+
     fetchToken();
   }, []);
-  
 
   return (
     <nav className="navbar">
@@ -75,28 +101,61 @@ const NavBar = ({ scrollToSection = null }) => {
             Home
           </a>
         </li>
-        <li>
-          <a
-            href="#about-us"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection ? scrollToSection("aboutUs") : navigate("/about");
-            }}
+        {/* Services Dropdown */}
+        <li className="navbar-dropdown">
+          <button
+            className="navbar-dropdown-button"
+            onClick={() => setServicesDropdown(!servicesDropdown)}
           >
-            About Us
-          </a>
+            Services <ChevronDown className="dropdown-icon" />
+          </button>
+          {servicesDropdown && (
+            <ul className="navbar-dropdown-menu">
+              <li>
+                <a href="/docfind">Doctor Finder</a>
+              </li>
+              <li>
+                <a href="/ai">AI Report Analyzer</a>
+              </li>
+              <li>
+                <a href="/mental">Mental Health Counsellor</a>
+              </li>
+              <li>
+                <a href="/donation">Donate to Patients</a>
+              </li>
+            </ul>
+          )}
         </li>
-        <li>
-          <a
-            href="#services"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection ? scrollToSection("services") : navigate("/services");
-            }}
+
+        {/* Resources Dropdown */}
+        <li className="navbar-dropdown">
+          <button
+            className="navbar-dropdown-button"
+            onClick={() => setResourcesDropdown(!resourcesDropdown)}
           >
-            Services
-          </a>
+            Resources <ChevronDown className="dropdown-icon" />
+          </button>
+          {resourcesDropdown && (
+            <ul className="navbar-dropdown-menu">
+              <li>
+                <a href="/survival">Cancer Survivor Stories</a>
+              </li>
+              <li>
+                <a href="/kid">Kid's Survivor Stories</a>
+              </li>
+              <li>
+                <a href="/care">Caregiver Support</a>
+              </li>
+              <li>
+                <a href="/quiz">Cancer Risk Quiz</a>
+              </li>
+              <li>
+                <a href="/cancerscreen">Cancer Screening Tests</a>
+              </li>
+            </ul>
+          )}
         </li>
+
         <li>
           <a
             href="/forum"
@@ -132,4 +191,3 @@ const NavBar = ({ scrollToSection = null }) => {
 };
 
 export default NavBar;
-

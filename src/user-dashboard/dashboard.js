@@ -141,60 +141,20 @@ export default function UserDashboardPage() {
             <DayDetails date={selectedDate} />
           </div>
         </div>
-        <div className="feature-cards-row">
-          <div className="feature-card">
-            <h3 className="feature-title">Curious about your cancer risk?</h3>
-            <p className="feature-description">
-              Take our health risk assessment quiz to learn more about your
-              cancer risks.
-            </p>
-            <button className="feature-button" onClick={() => window.location.href = '/quiz'}>Go there!</button>
-          </div>
-
-          <div className="feature-card">
-            <h3 className="feature-title">
-              Wondering about the screening test your doctor mentioned?
-            </h3>
-            <p className="feature-description">
-              Discover the details of cancer screenings here!
-            </p>
-            <button className="feature-button" onClick={() => window.location.href = '/cancerscreen'}>Go there!</button>
-          </div>
-
-          <div className="feature-card">
-            <h3 className="feature-title">
-              Confused by medical terms on your report?
-            </h3>
-            <p className="feature-description">
-              Use our AI report analyzer to simplify your report!
-            </p>
-            <button className="feature-button" onClick={() => window.location.href = '/ai'}>Try it Out!</button>
-          </div>
-
-          <div className="feature-card">
-            <h3 className="feature-title">
-              Keep an eye on your health with our daily symptom tracker!
-            </h3>
-            <p className="feature-description">Track your symptoms daily</p>
-            <button className="feature-button" onClick={() => window.location.href = '/symptom'}>Track Now!</button>
-          </div>
-        </div>
-
         {/* Support Cards Row */}
         <div className="support-cards-row">
           <div className="support-card">
-            <h3 className="support-title">Feeling overwhelmed?</h3>
+            <h3 className="support-title"> Keep an eye on your health with our daily symptom tracker!</h3>
             <p className="support-description">
-              Contact our counsellors and therapists to get consultation and
-              guidance!
+            Track your symptoms daily
             </p>
-            <button className="support-button" onClick={() => window.location.href = '/mental'}>Go there!</button>
+            <button className="support-button" onClick={() => window.location.href = '/symptom'}>Track Now!</button>
           </div>
 
           <div className="support-card">
-            <h3 className="support-title">Need immediate financial support?</h3>
+            <h3 className="support-title">Keep an eye on what you consume</h3>
             <p className="support-description">
-              Register your details with us to access donations quickly.
+              Use our nutrition and calorie tracker 
             </p>
             <button className="support-button" onClick={() => window.location.href = '/donation'}>Go there!</button>
           </div>
