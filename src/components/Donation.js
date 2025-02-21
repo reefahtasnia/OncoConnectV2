@@ -1,25 +1,39 @@
-import React from 'react';
-import "./CSS/donation.css"; // Updated to match the CSS filename
-import cancer5 from './assets/cancer5.jpg';
-import cancer4 from './assets/cancer4.jpg';
-import cancerr from './assets/cancerr.jpg';
-import cancer6 from './assets/cancer6.jpg';
+import React, { useState, useEffect } from "react";
+import "./CSS/donation.css"; 
 import Navbar from "./Nav";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+
+const API_BASE_URL = "http://localhost:5000"; // Define base API URL
 
 const DonationPage = () => {
   const navigate = useNavigate();
+  const [donations, setDonations] = useState([]); // Store dynamic donations
+
+  useEffect(() => {
+    // Fetch only approved donations from the backend
+    const fetchDonations = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/approved-donations`); // Adjust the URL if needed
+        const data = await response.json();
+        setDonations(data);
+      } catch (error) {
+        console.error("Error fetching donations:", error);
+      }
+    };
+
+    fetchDonations();
+  }, []);
+
   return (
     <div>
-      
+      <Navbar />
 
       {/* Secondary Hero */}
       <section className="don-secondary-hero">
         <div className="don-hero-content">
           <h2>Specialized Care<br />With Compassion and Community</h2>
           <p>Join us in making a difference in the lives of those affected by cancer.</p>
-          <button className="don-btn-primary">Donate Now</button>
         </div>
       </section>
 
@@ -29,63 +43,56 @@ const DonationPage = () => {
         <h2>Transparent Donation, See How You<br />Make a Difference</h2>
 
         <div className="don-updates-grid">
-          <div className="don-update-card">
-            <img src={cancer5} alt="Patient care" />
-            <div className="don-card-contents">
-              
-              <p>Martha, a young cancer fighter, urgently needs financial assistance to continue her treatment. Your support can help her embrace a healthier and brighter future.</p>
-              <button className="don-btn-secondary"
-               onClick={() => navigate('/credit')}
-              >Donate Now</button>
-            </div>
-          </div>
+          {donations.length > 0 ? (
+            donations.map((donation) => (
+              <div key={donation._id} className="don-update-card">
+                {/* Show image if available, otherwise show placeholder */}
+                <div className="don-image-container">
+                  {donation.image_url ? (
+                    <img
+                      src={`${API_BASE_URL}/${donation.image_url}`} // Ensure correct path
+                      alt="Donation"
+                      className="don-image"
+                    />
+                  ) : (
+                    <div className="don-placeholder-image"></div> // Placeholder for missing images
+                  )}
+                </div>
 
-          <div className="don-update-card">
-            <img src={cancer4} alt="Patient support" />
-            <div className="don-card-contents">
-              
-              <p>Baby Mary, a brave little fighter battling cancer, urgently needs your support to continue her treatment. Your contribution can give her a chance at life and hope for a brighter future.</p>
-              <button className="don-btn-secondary">Donate Now</button>
-            </div>
-          </div>
+                <div className="don-card-contents">
+                  <p><strong>{donation.username}</strong> needs ${donation.amount} for treatment.</p>
+                  <p>{donation.reason}</p>
+                  <p><strong>Amount raised so far:</strong> ${donation.amount_raised}</p> {/* Display amount raised */}
 
-          <div className="don-update-card">
-            <img src={cancerr} alt="Patient care" />
-            <div className="don-card-contents">
-             
-              <p>Camila, an elderly woman courageously facing cancer, is in urgent need of financial support for her treatment. Your kindness can bring comfort and hope to her challenging journey.</p>
-              <button className="don-btn-secondary">Donate Now</button>
-            </div>
-          </div>
+                  <button
+                    className="don-btn-secondary"
+                    onClick={() => navigate('/credit', { state: { donation } })} // Pass donation details
+                  >
+                    Donate Now
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="don-no-donations">No approved donation requests available.</p>
+          )}
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Support Section */}
       <section className="don-faq-section">
         <div className="don-faq-container">
           <div className="don-faq-questions">
-            <h3>Frequently Asked Questions</h3>
-            <h2>Have any question for us?</h2>
-
-            <div className="don-question">
-              <h4>How can I apply for financial aid for treatment?</h4>
-              <span className="don-plus">+</span>
-            </div>
-            <div className="don-question">
-              <h4>What support services are available for families?</h4>
-              <span className="don-plus">+</span>
-            </div>
-            <div className="don-question">
-              <h4>How can I volunteer or contribute?</h4>
-              <span className="don-plus">+</span>
-            </div>
-          </div>
-
-          <div className="don-faq-image">
-            <img src={cancer6} alt="Pink awareness ribbon" />
+            <h3>We Are Here to Help</h3>
+            <h2>Supporting Cancer Patients in Need</h2>
+            <p>We are always present to help those in need of financial aid for their cancer treatment. Your generosity can change lives and bring hope.</p>
+            <button className="don-btn-primary" onClick={() => navigate('/dform')}>
+              Apply for Financial Aid
+            </button>
           </div>
         </div>
       </section>
+
       <Footer />
     </div>
   );

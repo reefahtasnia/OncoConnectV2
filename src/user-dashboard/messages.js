@@ -160,7 +160,7 @@ export default function MessagesPage() {
             <UserDropdown
               username={userData.username}
               avatar={userData.profilePicture}
-              onLogout={() => {handleLogout}}
+              onLogout={() => {handleLogout()}}
             />
             <NotificationsButton notifications={notifications} />
           </div>

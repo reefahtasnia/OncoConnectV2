@@ -1,0 +1,71 @@
+/* Donation Form Styling */
+.dform-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f9;
+    padding: 20px;
+  }
+  
+  .dform-box {
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+  }
+  
+  .dform-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #8b5cf6;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .dform-label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .dform-input,
+  .dform-textarea,
+  .dform-file {
+    width: 100%;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+  }
+  
+  .dform-input:focus,
+  .dform-textarea:focus,
+  .dform-file:focus {
+    border-color: #8b5cf6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
+  }
+  
+  .dform-button {
+    width: 100%;
+    background: #8b5cf6;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .dform-button:hover {
+    background: #7a41f5;
+  }
+  

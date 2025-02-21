@@ -278,7 +278,7 @@ export default function MedicinesPage() {
             <UserDropdown
               username={userData.username}
               avatar={userData.profilePicture}
-              onLogout={() => {handleLogout}}
+              onLogout={() => {handleLogout()}}
             />
           </div>
         </header>

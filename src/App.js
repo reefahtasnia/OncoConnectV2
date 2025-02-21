@@ -45,6 +45,8 @@ import AdminDashboard from './admin-dashboard/dashboard.js';
 import ReportedPost from './admin-dashboard/reportedPost.js';
 import ReportedPostDetail from './admin-dashboard/reportedPostDetail.js';
 import DoctorApprovals from './admin-dashboard/DoctorApproval.js';
+import Dform from './components/donationform.js';
+import ADform from './components/DonationAdmin.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -67,7 +69,7 @@ function App() {
     const location = useLocation();
 
     // Define routes where the Navbar should not appear
-    const noNavbarRoutes = ['/', '/login', '/signup', '/forgot-password'];
+    const noNavbarRoutes = ['/', '/login', '/signup', '/forgot-password','/donation'];
 
     return (
         <>
@@ -77,6 +79,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/test" element={<Test />} />
+                <Route path="/dform" element={<Dform />} />
+                <Route path="/adform" element={<ADform />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/appf" element={<Appf />} />
                 <Route path="/editProfile" element={<EditProfile />} />
