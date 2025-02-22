@@ -109,6 +109,7 @@ const CalorieTracker = () => {
       });
   
       alert("Nutrition data submitted successfully!");
+      alert("Your today's diet doesn't contain enough fiber. Consider adding more vegetables and whole grains to your meals for better digestion and overall health.");
     } catch (error) {
       console.error("Error submitting nutrition data:", error);
       alert("Failed to submit nutrition data.");
