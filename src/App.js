@@ -47,6 +47,7 @@ import ReportedPostDetail from './admin-dashboard/reportedPostDetail.js';
 import DoctorApprovals from './admin-dashboard/DoctorApproval.js';
 import Dform from './components/donationform.js';
 import ADform from './components/DonationAdmin.js';
+import SDform from './components/StoryAdmin.js';
 import MyDoctorsPage from './user-dashboard/myDoctor.js';
 
 const PageWrapper = ({ children }) => {
@@ -82,6 +83,7 @@ function App() {
                 <Route path="/test" element={<Test />} />
                 <Route path="/dform" element={<Dform />} />
                 <Route path="/adform" element={<ADform />} />
+                <Route path="/sdform" element={<SDform />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/appf" element={<Appf />} />
                 <Route path="/editProfile" element={<EditProfile />} />

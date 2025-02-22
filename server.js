@@ -112,6 +112,11 @@ const survivalSchema = new mongoose.Schema({
   email: { type: String, required: true, trim: true },
   imageUrl: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
+  verified: { 
+    type: String, 
+    enum: ["hanging", "approved", "rejected"], 
+    default: "hanging" 
+  } // Default is "hanging"
 });
 //diary
 const diarySchema = new mongoose.Schema({
@@ -165,6 +170,21 @@ const HangingDonationSchema = new mongoose.Schema(
   { collection: "HangingDonation" }
 );
 
+//kid story
+const KidStorySchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    favourite_animal: { type: String, required: true }, // User's favorite animal
+    name: { type: String, required: true }, // Name of the kid
+    story_1: { type: String, required: true }, // First story
+    story_2: { type: String, required: true }, // Second story
+    story_3: { type: String, required: true }, // Third story
+    image_url: { type: String, required: true }
+  },
+  { collection: "kid_story" } // Explicitly set the collection name
+);
+
+
 
 // Create Models
 const Doctor = mongoose.model('Doctor', doctorSchema);
@@ -173,6 +193,7 @@ const Appointment = mongoose.model("Appointment", AppointmentSchema);
 const Diary = mongoose.model('Diary', diarySchema);
 const Nutrition = mongoose.model("Nutrition", NutritionSchema);
 const HangingDonation = mongoose.model("HangingDonation", HangingDonationSchema);
+const kid_story = mongoose.model("kid_story", KidStorySchema);
 // File Upload Configuration for Survival Images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -238,23 +259,23 @@ app.get('/api/survival/stories', async (req, res) => {
   const skip = (page - 1) * limit;
 
   try {
-      const stories = await Survival.find()
+      const stories = await Survival.find({ verified: "approved" }) // Fetch only approved stories
           .skip(skip)
           .limit(limit)
           .sort({ createdAt: -1 })
-          .select('_id title content authorName imageUrl createdAt'); // Fetch only required fields
+          .select('_id title content authorName imageUrl createdAt');
 
       // Modify content to show only the first 15 words
       const processedStories = stories.map(story => {
           const contentWords = story.content.split(' '); // Split content into words
-          const shortContent = contentWords.slice(0, 15).join(' ') + (contentWords.length > 15 ? '...' : ''); // Get the first 15 words
+          const shortContent = contentWords.slice(0, 15).join(' ') + (contentWords.length > 15 ? '...' : ''); // Get first 15 words
           return {
               ...story._doc, // Spread the story object
               content: shortContent
           };
       });
 
-      const totalCount = await Survival.countDocuments();
+      const totalCount = await Survival.countDocuments({ verified: "approved" }); // Count only approved stories
       const totalPages = Math.ceil(totalCount / limit);
 
       res.json({
@@ -267,22 +288,24 @@ app.get('/api/survival/stories', async (req, res) => {
   }
 });
 
-// Fetch full article by ID
+// Fetch full article by ID (only approved)
 app.get('/api/survival/story/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const article = await Survival.findById(id).select('_id title content authorName imageUrl createdAt');
+    const article = await Survival.findOne({ _id: id, verified: "approved" }) // Fetch only if verified is approved
+      .select('_id title content authorName imageUrl createdAt');
 
     if (!article) {
       return res.status(404).json({ message: 'Article not found' });
     }
 
-    res.json(article); // Send the full article data
+    res.json(article);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching article', error });
   }
 });
+
 
   
   // Endpoint for uploading stories
@@ -335,7 +358,7 @@ const verifyToken = (req, res, next) => {
 app.get("/api/get-userid", verifyToken, (req, res) => {
   return res.status(200).json({ user_id: req.userId });
 });
-app.post("/api/appointments", verifyToken, async (req, res) => {
+app.post("/api/appointments", async (req, res) => {
   try {
     const { user_id, user_name, doctor_id, date, medium } = req.body;
     console.log("Request Body:", req.body); // Debugging
@@ -351,10 +374,10 @@ app.post("/api/appointments", verifyToken, async (req, res) => {
     }
 
     // Find the user by their ID
-    const user = await User.findById(user_id);
+    /*const user = await User.findById(user_id);
     if (!user) {
       return res.status(404).json({ error: "User not found." });
-    }
+    }*/
 
     // Create new appointment with doctor and user details
     const newAppointment = new Appointment({
@@ -553,7 +576,75 @@ app.post("/api/donate", async (req, res) => {
   }
 });
 
+// API to save kid's story
+app.post("/api/kid-story", upload.single("image_url"), async (req, res) => {
+  try {
+    const { user_id, favourite_animal, name, story_1, story_2, story_3 } = req.body;
+    const image_url = req.file ? `uploads/${req.file.filename}` : "";
 
+    if (!user_id || !favourite_animal || !name || !story_1 || !story_2 || !story_3 || !image_url) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    const newStory = new kid_story({
+      user_id,
+      favourite_animal,
+      name,
+      story_1,
+      story_2,
+      story_3,
+      image_url, // ✅ Save file path in DB
+    });
+
+    await newStory.save();
+    res.status(201).json({ message: "Story saved successfully!" });
+  } catch (error) {
+    console.error("Error saving story:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+app.get("/api/kid-story/latest", async (req, res) => {
+  try {
+      const latestStory = await kid_story.findOne().sort({ createdAt: -1 }); // Fetch latest entry
+      if (!latestStory) {
+          return res.status(404).json({ message: "No stories found" });
+      }
+      res.json(latestStory);
+  } catch (error) {
+      console.error("Error fetching latest story:", error);
+      res.status(500).json({ message: "Server error", error });
+  }
+});
+
+//survival story
+app.put("/api/update-story/:id", async (req, res) => {
+  const { status } = req.body; // Expected: "approved" or "rejected"
+
+  if (!["approved", "rejected"].includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  try {
+    const updatedDonation = await Survival.findByIdAndUpdate(
+      req.params.id,
+      { verified: status },
+      { new: true }
+    );
+
+    res.json(updatedDonation);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating donation status", error });
+  }
+});
+app.get("/api/pending-stories", async (req, res) => {
+  try {
+    const donations = await Survival.find({ verified: "hanging" });
+    res.json(donations);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching donations", error });
+  }
+});
   
 // Start the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
