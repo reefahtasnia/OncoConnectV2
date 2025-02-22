@@ -26,6 +26,7 @@ app.use(
   cors({
     origin: "http://localhost:3000", // Allow only frontend origin
     credentials: true, // Allow cookies and authentication headers
+    
   })
 );
 import { fileURLToPath } from "url";
@@ -186,81 +187,9 @@ app.get("/api/doctor_finder/search", async (req, res) => {
   }
 });
 
-const AppointFormSchema = new mongoose.Schema(
-  {
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "users",
-    }, // Reference to User model
-    user_name: { type: String, required: true }, // Name of the user booking the appointment
-    doctor_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "DoctorFinder",
-    }, // Reference to DoctorFinder model
-    doctor_name: { type: String, required: true }, // Name of the doctor
-    date: { type: Date, required: true }, // Appointment date
-    medium: { type: String, required: true, enum: ["In-person", "Online"] }, // Appointment mode
-  },
-  { collection: "appointform" } // Explicitly set the collection name
-);
-
-// Create Model
-const AppointForm = mongoose.model("AppointForm", AppointFormSchema);
-
-const UserSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-  },
-  { collection: "users" } // Explicitly set the collection name
-);
-
-// Create Model
-const User = mongoose.model("users", UserSchema);
 
 const router = express.Router();
 
-router.post("/submit-appointment", async (req, res) => {
-  try {
-    const { user_id, user_name, doctor_id, date, medium } = req.body;
-
-    // Validate input
-    if (!user_id || !user_name || !doctor_id || !date || !medium) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    // Find the doctor to get their name
-    const DoctorFinder = mongoose.model("DoctorFinder");
-    const doctor = await DoctorFinder.findById(doctor_id);
-    if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found" });
-    }
-
-    // Create new appointment
-    const newAppointment = new AppointForm({
-      user_id,
-      user_name,
-      doctor_id,
-      doctor_name: doctor.name,
-      date,
-      medium,
-    });
-
-    // Save the appointment
-    await newAppointment.save();
-
-    res
-      .status(201)
-      .json({
-        message: "Appointment created successfully",
-        appointment: newAppointment,
-      });
-  } catch (error) {
-    console.error("Error submitting appointment:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
 
 const caregiverArticleSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -592,78 +521,7 @@ app.get("/api/user-result", async (req, res) => {
   }
 });
 
-//AI Try
-
-// Define the Image schema for storing data in MongoDB
-/*const imageSchema = new mongoose.Schema({
-  userId: String,
-  originalImage: String,
-  extractedText: String,
-});
-const ImageModel = mongoose.model("Image", imageSchema);
-
-// Configure Multer for file uploads
-const storage = multer.diskStorage({
-  destination: "./uploads", // Store in the 'uploads' folder
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true); // Accept only image files
-    } else {
-      cb(new Error("File type is not supported!"));
-    }
-  },
-});
-
-// **Upload & Process Image**
-// Load summarization model
-let summarizer;
-(async () => {
-  summarizer = await pipeline("summarization");
-})();
-
-// 🔹 **Upload & Process Image**
-app.post("/upload", upload.single("file"), async (req, res) => {
-  const filePath = req.file.path;
-
-  try {
-    // OCR: Extract text from image
-    const { data } = await Tesseract.recognize(filePath, "eng");
-    const extractedText = data.text;
-    console.log("Extracted Text:", extractedText);
-
-    // **Ensure summarizer is ready**
-    if (!summarizer) {
-      return res.status(503).json({ success: false, error: "Summarizer not initialized yet. Please retry." });
-    }
-
-    // Summarize extracted text
-    const summary = await summarizer(extractedText, { max_length: 100, min_length: 30 });
-    const simplifiedText = summary[0].summary_text;
-    console.log("Simplified Text:", simplifiedText);
-
-    res.json({ success: true, extractedText, simplifiedText });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: "Error processing image" });
-  }
-});
-
-// **Retrieve Processed Image Data**
-app.get("/images/:userId", async (req, res) => {
-  const userId = req.params.userId;
-  try {
-    const images = await ImageModel.find({ userId });
-    res.json(images);
-  } catch (error) {
-    res.status(500).json({ success: false, error: "Error fetching images" });
-  }
-});*/
+//AI 
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI("AIzaSyDJz6uxTZOqxZ9TAIO-7vyeVLe4ooX0tEs");
@@ -736,6 +594,171 @@ app.get("/images/:userId", async (req, res) => {
     res.status(500).json({ success: false, error: "Error fetching images" });
   }
 });
+
+//CHATTING
+
+// User Schema
+const userSchema = new mongoose.Schema({
+  username: {type: String},
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String },
+  phone: { type: String, unique: true, sparse: true },
+  gender: { type: String, enum: ["Male", "Female"] },
+  dateOfBirth: { type: Date },
+  profilePicture: { type: String },
+  address: {
+    houseno: String,
+    roadno: String,
+    city: String,
+    region: String,
+    country: String,
+  },
+  treatmentStatus: {
+    type: String,
+    enum: ["ongoing", "completed", "diagnosed not treated"],
+  },
+  emergencyContact: {
+    name: String,
+    phone: String,
+    email: String,
+  },
+  aboutMe: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+const User = mongoose.model("users", userSchema);
+
+const authenticate = (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1]; // Extract token
+
+  if (!token) {
+      return res.status(401).json({ message: "Access Denied. No token provided." });
+  }
+
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+      req.userId = decoded.userId; // Set userId from token payload
+      next(); // Move to the next middleware
+  } catch (error) {
+      console.error("JWT Verification Failed:", error);
+      return res.status(403).json({ message: "Invalid token" });
+  }
+};
+
+// ✅ **Route to Fetch User Data**
+app.get("/api/user", verifyToken, async (req, res) => {
+  console.log("🚀 API HIT: /userdata");
+  console.log("maybe nai: ",req.userId);
+  try {
+      const user = await User.findById(req.userId).select("-password");
+      console.log(user);
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      res.status(200).json(user);
+  } catch (error) {
+      console.error("Error fetching user data:", error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
+
+const AppointmentSchema = new mongoose.Schema(
+  {
+    user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "users" }, // Reference to User model
+    user_name: { type: String, required: true }, // Name of the user booking the appointment
+    doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Doctor" }, // Reference to DoctorFinder model
+    doctor_name: { type: String, required: true }, // Name of the doctor
+    date: { type: Date, required: true }, // Appointment date
+    medium: { type: String, required: true, enum: ["In-person", "Online"] } // Appointment mode
+  },
+  { collection: "appointment" } // Explicitly set the collection name
+);
+
+const Appointment = mongoose.model("Appointment", AppointmentSchema);
+
+// API endpoint to fetch doctor's name and ID for a specific user
+app.get('/api/appointments/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Fetch appointments for the user
+    const appointments = await Appointment.find({ user_id: userId })
+      .select('doctor_id doctor_name -_id') // Select only doctor_id and doctor_name
+      .exec();
+
+    if (appointments.length === 0) {
+      return res.status(404).json({ message: 'No appointments found for this user.' });
+    }
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+const MessageSchema = new mongoose.Schema({
+  msg_id: { type: String, required: true, unique: true },
+  sender_id: { type: String, required: true }, // Can be user_id or doctor_id
+  receiver_id: { type: String, required: true }, // Can be user_id or doctor_id
+  content: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+  attachments: { type: String }, // URL or path to the attachment
+  read: { type: Boolean, default: false },
+});
+
+const Message = mongoose.model("messages", MessageSchema);
+
+
+// Save a new message
+app.post("/api/messages", async (req, res) => {
+  try {
+    const { msg_id, sender_id, receiver_id, content, attachments } = req.body;
+
+    const newMessage = new Message({
+      msg_id,
+      sender_id,
+      receiver_id,
+      content,
+      attachments,
+    });
+
+    await newMessage.save();
+    res.status(201).json({ message: "Message saved successfully", data: newMessage });
+  } catch (error) {
+    console.error("Error saving message:", error);
+    res.status(500).json({ message: "Failed to save message" });
+  }
+});
+
+// Fetch messages for a specific chat (between sender and receiver)
+app.get("/api/messages", async (req, res) => {
+  try {
+    const { sender_id, receiver_id } = req.query;
+
+    const messages = await Message.find({
+      $or: [
+        { sender_id, receiver_id }, // Messages sent by the user to the doctor
+        { sender_id: receiver_id, receiver_id: sender_id }, // Messages sent by the doctor to the user
+      ],
+    }).sort({ timestamp: 1 }); // Sort by timestamp in ascending order
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ message: "Failed to fetch messages" });
+  }
+});
+
+
+
+
+
+
 
 // Start the server
 app.listen(PORT, () =>
