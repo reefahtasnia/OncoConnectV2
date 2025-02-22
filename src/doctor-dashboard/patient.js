@@ -1,57 +1,66 @@
-import DoctorSidebar from './components/doctor-sidebar';
-import DoctorBottomNav from './components/doctor-bottom-nav';
+import DoctorSidebar from "./components/doctor-sidebar";
+import DoctorBottomNav from "./components/doctor-bottom-nav";
 import UserDropdown from "../user-dashboard/components/user-dropdown";
 import NotificationsButton from "../user-dashboard/components/notifications";
-import './patient.css';
-import userImage from '../user-dashboard/user.png';
+import "./patient.css";
+import userImage from "../user-dashboard/user.png";
 
 export default function PatientsPage() {
-    const currentPatients = [
-        {
-          id: 1,
-          name: "Denzel White",
-          initials: "DW",
-          status: "New Report added",
-          time: "09:00 AM",
-          bgColor: "#FFF5F5"
-        },
-        {
-          id: 2,
-          name: "Nitya Jayakumar",
-          initials: "NJ",
-          status: "Upcoming appointment",
-          time: "10:00 AM",
-          bgColor: "#EEE6FF"
-        },
-        {
-          id: 3,
-          name: "Stacy Mitchell",
-          initials: "SM",
-          status: "Routine checkup",
-          time: "09:00 AM",
-          bgColor: "#F0FFF4"
-        },
-        {
-          id: 4,
-          name: "Susan Meyers",
-          initials: "SM",
-          status: "Weekly Visit",
-          time: "09:00 AM",
-          bgColor: "#FFF5F5"
-        }
-      ];    
+  const currentUser = {
+    username: "Dr. Username",
+    avatar:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Doctor%20Dashboard%206-4Ihz51hyxs75TPG6Ull26QOWjWDdgk.png",
+  };
+  const handleLogout = () => {
+    // Implement logout logic
+    console.log("Logging out...");
+  };
+  const currentPatients = [
+    {
+      id: 1,
+      name: "Nitya Jayakumar",
+      initials: "NJ",
+      status: "New Report added",
+      time: "09:00 AM",
+      bgColor: "#FFF5F5",
+    },
+    {
+      id: 2,
+      name: "Denzel White",
+      initials: "DW",
+      status: "Upcoming appointment",
+      time: "10:00 AM",
+      bgColor: "#EEE6FF",
+    },
+    {
+      id: 3,
+      name: "Stacy Mitchell",
+      initials: "SM",
+      status: "Routine checkup",
+      time: "09:00 AM",
+      bgColor: "#F0FFF4",
+    },
+    {
+      id: 4,
+      name: "Susan Meyers",
+      initials: "SM",
+      status: "Weekly Visit",
+      time: "09:00 AM",
+      bgColor: "#FFF5F5",
+    },
+  ];
 
   const upcomingPatients = [
     {
       id: 5,
       name: "Daisy Sanders",
-      initials: "DS"
+      initials: "DS",
     },
     {
       id: 6,
       name: "Laila Mason",
-      initials: "LM"
-    }
+      initials: "LM",
+    },
   ];
   const notifications = [
     {
@@ -83,34 +92,39 @@ export default function PatientsPage() {
   return (
     <div className="doctor-dashboard">
       <DoctorSidebar />
-      
+
       <main className="doctor-dashboard-main">
-        <header className="doctor-dashboard-header">
-        <div className="doctor-header-content">
-            <h1>Patient Messages</h1>
-            <div className="doctor-header-actions">
-              <UserDropdown
-                username="Dr. Johnson"
-                avatar={userImage}
-                onLogout={() => {}}
-              />
-              <NotificationsButton notifications={notifications} />
-            </div>
-          </div>
+        <header className="dashboard-header">
+          <UserDropdown
+            username={currentUser.username}
+            avatar={currentUser.avatar}
+            onLogout={handleLogout}
+          />
+          <NotificationsButton notifications={notifications} />
         </header>
+        <h1>My Patients</h1>
 
         <div className="doctor-patients-container">
           <div className="doctor-patients-section">
             <h2>My Current Patients</h2>
             <div className="doctor-patients-list">
-              {currentPatients.map(patient => (
-                <a href={`/doctor/patients/patient-${patient.id}`} key={patient.id} className="doctor-patient-item">
-                  <div className="doctor-patient-initials" style={{background: patient.bgColor}}>
+              {currentPatients.map((patient) => (
+                <a
+                  href={`/doctor/patients/patient-${patient.id}`}
+                  key={patient.id}
+                  className="doctor-patient-item"
+                >
+                  <div
+                    className="doctor-patient-initials"
+                    style={{ background: patient.bgColor }}
+                  >
                     {patient.initials}
                   </div>
                   <div className="doctor-patient-details">
                     <h3>{patient.name}</h3>
-                    <span className="doctor-patient-status">{patient.status}</span>
+                    <span className="doctor-patient-status">
+                      {patient.status}
+                    </span>
                   </div>
                   <span className="doctor-patient-time">{patient.time}</span>
                 </a>
@@ -121,9 +135,12 @@ export default function PatientsPage() {
           <div className="doctor-patients-section">
             <h2>Upcoming Patients</h2>
             <div className="doctor-patients-list">
-              {upcomingPatients.map(patient => (
+              {upcomingPatients.map((patient) => (
                 <div key={patient.id} className="doctor-patient-item upcoming">
-                  <div className="doctor-patient-initials" style={{background: patient.bgColor, color: 'white'}}>
+                  <div
+                    className="doctor-patient-initials"
+                    style={{ background: patient.bgColor, color: "white" }}
+                  >
                     {patient.initials}
                   </div>
                   <div className="doctor-patient-details">
@@ -140,4 +157,3 @@ export default function PatientsPage() {
     </div>
   );
 }
-

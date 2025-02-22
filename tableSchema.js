@@ -241,8 +241,49 @@ const notificationSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }, // When was it sent?
 });
 
-
-
+const DoctorPatientSchema = new mongoose.Schema({
+  doctor_id: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true, 
+    ref: 'Doctor' 
+  },
+  user_id: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true, 
+    ref: 'User' 
+  },
+  treatment_status: { 
+    type: String, 
+    enum: ['ongoing', 'completed', 'not treated'], 
+    required: true 
+  },
+  diagnosis: mongoose.Schema.Types.Mixed,
+  follow_up_date: Date,
+  appointment_count: { 
+    type: Number, 
+    default: 1 
+  },
+  last_appointment_date: Date,
+  last_appointment_medium: String,
+  upcoming_appointment_date: Date,
+  upcoming_appointment_medium: String,
+  created_at: { 
+    type: Date, 
+    default: Date.now 
+  },
+  attachments: [{
+    url: String,
+    name: String,
+    uploaded_at: Date
+  }]
+});
+const FeedbackSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  doctor_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Doctor" },
+  rating: { type: Number, min: 1, max: 5 },
+  review: String,
+  created_at: { type: Date, default: Date.now }
+});
 // Register Models
 const User = mongoose.model("User", userSchema);
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
@@ -252,6 +293,7 @@ const PatientSymptom = mongoose.model("PatientSymptom", patientSymptomSchema);
 const ForumPost = mongoose.model("ForumPost", forumPostSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const Notification = mongoose.model("Notification", notificationSchema);
-
+const DoctorPatient = mongoose.model("DoctorPatient", DoctorPatientSchema);
+const Feedback = mongoose.model("Feedback", FeedbackSchema);
 // Export Both Models
-module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment, Notification };
+module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment, Notification, DoctorPatient, Feedback };
