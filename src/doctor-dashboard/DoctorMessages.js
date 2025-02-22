@@ -4,14 +4,23 @@ import DoctorBottomNav from "./components/doctor-bottom-nav";
 import UserDropdown from "../user-dashboard/components/user-dropdown";
 import NotificationsButton from "../user-dashboard/components/notifications";
 import "./DoctorMessages.css";
-import userImage from "../user-dashboard/user.png";
+import userImage from "./patient.jpg";
+import React from "react";
 
 export default function DoctorMessagesPage() {
   const [activeSection, setActiveSection] = useState("messages");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-
+  const currentUser = {
+    username: "Dr. Username",
+    avatar:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Doctor%20Dashboard%206-4Ihz51hyxs75TPG6Ull26QOWjWDdgk.png",
+  };
+  const handleLogout = () => {
+    // Implement logout logic
+    console.log("Logging out...");
+  };
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -27,7 +36,7 @@ export default function DoctorMessagesPage() {
     {
       id: 1,
       name: "Patient John Doe",
-      avatar: { userImage },
+      avatar: {userImage},
       status: "Read",
       time: "00:31:00",
       unread: 0,
@@ -49,7 +58,7 @@ export default function DoctorMessagesPage() {
     {
       id: 2,
       name: "Patient Jane Smith",
-      avatar: { userImage },
+      avatar: './patient.jpg',
       status: "Unread",
       time: "00:31:00",
       unread: 1,
@@ -110,20 +119,15 @@ export default function DoctorMessagesPage() {
       <DoctorSidebar isOpen={sidebarOpen} />
 
       <main className="doctor-dashboard-main">
-        <header className="doctor-dashboard-header">
-          <div className="doctor-header-content">
-            <h1>Patient Messages</h1>
-            <div className="doctor-header-actions">
-              <UserDropdown
-                username="Dr. Johnson"
-                avatar={userImage}
-                onLogout={() => {}}
-              />
-              <NotificationsButton notifications={notifications} />
-            </div>
-          </div>
-        </header>
-
+          <header className="dashboard-header">
+            <UserDropdown
+              username={currentUser.username}
+              avatar={currentUser.avatar}
+              onLogout={handleLogout}
+            />
+            <NotificationsButton notifications={notifications} />
+          </header>
+          <h1>Patient Messages</h1>
         <div className="doctor-messages-content">
           <div className="doctor-messages-container">
             <div className="doctor-chats-list">

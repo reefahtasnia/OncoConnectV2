@@ -511,6 +511,368 @@
   color: #8b5cf6;
 }
 
+/* My Doctors Page Specific Styles */
+.doctors-container {
+  padding: 1rem 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.add-new-doctors-button{
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.add-new-doctors-button:hover{
+  background-color: #844fff;
+  transform: scale(1.05);
+}
+.add-new-doctors-button:active{
+  transform: scale(0.95);
+}
+.doctor-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doctor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctor-info {
+  flex: 1;
+  padding-top: 0.25rem; /* Add slight padding to align with avatar */
+}
+
+.doctor-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.specialization {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  line-height: 1.2;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.status-badge.ongoing {
+  background: #E3F2FD;
+  color: #1976D2;
+}
+
+.status-badge.completed {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.doctor-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #666;
+  display: block;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.doctor-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.doctor-details-button {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doctor-details-button:hover{
+  background-color: #844fff;
+  transform: scale(1.05);
+}
+.doctor-details-button:active{
+  transform: scale(0.95);
+}
+.send-report-button{
+  background: white;
+  color: #8b5cf6;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 6px -1px;
+}
+.send-report-button:hover{
+  background-color: #f3f0ff;
+  transform: scale(1.05);
+}
+.send-report-button:active{
+  transform: scale(0.95);
+}
+/* Doctor Details Sidebar */
+.doctor-details-sidebar {
+  position: fixed;
+  top: 0;
+  margin-top: 70px;
+  right: 0;
+  width: 400px;
+  height: calc(100vh - 70px);
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.details-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1; /* Ensure it's always visible */
+  z-index: 1001; /* Make sure it's above other elements */
+  background-color: #f3f4f6; /* Light background to make it always visible */
+}
+
+.details-close-button:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+.doctor-details h3,
+.appointment-details h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #8b5cf6;
+}
+.education-list {
+  margin: 15px 0;
+}
+
+.education-list h4 {
+  color: #6b7280;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.education-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.education-item {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.education-item .degree {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.education-item .institution {
+  display: block;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.education-item .year {
+  display: block;
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.experience-info {
+  margin: 12px 0;
+  padding: 10px;
+  border-radius: 8px;
+  color: #374151;
+  margin-left: -180px;
+}
+.appointment-item {
+  background-color: #f3f0ff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* Review Form Overlay */
+.review-form-overlay,
+.report-upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.review-form,
+.report-upload-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.submit-review-button{
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  gap: 8px;
+  margin-right: 10px;
+}
+.submit-review-button:hover{
+  background-color: #844fff;
+  transform: scale(1.05);
+}
+.submit-review-button:active{
+  transform: scale(0.95);
+}
+.cancel-review-button{
+  background: white;
+  color: #8b5cf6;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 6px -1px;
+}
+.cancel-review-button:hover{
+  background-color: #f3f0ff;
+  transform: scale(1.05);
+}
+.cancel-review-button:active{
+  transform: scale(0.95);
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .doctor-details-sidebar {
+    width: 100%;
+  }
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-main {

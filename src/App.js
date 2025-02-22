@@ -47,6 +47,7 @@ import ReportedPostDetail from './admin-dashboard/reportedPostDetail.js';
 import DoctorApprovals from './admin-dashboard/DoctorApproval.js';
 import Dform from './components/donationform.js';
 import ADform from './components/DonationAdmin.js';
+import MyDoctorsPage from './user-dashboard/myDoctor.js';
 
 const PageWrapper = ({ children }) => {
     const location = useLocation();
@@ -107,6 +108,7 @@ function App() {
                 <Route path="/user/messages" element={<UserMessages />} />
                 <Route path="/user/diary" element={<UserDiary />} />
                 <Route path="/user/forum" element={<UserForum />} />
+                <Route path="/user/my-doctors" element={<MyDoctorsPage />} />
                 <Route path="/symptom" element={<SymptomTracker />} />
                 <Route path="/docfind" element={<Doctor_finder />} />
                 <Route path="/cancerscreen" element={<CancerScreen />} />
