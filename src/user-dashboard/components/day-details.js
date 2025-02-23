@@ -9,11 +9,11 @@ export default function DayDetails({ date }) {
     const events = [
       {
         type: 'appointment',
-        text: 'You have an appointment today at 7 pm.'
+        text: 'You have an appointment today at 2 pm with Prof. Dr. Swapan Bandyopadhyay'
       },
       {
-        type: 'medicine',
-        text: 'Medicine: Antibiotics at 3 pm.'
+        type: 'appointment',
+        text: 'You have an appointment today at 4 pm with Dr. Alice Johnson over the phone'
       }
     ]
   

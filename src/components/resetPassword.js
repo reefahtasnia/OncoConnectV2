@@ -36,18 +36,80 @@ export default function PasswordReset() {
       window.location.href = '/login';
     }, 600);
   };
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5001/api/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
 
+      if (!response.ok) throw new Error('Failed to send OTP');
+      nextStep(e);
+    } catch (error) {
+      console.error('OTP send error:', error);
+      alert(error.message);
+    }
+  };
+
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5001/api/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: formData.otp
+        })
+      });
+
+      if (!response.ok) throw new Error('Invalid OTP');
+      nextStep(e);
+    } catch (error) {
+      console.error('OTP verification error:', error);
+      alert(error.message);
+    }
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      return alert("Passwords don't match!");
+    }
+
+    try {
+      const response = await fetch('http://localhost:5001/api/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      if (!response.ok) throw new Error('Password reset failed');
+      nextStep(e);
+    } catch (error) {
+      console.error('Password reset error:', error);
+      alert(error.message);
+    }
+  };
   const renderStep = () => {
     switch(step) {
       case 1:
         return (
           <div className={`form-container ${isSliding ? 'slide-left' : ''}`}>
             <button onClick={() => window.location.href = '/'} className="back-button">
-              <ArrowLeft size={20} />
-              <span>Back to Home</span>
+            <span className="arrow-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.54 19.54L9 13h13v-2H9l6.54-6.54L14 3l-9 9l9 9z"/>
+              </svg>
+            </span>
             </button>
             <h1 className="form-title">Forgot Password</h1>
-            <form onSubmit={nextStep}>
+            <form onSubmit={handleSendOTP}>
               <div className="input-group">
                 <span className="input-icon">
                   ✉️
@@ -76,11 +138,15 @@ export default function PasswordReset() {
         return (
           <div className={`form-container ${isSliding ? 'slide-left' : ''}`}>
             <button onClick={() => setStep(1)} className="back-button">
-              <ArrowLeft size={20} />
+            <span className="arrow-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.54 19.54L9 13h13v-2H9l6.54-6.54L14 3l-9 9l9 9z"/>
+              </svg>
+            </span>
               <span>Back</span>
             </button>
             <h1 className="form-title">OTP Verification</h1>
-            <form onSubmit={nextStep}>
+            <form onSubmit={handleVerifyOTP}>
               <div className="input-group">
                 <span className="input-icon">
                   🔑
@@ -109,11 +175,15 @@ export default function PasswordReset() {
         return (
           <div className={`form-container ${isSliding ? 'slide-left' : ''}`}>
             <button onClick={() => setStep(2)} className="back-button">
-              <ArrowLeft size={20} />
+            <span className="arrow-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.54 19.54L9 13h13v-2H9l6.54-6.54L14 3l-9 9l9 9z"/>
+              </svg>
+            </span>
               <span>Back</span>
             </button>
             <h1 className="form-title">Reset your Password</h1>
-            <form onSubmit={nextStep}>
+            <form onSubmit={handlePasswordReset}>
               <div className="input-group">
                 <span className="input-icon">
                   🔑

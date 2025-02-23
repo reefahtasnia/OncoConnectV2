@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import Sidebar from "./components/sidebar";
+import "./StoryAdmin.css";
 const StoryAdmin = () => {
   const [stories, setStories] = useState([]);
   const API_BASE_URL = "http://localhost:5000";
@@ -29,7 +30,9 @@ const StoryAdmin = () => {
 
   return (
     <div className="admin-container">
-      <h2>Pending Stories</h2>
+      <Sidebar />
+      <div className="admin-main">
+      <h2 className="admin-content-title">Pending Stories</h2>
       <table className="story-table">
         <thead>
           <tr>
@@ -66,6 +69,7 @@ const StoryAdmin = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

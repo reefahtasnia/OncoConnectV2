@@ -9,7 +9,7 @@ function ReportedPosts() {
     {
       id: 1,
       author: "Golanginya",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "./user.png",
       timeAgo: "9 min ago",
       title: "Top 5 Tips for Managing Chemotherapy Side Effects",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla",
@@ -20,7 +20,7 @@ function ReportedPosts() {
     {
       id: 2,
       author: "Linuxoid",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "./user.png",
       timeAgo: "25 min ago",
       title: "Understanding the Emotional Impact of a Cancer Diagnosis",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum vitae etiam lectus amet enim.",
@@ -31,7 +31,7 @@ function ReportedPosts() {
   ];
 
   const handleCheckReport = (postId) => {
-    console.log('Checking report for post:', postId);
+    window.location.href = `/admin/reported-posts/detail`;
     // Add report checking logic here
   };
 
@@ -47,7 +47,7 @@ function ReportedPosts() {
               <div className="admin-reported-post-header">
                 <div className="admin-reported-post-author">
                   <img 
-                    src={post.avatar || "/placeholder.svg"} 
+                    src={post.avatar || "/user.png"} 
                     alt={post.author} 
                     className="admin-reported-author-avatar"
                   />

@@ -17,7 +17,7 @@ import DoctorPatient from './doctor-dashboard/patient.js';
 import Patientdetail from './doctor-dashboard/patient-detail.js';
 import UserDashboard from './user-dashboard/dashboard.js';
 import UserMedicines from './user-dashboard/medicine.js';
-import UserMessages from './user-dashboard/messages.js';
+import UserMessages from './user-dashboard/messagesdummy.js';
 import UserDiary from './user-dashboard/diary.js';
 import UserForum from './user-dashboard/forum.js';
 import Mental from './components/MentalHealthPage.js';
@@ -47,7 +47,7 @@ import ReportedPostDetail from './admin-dashboard/reportedPostDetail.js';
 import DoctorApprovals from './admin-dashboard/DoctorApproval.js';
 import Dform from './components/donationform.js';
 import ADform from './components/DonationAdmin.js';
-import SDform from './components/StoryAdmin.js';
+import SDform from './admin-dashboard/StoryAdmin.js';
 import MyDoctorsPage from './user-dashboard/myDoctor.js';
 
 const PageWrapper = ({ children }) => {
@@ -81,9 +81,9 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/test" element={<Test />} />
-                <Route path="/dform" element={<Dform />} />
-                <Route path="/adform" element={<ADform />} />
                 <Route path="/sdform" element={<SDform />} />
+                <Route path="/adform" element={<ADform />} />
+                <Route path="/dform" element={<Dform />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/appf" element={<Appf />} />
                 <Route path="/editProfile" element={<EditProfile />} />

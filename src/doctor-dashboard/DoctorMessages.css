@@ -78,6 +78,8 @@
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s;
+    height: 80px;
+    margin-bottom: 10px;
   }
   
   .doctor-chat-item:hover,

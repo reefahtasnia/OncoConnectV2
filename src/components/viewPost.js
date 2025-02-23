@@ -272,7 +272,7 @@ export default function PostView() {
             <div key={comment._id} className="forum-comment">
               <div className="comment-header">
                 <span className="comment-author">
-                  {comment.user_id?.username || "Unknown"}
+                  {comment.user_id?.username || "Zaima"}
                 </span>
                 <span className="comment-time">
                   {new Date(comment.created_at).toLocaleDateString()}
@@ -305,7 +305,8 @@ export default function PostView() {
                   <div key={reply._id} className="forum-reply">
                     <div className="reply-header">
                       <span className="reply-author">
-                        {reply.user_id?.username || "Unknown"}
+                        {/* {reply.user_id?.username || "Zaima"} */}
+                        Zaima
                       </span>
                       <span className="reply-time">
                         {new Date(reply.created_at).toLocaleDateString()}
@@ -324,11 +325,11 @@ export default function PostView() {
       <aside className="forum-right-sidebar">
         <div className="forum-profile-card">
           <img
-            src={post.user_id.profilePicture}
+            src={post.user_id.profilePicture || "https://ainckthvriahwdeczfew.supabase.co/storage/v1/object/public/User-Profile-pic/0.36444254711929225.png"}
             alt="Profile"
             className="forum-profile-avatar"
           />
-          <h2 className="forum-profile-name">{post.user_id.username}</h2>
+          <h2 className="forum-profile-name">{post.user_id.username || "Zaima"}</h2>
           <div className="forum-profile-actions">
             <button className="forum-profile-action-button">💬</button>
             <button className="forum-profile-action-button">📷</button>

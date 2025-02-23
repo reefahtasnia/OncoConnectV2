@@ -44,7 +44,7 @@ export default function AdminSidebar() {
         </svg>
       ),
       label: 'Reported Post',
-      href: '/admin/reported'
+      href: '/admin/reported-posts'
     },
     {
       icon: (
@@ -57,30 +57,18 @@ export default function AdminSidebar() {
         </svg>
       ),
       label: 'Survival Story',
-      href: '/admin/stories'
+      href: '/sdform'
     },
-    {
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-      ),
-      label: "Children's Zone",
-      href: '/admin/children'
-    },
-    {
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-        </svg>
-      ),
-      label: 'Caregiver Article',
-      href: '/admin/caregiver'
-    },
+    // {
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    //       <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    //       <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    //     </svg>
+    //   ),
+    //   label: 'Caregiver Article',
+    //   href: '/admin/caregiver'
+    // },
     {
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -88,7 +76,7 @@ export default function AdminSidebar() {
         </svg>
       ),
       label: 'Donation',
-      href: '/admin/donation'
+      href: '/adform'
     },
     {
       icon: (
@@ -98,17 +86,17 @@ export default function AdminSidebar() {
         </svg>
       ),
       label: 'Doctor Approval',
-      href: '/admin/doctor'
+      href: '/admin/doctor-approvals'
     },
-    {
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-      ),
-      label: 'User Feedback',
-      href: '/admin/feedback'
-    }
+    // {
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    //       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    //     </svg>
+    //   ),
+    //   label: 'User Feedback',
+    //   href: '/admin/feedback'
+    // }
   ];
 
   return (

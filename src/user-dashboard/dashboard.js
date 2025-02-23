@@ -156,7 +156,7 @@ export default function UserDashboardPage() {
             <p className="support-description">
               Use our nutrition and calorie tracker 
             </p>
-            <button className="support-button" onClick={() => window.location.href = '/donation'}>Go there!</button>
+            <button className="support-button" onClick={() => window.location.href = '/calorie'}>Go there!</button>
           </div>
         </div>
         <SlidingSidebar

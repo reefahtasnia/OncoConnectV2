@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Sidebar from "../admin-dashboard/components/sidebar.js";
+import "./donationAdmin.css";
 
 const DonationAdmin = () => {
   const [donations, setDonations] = useState([]);
@@ -28,7 +30,9 @@ const DonationAdmin = () => {
 
   return (
     <div className="admin-container">
-      <h2>Pending Donations</h2>
+      <Sidebar />
+      <div className="admin-main">
+      <h2 className="admin-content-title">Pending Donations</h2>
       <table className="donation-table">
         <thead>
           <tr>
@@ -69,6 +73,7 @@ const DonationAdmin = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

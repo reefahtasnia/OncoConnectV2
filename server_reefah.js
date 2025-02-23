@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const router = express.Router();
+const sendOTPEmail  = require("./sendmail.js");
 
 const app = express();
 const PORT = 5001;
@@ -40,7 +41,8 @@ const {
   PatientSymptom,
   Medicine,
   ForumPost,
-  Comment
+  Comment,
+  OTP,
 } = require("./tableSchema.js");
 
 app.post("/api/signup", async (req, res) => {
@@ -255,6 +257,74 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// Send OTP
+app.post("/api/send-otp", async (req, res) => {
+  console.log("In send otp POST API");
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Email is required" });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Delete existing OTPs for this email
+    await OTP.deleteMany({ email });
+
+    // Create new OTP entry
+    const newOTP = new OTP({ email, otp });
+    await newOTP.save();
+    console.log("Stored OTP in in db" + otp);
+    // Send email
+    await sendOTPEmail(email, otp); // From your sendEmail.js
+    console.log("OTP sent successfully");
+    res.status(200).json({ message: "OTP sent successfully" });
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ error: "Failed to send OTP" });
+  }
+});
+
+app.post("/api/verify-otp", async (req, res) => {
+  console.log("POST verify otp");
+  try {
+    const { email, otp } = req.body;
+    console.log("Email:", email, "OTP:", otp);
+    const storedOTP = await OTP.findOne({ email });
+    if (!storedOTP) return res.status(400).json({ error: "OTP not found" });
+
+    if (storedOTP.otp !== otp) {
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+    console.log("OTP verified successfully");
+    // OTP verified successfully
+    res.status(200).json({ message: "OTP verified" });
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    res.status(500).json({ error: "Failed to verify OTP" });
+  }
+});
+
+app.post("/api/reset-password", async (req, res) => {
+  console.log("API Reset password");
+  try {
+    const { email, password } = req.body;
+
+    // Find user and update password
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    console.log("User found:" + user);
+    user.password = password; // Add bcrypt hashing here
+    await user.save();
+    console.log("Password updated successfully");
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ error: "Failed to reset password" });
+  }
+});
+//API to edit profile
 app.post("/api/edit-profile", async (req, res) => {
   try {
     const {
@@ -997,6 +1067,7 @@ app.post("/api/newPost", async (req, res) => {
     }
     const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.userId;
+    console.log("userid: ", userId);
     const { category, title, content, attachment } = req.body;
     if (!title || !content || !category || !attachment) {
       return res.status(400).json({ message: "All fields are required" });
@@ -1099,8 +1170,8 @@ app.get("/api/posts/:postId", async (req, res) => {
     }
     if (post.votes === undefined || post.votes === null) {
       post.votes = 0;
-  }
-    console.log("Post User:", post.user_id.username); 
+    }
+    console.log("Post User:", post.user_id.username);
     res.status(200).json({ post });
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -1112,15 +1183,17 @@ app.get("/api/posts/:postId", async (req, res) => {
 //API to get comments
 app.get("/api/posts/:postId/comments", async (req, res) => {
   console.log("Get Comments API");
-  try{
+  try {
     const comments = await Comment.find({ post_id: req.params.postId })
       .sort({ createdAt: "desc" })
-      .populate('user_id', 'username')
-      .populate('replies.user_id', 'username');
+      .populate("user_id", "username")
+      .populate("replies.user_id", "username");
     res.status(200).json({ comments });
-  }catch(error){
+  } catch (error) {
     console.error("Error fetching comments:", error);
-    res.status(500).json({ message: "Error fetching comments", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching comments", error: error.message });
   }
 });
 //API to create comments
@@ -1158,10 +1231,14 @@ app.post("/api/posts/:postId/comments", async (req, res) => {
     });
 
     console.log("New Comment:", newComment);
-    res.status(201).json({ message: "Comment added successfully", data: newComment });
+    res
+      .status(201)
+      .json({ message: "Comment added successfully", data: newComment });
   } catch (error) {
     console.error("Error creating comment:", error);
-    res.status(500).json({ message: "Error creating comment", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating comment", error: error.message });
   }
 });
 //API to create reply
@@ -1193,46 +1270,51 @@ app.post("/api/comments/:commentId/reply", async (req, res) => {
     const newReply = {
       user_id: userId,
       content,
-      created_at: new Date()
+      created_at: new Date(),
     };
 
     const updatedComment = await Comment.findByIdAndUpdate(
       commentId,
       { $push: { replies: newReply } },
       { new: true }
-    ).populate('user_id', 'username')
-     .populate('replies.user_id', 'username');
+    )
+      .populate("user_id", "username")
+      .populate("replies.user_id", "username");
 
-    res.status(201).json({ 
+    res.status(201).json({
       message: "Reply added successfully",
-      data: updatedComment.replies 
+      data: updatedComment.replies,
     });
   } catch (error) {
     console.error("Error creating reply:", error);
-    res.status(500).json({ message: "Error creating reply", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating reply", error: error.message });
   }
 });
 //API to increase vote count
 app.post("/api/posts/:postId/vote", async (req, res) => {
   try {
-      const { postId } = req.params;
-      
-      // Fetch the post first to check if it exists
-      const post = await ForumPost.findById(postId);
-      if (!post) {
-          return res.status(404).json({ message: "Post not found" });
-      }
+    const { postId } = req.params;
 
-      // Increment votes
-      post.votes = (post.votes || 0) + 1;
-      await post.save();
+    // Fetch the post first to check if it exists
+    const post = await ForumPost.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
 
-      console.log("Updated Votes:", post.votes); // Debugging log
+    // Increment votes
+    post.votes = (post.votes || 0) + 1;
+    await post.save();
 
-      res.status(200).json({ message: "Vote added", votes: post.votes });
+    console.log("Updated Votes:", post.votes); // Debugging log
+
+    res.status(200).json({ message: "Vote added", votes: post.votes });
   } catch (error) {
-      console.error("Error voting on post:", error);
-      res.status(500).json({ message: "Error voting on post", error: error.message });
+    console.error("Error voting on post:", error);
+    res
+      .status(500)
+      .json({ message: "Error voting on post", error: error.message });
   }
 });
 //API to get user forum activities
@@ -1256,49 +1338,47 @@ app.get("/api/forumActivities", async (req, res) => {
 
     // Fetch comments where the user has replied
     const commentsWithUserReplies = await Comment.find({
-      "replies.user_id": userId
+      "replies.user_id": userId,
     })
       .populate("user_id", "username profilePicture")
       .populate("post_id", "title")
       .select("content created_at post_id user_id replies");
 
     // Extract the user's replies from comments
-    const userReplies = commentsWithUserReplies.flatMap(comment => 
+    const userReplies = commentsWithUserReplies.flatMap((comment) =>
       comment.replies
-        .filter(reply => reply.user_id.toString() === userId.toString())
-        .map(reply => ({
+        .filter((reply) => reply.user_id.toString() === userId.toString())
+        .map((reply) => ({
           type: "comment_reply",
           user: {
-            name: comment.user_id.username,
-            avatar: comment.user_id.profilePicture,
+            name: comment.user_id?.username || "Unknown User",
+            avatar: comment.user_id?.profilePicture || "",
           },
           content: reply.content,
           timestamp: new Date(reply.created_at).toLocaleString(),
-          title: comment.post_id.title,
-          postId: comment.post_id._id
+          title: comment.post_id ? comment.post_id.title : "Deleted Post",
+          postId: comment.post_id ? comment.post_id._id : null,
         }))
     );
 
     // Map main comments
-    const mainCommentActivities = mainComments.map(comment => ({
+    const mainCommentActivities = mainComments.map((comment) => ({
       type: "post_reply",
       user: {
-        name: comment.user_id.username,
-        avatar: comment.user_id.profilePicture,
+        name: comment.user_id?.username || "Unknown User",
+        avatar: comment.user_id?.profilePicture || "",
       },
       content: comment.content,
       timestamp: new Date(comment.created_at).toLocaleString(),
-      title: comment.post_id.title,
-      postId: comment.post_id._id
+      title: comment.post_id ? comment.post_id.title : "Deleted Post",
+      postId: comment.post_id ? comment.post_id._id : null,
     }));
 
     // Combine all activities
     const activities = [...mainCommentActivities, ...userReplies];
 
     // Sort activities by timestamp (most recent first)
-    activities.sort((a, b) => 
-      new Date(b.timestamp) - new Date(a.timestamp)
-    );
+    activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     // Send the activities back in the response
     res.status(200).json({ activities });
@@ -1306,9 +1386,13 @@ app.get("/api/forumActivities", async (req, res) => {
     console.error("Error fetching forum activities:", error);
     res
       .status(500)
-      .json({ message: "Error fetching forum activities", error: error.message });
+      .json({
+        message: "Error fetching forum activities",
+        error: error.message,
+      });
   }
 });
+
 // API Route: Logout
 app.post("/api/logout", (req, res) => {
   res.clearCookie("token", {

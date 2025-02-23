@@ -284,6 +284,11 @@ const FeedbackSchema = new mongoose.Schema({
   review: String,
   created_at: { type: Date, default: Date.now }
 });
+const OTPSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  otp: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now, expires: 600 } //10 minutes
+});
 // Register Models
 const User = mongoose.model("User", userSchema);
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
@@ -295,5 +300,6 @@ const Comment = mongoose.model("Comment", commentSchema);
 const Notification = mongoose.model("Notification", notificationSchema);
 const DoctorPatient = mongoose.model("DoctorPatient", DoctorPatientSchema);
 const Feedback = mongoose.model("Feedback", FeedbackSchema);
+const OTP = mongoose.model("OTP", OTPSchema);
 // Export Both Models
-module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment, Notification, DoctorPatient, Feedback };
+module.exports = { User, Doctor, PatientSymptom, Appointment, Medicine, ForumPost, Comment, Notification, DoctorPatient, Feedback, OTP };

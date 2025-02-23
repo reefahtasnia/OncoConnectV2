@@ -9,22 +9,14 @@ export default function SlidingSidebar({ date, isOpen, onClose }) {
   const sections = [
     {
       title: "My Appointments",
-      items: ["Dr. Mehta at 7 pm in Tata Hospital."],
+      // items: ["Dr. Lee at 7 pm in Tata Hospital."],
+      items: ["Prof. Dr. Swapan Bandyopadhyay at 2 pm", "Dr. Alice Johnson at 4 pm - Advice by Phone"],
       route: "/docfind",
     },
     {
-      title: "My Tests",
-      items: ["Colon cancer screening test"],
-      route: "/cancerscreen",
-    },
-    {
-      title: "My Symptoms",
-      items: ["Felt dizzy at 12 pm."],
-      route: "/symptom",
-    },
-    {
       title: "My Calorie Intake",
-      items: ["Carbohydrates: 200g", "Proteins: 50g", "Fats: 30g"],
+      // items: ["Carbohydrates: 200g", "Proteins: 50g", "Fats: 30g"],
+      items: ["Total Calories: 1550"],
       route: "/calorie",
     },
   ];

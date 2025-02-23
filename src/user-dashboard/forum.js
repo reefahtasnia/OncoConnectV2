@@ -183,7 +183,8 @@ export default function ForumPage() {
                       alt={activity.user.name}
                       className="user-avatar-small"
                     />
-                    <strong>{activity.user.name}</strong>{" "}
+                    {/* <strong>{activity.user.name}</strong>{" "} */}
+                    <strong>Zaima</strong>{" "}
                     {activity.type === "post_reply"
                       ? "replied to your community post"
                       : activity.type === "comment_reply"

@@ -42,7 +42,7 @@ Olive the owl saw Benny and flew down. "Let me help," she said, placing a honey-
             Moral: Friends make healing easier! ❤️
           </p>
           <button className="bunny-cta-button" onClick={handleExploreClick}>
-            Visit Your Friend Elephant
+            Visit Your Next Friend
           </button>
           <button className="bunny-cta-button2" onClick={handleNavigateForm}>
             Upload Your Own Storyl

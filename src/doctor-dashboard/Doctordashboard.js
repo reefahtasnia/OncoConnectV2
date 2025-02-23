@@ -10,7 +10,7 @@ export default function DoctorDashboard() {
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const currentUser = {
-    username: "Dr. Username",
+    username: "Dr. John Doe",
     avatar:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Doctor%20Dashboard%206-4Ihz51hyxs75TPG6Ull26QOWjWDdgk.png",
   };

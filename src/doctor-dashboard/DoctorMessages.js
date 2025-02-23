@@ -12,6 +12,8 @@ export default function DoctorMessagesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [newMessage, setNewMessage] = useState(""); // For real-time message input
+  const [messages, setMessages] = useState([]); // Store all messages
   const currentUser = {
     username: "Dr. Username",
     avatar:
@@ -35,7 +37,7 @@ export default function DoctorMessagesPage() {
   const chats = [
     {
       id: 1,
-      name: "Patient John Doe",
+      name: "Patient Rose",
       avatar: {userImage},
       status: "Read",
       time: "00:31:00",
@@ -53,12 +55,18 @@ export default function DoctorMessagesPage() {
           time: "8:05 PM",
           sender: "doctor",
         },
+        {
+          id: 3,
+          text: "I'm experiencing some side effects from the new medication.",
+          time: "8:10 PM",
+          sender: "patient",
+        }
       ],
     },
     {
       id: 2,
       name: "Patient Jane Smith",
-      avatar: './patient.jpg',
+      avatar: { userImage },
       status: "Unread",
       time: "00:31:00",
       unread: 1,
@@ -113,21 +121,36 @@ export default function DoctorMessagesPage() {
       document.body.style.overflow = "";
     }
   };
+   // Send message functionality
+  const sendMessage = () => {
+    if (newMessage.trim() !== "") {
+      // Add doctor's message instantly
+      const newMessageObj = {
+        sender: "doctor",
+        text: newMessage,
+        time: "Just now",
+      };
+
+      setMessages((prevMessages) => [...prevMessages, newMessageObj]);
+      setNewMessage(""); // Clear the input after sending the message
+    }
+  };
 
   return (
     <div className="doctor-dashboard">
       <DoctorSidebar isOpen={sidebarOpen} />
 
       <main className="doctor-dashboard-main">
-          <header className="dashboard-header">
-            <UserDropdown
-              username={currentUser.username}
-              avatar={currentUser.avatar}
-              onLogout={handleLogout}
-            />
-            <NotificationsButton notifications={notifications} />
-          </header>
-          <h1>Patient Messages</h1>
+        <header className="dashboard-header">
+          <UserDropdown
+            username={currentUser.username}
+            avatar={currentUser.avatar}
+            onLogout={handleLogout}
+          />
+          <NotificationsButton notifications={[]} />
+        </header>
+        <h1>Patient Messages</h1>
+
         <div className="doctor-messages-content">
           <div className="doctor-messages-container">
             <div className="doctor-chats-list">
@@ -135,49 +158,23 @@ export default function DoctorMessagesPage() {
                 <h2>Messages</h2>
                 <div className="doctor-search-box">
                   <input type="text" placeholder="Search patient" />
-                  <button className="doctor-chat-new">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                    NEW
-                  </button>
+                  <button className="doctor-chat-new">NEW</button>
                 </div>
               </div>
+
               <div className="doctor-chats-scroll">
                 {chats.map((chat) => (
                   <button
                     key={chat.id}
-                    className={`doctor-chat-item ${
-                      activeChat?.id === chat.id ? "active" : ""
-                    }`}
+                    className={`doctor-chat-item ${activeChat?.id === chat.id ? "active" : ""}`}
                     onClick={() => handleChatSelect(chat)}
                   >
-                    <div className="doctor-chat-avatar">
+                    {/* <div className="doctor-chat-avatar">
                       <img src={chat.avatar || userImage} alt={chat.name} />
-                      <span className="doctor-status-indicator"></span>
-                    </div>
+                    </div> */}
                     <div className="doctor-chat-info">
-                      <div className="doctor-chat-header">
-                        <h3>{chat.name}</h3>
-                        <span className="doctor-chat-time">{chat.time}</span>
-                      </div>
-                      <div className="doctor-chat-preview">
-                        <span className="doctor-chat-status">
-                          {chat.status}
-                        </span>
-                        {chat.unread > 0 && (
-                          <span className="doctor-unread-badge">
-                            {chat.unread}
-                          </span>
-                        )}
-                      </div>
+                      <h3>{chat.name}</h3>
+                      <div>{chat.messages[chat.messages.length - 1].text}</div>
                     </div>
                   </button>
                 ))}
@@ -188,133 +185,43 @@ export default function DoctorMessagesPage() {
               {activeChat ? (
                 <>
                   <div className="doctor-chat-header">
-                    <button
-                      className="doctor-back-to-chats"
-                      onClick={handleBackToChats}
-                      aria-label="Back to chat list"
-                    >
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                      </svg>
-                    </button>
+                    <button className="doctor-back-to-chats" onClick={handleBackToChats}>Back</button>
                     <div className="doctor-chat-contact">
-                      <img
-                        src={activeChat.avatar}
-                        alt={activeChat.name}
-                        className="doctor-contact-avatar"
-                      />
+                      {/* <img src={activeChat.avatar} alt={activeChat.name} className="doctor-contact-avatar" /> */}
                       <div className="doctor-contact-info">
                         <h3>{activeChat.name}</h3>
-                        <span className="doctor-contact-id">#PAT123456</span>
                       </div>
                     </div>
-                    <div className="doctor-chat-actions">
-                      <button className="doctor-action-btn">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                        </svg>
-                      </button>
-                      <button className="doctor-action-btn">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                          <line x1="16" y1="13" x2="8" y2="13" />
-                          <line x1="16" y1="17" x2="8" y2="17" />
-                          <polyline points="10 9 9 9 8 9" />
-                        </svg>
-                      </button>
-                      <button className="doctor-action-btn">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <line x1="12" y1="16" x2="12" y2="12" />
-                          <line x1="12" y1="8" x2="12.01" y2="8" />
-                        </svg>
-                      </button>
-                    </div>
                   </div>
+
                   <div className="doctor-chat-messages">
                     {activeChat.messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`doctor-message ${
-                          message.sender === "doctor" ? "sent" : "received"
-                        }`}
-                      >
-                        {message.sender === "patient" && (
-                          <div className="doctor-message-avatar">
-                            <span>P</span>
-                          </div>
-                        )}
+                      <div key={message.id} className={`doctor-message ${message.sender === "doctor" ? "sent" : "received"}`}>
                         <div className="doctor-message-content">
                           <p>{message.text}</p>
-                          <span className="doctor-message-time">
-                            {message.time}
-                          </span>
+                          <span className="doctor-message-time">{message.time}</span>
                         </div>
-                        {message.sender === "doctor" && (
-                          <img
-                            src={userImage}
-                            alt=""
-                            className="doctor-user-message-avatar"
-                          />
-                        )}
+                      </div>
+                    ))}
+                    {messages.map((message, index) => (
+                      <div key={index} className={`doctor-message ${message.sender === "doctor" ? "sent" : "received"}`}>
+                        <div className="doctor-message-content">
+                          <p>{message.text}</p>
+                          <span className="doctor-message-time">{message.time}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
+
                   <div className="doctor-chat-input">
-                    <input type="text" placeholder="Type your message..." />
-                    <button className="doctor-attach-btn">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-                      </svg>
-                    </button>
-                    <button className="doctor-send-btn">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                      </svg>
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Type your message..."
+                    />
+                    <button className="doctor-send-btn" onClick={sendMessage}>
+                      Send
                     </button>
                   </div>
                 </>
@@ -326,11 +233,6 @@ export default function DoctorMessagesPage() {
             </div>
           </div>
         </div>
-
-        <DoctorBottomNav
-          activeSection={activeSection}
-          onSectionChange={setActiveSection}
-        />
       </main>
     </div>
   );

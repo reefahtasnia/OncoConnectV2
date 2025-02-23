@@ -17,40 +17,35 @@ export default function MyDoctorsPage() {
   const doctors = [
     {
       id: "doc123",
-      name: "Dr. Sarah Johnson",
-      specialization: "Cardiologist",
+      name: "Prof. Dr. Swapan Bandyopadhyay",
+      specialization: "Breast Cancer Specialist",
       profilePic: doctorImage,
       visits: 5,
-      lastVisit: "15/03/23 - Online",
-      upcoming: "25/04/23 - In-person",
+      lastVisit: "15/03/23 - In-Person",
+      upcoming: "22/02/25 - Online",
       status: "ongoing",
       bgColor: "#E3F2FD",
       details: {
-        email: "sarah.johnson@example.com",
-        phone: "+1 (555) 123-4567",
-        address: "123 Medical Center Dr, Cityville, State 12345",
+        email: "swapandoctor@example.com",
+        phone: "+88017543698124",
+        address: "Popular Diagnostics, Rampura, Dhaka",
         education: [
           {
-            degree: "MD in Cardiology",
+            degree: "MD in Oncology",
             institution: "Harvard Medical School",
             year: 2010,
           },
           {
-            degree: "Fellowship in Interventional Cardiology",
+            degree: "Fellowship in Breast Cancer",
             institution: "Johns Hopkins Hospital",
             year: 2012,
-          },
-          {
-            degree: "Board Certification in Cardiovascular Disease",
-            institution: "American Board of Internal Medicine",
-            year: 2013,
           },
         ],
         experience: "15 years",
       },
       appointments: [
-        { date: "15/03/23", type: "Online", notes: "Regular checkup" },
-        { date: "25/04/23", type: "In-person", notes: "Follow-up appointment" },
+        { date: "15/03/23", type: "In-person", notes: "Regular checkup" },
+        { date: "22/02/25", type: "Online", notes: "Follow-up appointment" },
       ],
     },
     {

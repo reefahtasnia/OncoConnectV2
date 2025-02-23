@@ -37,6 +37,65 @@
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
+/* Line Chart Styles */
+.admin-line-chart {
+  width: 100%;
+  height: 300px;
+  margin: 20px 0;
+}
+
+.chart-axis {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+  fill: none;
+}
+
+.chart-line {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-point {
+  fill: #7c3aed;
+  stroke: white;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.chart-point:hover {
+  r: 6;
+  filter: drop-shadow(0 2px 4px rgba(124, 58, 237, 0.3));
+}
+
+.chart-label {
+  fill: #6b7280;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+/* Gradient fill under line */
+.chart-line {
+  stroke: url(#lineGradient);
+}
+
+/* Animated line effect */
+/* Animated line effect */
+.chart-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 2s ease-out forwards;
+  stroke: #7c3aed; /* Fallback color */
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 
 .admin-dashboard-logout-button:hover {
   background-color: #7c3aed;
